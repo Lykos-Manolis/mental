@@ -4,24 +4,14 @@ import * as tf from "@tensorflow/tfjs";
 function WinePredictor() {
   const [model, setModel] = useState(null);
   const [formData, setFormData] = useState({
-    "fixed acidity": 7.4,
-    "volatile acidity": 0.7,
-    "citric acid": 0.0,
-    "residual sugar": 1.9,
-    chlorides: 0.076,
-    "free sulfur dioxide": 11.0,
-    "total sulfur dioxide": 34.0,
-    density: 0.9978,
-    pH: 3.51,
-    sulphates: 0.56,
-    alcohol: 9.4,
+    text: "love you",
   });
   const [prediction, setPrediction] = useState(null);
 
   // Load model when the component mounts
   useEffect(() => {
     async function loadModel() {
-      const loadedModel = await tf.loadLayersModel("/wine_model_js/model.json");
+      const loadedModel = await tf.loadLayersModel("/emo_model_js/model.json");
 
       setModel(loadedModel);
     }
@@ -29,7 +19,7 @@ function WinePredictor() {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: parseFloat(e.target.value) });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handlePredict = async () => {
@@ -50,13 +40,37 @@ function WinePredictor() {
     );
 
     // Map index to quality category
-    const qualityCategories = [
-      "low quality",
-      "lower medium quality",
-      "upper medium quality",
-      "high quality",
+    const EMOTION_LABELS = [
+      "admiration",
+      "amusement",
+      "anger",
+      "annoyance",
+      "approval",
+      "caring",
+      "confusion",
+      "curiosity",
+      "desire",
+      "disappointment",
+      "disapproval",
+      "disgust",
+      "embarrassment",
+      "excitement",
+      "fear",
+      "gratitude",
+      "grief",
+      "joy",
+      "love",
+      "nervousness",
+      "optimism",
+      "pride",
+      "realization",
+      "relief",
+      "remorse",
+      "sadness",
+      "surprise",
+      "neutral",
     ];
-    setPrediction(qualityCategories[predictedClassIndex]);
+    setPrediction(EMOTION_LABELS[predictedClassIndex]);
   };
 
   return (
@@ -66,7 +80,7 @@ function WinePredictor() {
         <div key={key}>
           <label>{key}:</label>
           <input
-            type="number"
+            type="text"
             name={key}
             value={formData[key]}
             onChange={handleChange}

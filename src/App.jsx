@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NotFound from "./views/NotFound";
 import ChatView from "./views/ChatView";
 import WinePredictor from "./components/WinePredictor";
+import EmotionPredictor from "./components/EmotionPredictor";
 
 const darkTheme = createTheme({
   palette: {
@@ -26,7 +27,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeView />} />
           <Route path="/chat/:chatId" element={<ChatView />} />
-          <Route path="/predict" element={<WinePredictor />} />
+          <Route path="/predict" element={<EmotionPredictor />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </ThemeProvider>
