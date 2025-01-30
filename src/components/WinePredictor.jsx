@@ -21,9 +21,8 @@ function WinePredictor() {
   // Load model when the component mounts
   useEffect(() => {
     async function loadModel() {
-      const loadedModel = await tf.loadLayersModel(
-        "public/wine_model_js/model.json",
-      );
+      const loadedModel = await tf.loadLayersModel("/wine_model_js/model.json");
+
       setModel(loadedModel);
     }
     loadModel();
