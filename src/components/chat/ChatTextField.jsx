@@ -4,7 +4,7 @@ import React from "react";
 import SendIcon from "@mui/icons-material/Send";
 import EmoSendButton from "./EmoSendButton";
 
-function ChatTextField() {
+function ChatTextField({ onColorUpdate }) {
   const [text, setText] = useState("");
 
   return (
@@ -40,7 +40,7 @@ function ChatTextField() {
           p: 1,
         }}
       />
-      <EmoSendButton text={text} />
+      <EmoSendButton text={text} onColorUpdate={onColorUpdate} />
     </Grid2>
   );
 }

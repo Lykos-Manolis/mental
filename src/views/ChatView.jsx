@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ChatContainer from "../components/chat/ChatContainer";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../components/chat/ChatHeader";
@@ -102,6 +102,19 @@ function ChatView() {
   // Reverse the chat so it works with column-reverse, to scroll bottom to top
   const reversedChat = chatInfo.contactChat.slice().reverse();
 
+  // useState called backgroundGradient
+  const [backgroundColors, setBackgroundColors] = useState([
+    "rgba(5, 25, 55, 0.5)",
+    "rgba(0, 77, 122, 0.5)",
+    "rgba(0, 135, 147, 0.5)",
+    "rgba(0, 191, 114, 0.5)",
+    "rgba(168, 235, 18, 0.5)",
+  ]);
+
+  const updateLastBackgroundColor = (newColor) => {
+    setBackgroundColors((prev) => [...prev.slice(1), newColor]);
+  };
+
   return (
     <Grid2
       container
@@ -109,8 +122,7 @@ function ChatView() {
       wrap="nowrap"
       sx={{
         height: "100vh",
-        background:
-          "linear-gradient(to left top,rgba(5, 25, 55,0.5),rgba(0, 77, 122,0.5),rgba(0, 135, 147,0.5),rgba(0, 191, 114,0.5),rgba(168, 235, 18,0.5))",
+        background: `linear-gradient(to left top,${backgroundColors[0]},${backgroundColors[1]},${backgroundColors[2]},${backgroundColors[3]},${backgroundColors[4]})`,
       }}
     >
       <ChatHeader
@@ -118,7 +130,7 @@ function ChatView() {
         contactName={chatInfo.contactName}
       />
       <ChatContainer messages={reversedChat} />
-      <ChatTextField />
+      <ChatTextField onColorUpdate={updateLastBackgroundColor} />
     </Grid2>
   );
 }
