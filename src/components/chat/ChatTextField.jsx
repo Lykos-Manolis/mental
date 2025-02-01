@@ -1,8 +1,12 @@
 import { Avatar, Grid2, IconButton, InputBase, TextField } from "@mui/material";
+import { useState, useEffect } from "react";
 import React from "react";
 import SendIcon from "@mui/icons-material/Send";
+import EmoSendButton from "./EmoSendButton";
 
 function ChatTextField() {
+  const [text, setText] = useState("");
+
   return (
     <Grid2
       container
@@ -25,6 +29,9 @@ function ChatTextField() {
         maxRows={4}
         placeholder="Type your message"
         label="Type your message"
+        onChange={(event) => {
+          setText(event.target.value);
+        }}
         sx={{
           width: "100%",
           border: "2px solid lightblue",
@@ -33,18 +40,7 @@ function ChatTextField() {
           p: 1,
         }}
       />
-      <IconButton
-        aria-label="send"
-        sx={{
-          border: "1px solid gray",
-          borderRadius: 1,
-          ml: 0.5,
-          bgcolor: "#147efb",
-          height: "50%",
-        }}
-      >
-        <SendIcon />
-      </IconButton>
+      <EmoSendButton text={text} />
     </Grid2>
   );
 }
