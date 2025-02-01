@@ -123,6 +123,7 @@ function ChatView() {
       sx={{
         height: "100vh",
         background: `linear-gradient(to left top,${backgroundColors[0]},${backgroundColors[1]},${backgroundColors[2]},${backgroundColors[3]},${backgroundColors[4]})`,
+        transition: "background 0.5s ease",
       }}
     >
       <ChatHeader
