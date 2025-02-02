@@ -1,11 +1,30 @@
-import { Avatar, Grid2, IconButton, InputBase, TextField } from "@mui/material";
-import { useState, useEffect } from "react";
+import { Grid2, InputBase } from "@mui/material";
+import { useState } from "react";
 import React from "react";
-import SendIcon from "@mui/icons-material/Send";
 import EmoSendButton from "./EmoSendButton";
+import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
 
 function ChatTextField({ onColorUpdate }) {
   const [text, setText] = useState("");
+
+  const { predictEmotion, modelLoading, isModelReady } = useEmotionPrediction();
+
+  const handleEnter = async () => {
+    try {
+      const { emotion, color } = await predictEmotion(text);
+      console.log(`Predicted: ${emotion} | Input: ${text}`);
+      onColorUpdate(color);
+      setText("");
+    } catch (error) {
+      console.error("Prediction failed:", error);
+    }
+  };
+
+  const handleKeyDown = async (pressedKey) => {
+    if (pressedKey === "Enter" && !modelLoading && isModelReady && text) {
+      await handleEnter();
+    }
+  };
 
   return (
     <Grid2
@@ -26,11 +45,14 @@ function ChatTextField({ onColorUpdate }) {
       <InputBase
         id="message-input"
         multiline
+        autoFocus
+        value={text}
         maxRows={4}
+        onKeyDown={async (event) => await handleKeyDown(event.key)}
         placeholder="Type your message"
         label="Type your message"
         onChange={(event) => {
-          setText(event.target.value);
+          if (event.target.value !== "\n") setText(event.target.value);
         }}
         sx={{
           width: "100%",
@@ -40,7 +62,12 @@ function ChatTextField({ onColorUpdate }) {
           p: 1,
         }}
       />
-      <EmoSendButton text={text} onColorUpdate={onColorUpdate} />
+      <EmoSendButton
+        text={text}
+        modelLoading={modelLoading}
+        isModelReady={isModelReady}
+        handleClick={handleEnter}
+      />
     </Grid2>
   );
 }

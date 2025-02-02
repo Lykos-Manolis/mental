@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatContainer from "../components/chat/ChatContainer";
 import { useParams } from "react-router-dom";
 import ChatHeader from "../components/chat/ChatHeader";
 import { Grid2, TextField } from "@mui/material";
 import ChatTextField from "../components/chat/ChatTextField";
+import anime from "animejs/lib/anime.es.js";
 
 function ChatView() {
   // Get chat ID from url
@@ -104,26 +105,31 @@ function ChatView() {
 
   // useState called backgroundGradient
   const [backgroundColors, setBackgroundColors] = useState([
-    "rgba(5, 25, 55, 0.5)",
-    "rgba(0, 77, 122, 0.5)",
-    "rgba(0, 135, 147, 0.5)",
-    "rgba(0, 191, 114, 0.5)",
-    "rgba(168, 235, 18, 0.5)",
+    "rgba(5, 25, 55, 0.1)",
+    "rgba(0, 77, 122, 0.1)",
+    "rgba(0, 135, 147, 0.1)",
   ]);
 
-  const updateLastBackgroundColor = (newColor) => {
+  useEffect(() => {
+    anime({
+      targets: "#emotion-grid",
+      background: `linear-gradient(to left top, ${backgroundColors[0]},${backgroundColors[1]},${backgroundColors[2]})`,
+      easing: "easeInOutQuad",
+    });
+  }, [backgroundColors]);
+
+  const updateBackgroundColor = (newColor) => {
     setBackgroundColors((prev) => [...prev.slice(1), newColor]);
   };
 
   return (
     <Grid2
+      id="emotion-grid"
       container
       direction="column"
       wrap="nowrap"
       sx={{
         height: "100vh",
-        background: `linear-gradient(to left top,${backgroundColors[0]},${backgroundColors[1]},${backgroundColors[2]},${backgroundColors[3]},${backgroundColors[4]})`,
-        transition: "background 0.5s ease",
       }}
     >
       <ChatHeader
@@ -131,7 +137,7 @@ function ChatView() {
         contactName={chatInfo.contactName}
       />
       <ChatContainer messages={reversedChat} />
-      <ChatTextField onColorUpdate={updateLastBackgroundColor} />
+      <ChatTextField onColorUpdate={updateBackgroundColor} />
     </Grid2>
   );
 }

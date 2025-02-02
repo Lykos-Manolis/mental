@@ -2,25 +2,12 @@ import { IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
 
-function EmoSendButton({ text, onColorUpdate }) {
-  const { predictEmotionAndGetColor, loading, isModelReady } =
-    useEmotionPrediction();
-
-  const handleClick = async () => {
-    try {
-      const { emotion, color } = await predictEmotionAndGetColor(text);
-      console.log(`Predicted: ${emotion} | Input: ${text}`);
-      onColorUpdate(color);
-    } catch (error) {
-      console.error("Prediction failed:", error);
-    }
-  };
-
+function EmoSendButton({ text, modelLoading, isModelReady, handleClick }) {
   return (
     <IconButton
       aria-label="send"
       onClick={handleClick}
-      disabled={loading || !isModelReady || !text}
+      disabled={modelLoading || !isModelReady || !text.replace(/\s/g, "")}
       sx={{
         border: "1px solid gray",
         borderRadius: 1,
