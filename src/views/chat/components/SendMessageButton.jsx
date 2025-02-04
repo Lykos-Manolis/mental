@@ -1,8 +1,8 @@
 import { IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
+import { useEmotionPrediction } from "../../../hooks/useEmotionPrediction";
 
-function EmoSendButton({ text, modelLoading, isModelReady, handleClick }) {
+function SendMessageButton({ text, modelLoading, isModelReady, handleClick }) {
   return (
     <IconButton
       aria-label="send"
@@ -21,4 +21,4 @@ function EmoSendButton({ text, modelLoading, isModelReady, handleClick }) {
   );
 }
 
-export default EmoSendButton;
+export default SendMessageButton;

@@ -1,69 +1,8 @@
 import { useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
+import { EMOTION_COLORS, EMOTION_LABELS } from "../constants";
 
 const MAX_LENGTH = 100;
-const EMOTION_LABELS = [
-  "admiration",
-  "amusement",
-  "anger",
-  "annoyance",
-  "approval",
-  "caring",
-  "confusion",
-  "curiosity",
-  "desire",
-  "disappointment",
-  "disapproval",
-  "disgust",
-  "embarrassment",
-  "excitement",
-  "fear",
-  "gratitude",
-  "grief",
-  "joy",
-  "love",
-  "nervousness",
-  "optimism",
-  "pride",
-  "realization",
-  "relief",
-  "remorse",
-  "sadness",
-  "surprise",
-  "neutral",
-];
-
-const EMOTION_COLORS = {
-  admiration: "rgba(255, 215, 0, 0.1)",
-  amusement: "rgba(255, 192, 203, 0.1)",
-  anger: "rgba(255, 0, 0, 0.1)",
-  annoyance: "rgba(255, 99, 71, 0.1)",
-  approval: "rgba(50, 205, 50, 0.1)",
-  caring: "rgba(255, 182, 193, 0.1)",
-  confusion: "rgba(147, 112, 219, 0.1)",
-  curiosity: "rgba(135, 206, 235, 0.1)",
-  desire: "rgba(255, 20, 147, 0.1)",
-  disappointment: "rgba(128, 128, 128, 0.1)",
-  disapproval: "rgba(139, 0, 0, 0.1)",
-  disgust: "rgba(0, 100, 0, 0.1)",
-  embarrassment: "rgba(219, 112, 147, 0.1)",
-  excitement: "rgba(255, 140, 0, 0.1)",
-  fear: "rgba(25, 25, 112, 0.1)",
-  gratitude: "rgba(218, 165, 32, 0.1)",
-  grief: "rgba(0, 0, 0, 0.1)",
-  joy: "rgba(255, 255, 0, 0.1)",
-  love: "rgba(255, 0, 255, 0.1)",
-  nervousness: "rgba(176, 196, 222, 0.1)",
-  optimism: "rgba(255, 165, 0, 0.1)",
-  pride: "rgba(148, 0, 211, 0.1)",
-  realization: "rgba(64, 224, 208, 0.1)",
-  relief: "rgba(152, 251, 152, 0.1)",
-  remorse: "rgba(70, 130, 180, 0.1)",
-  sadness: "rgba(0, 0, 139, 0.1)",
-  surprise: "rgba(255, 105, 180, 0.1)",
-  neutral: "rgba(169, 169, 169, 0.1)",
-  default: "rgba(128, 128, 128, 0.1)",
-};
 
 export function useEmotionPrediction() {
   const [model, setModel] = useState(null);

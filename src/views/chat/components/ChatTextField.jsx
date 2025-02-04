@@ -1,8 +1,8 @@
 import { Grid2, InputBase } from "@mui/material";
 import { useState } from "react";
 import React from "react";
-import EmoSendButton from "./EmoSendButton";
-import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
+import EmoSendButton from "./SendMessageButton";
+import { useEmotionPrediction } from "../../../hooks/useEmotionPrediction";
 
 function ChatTextField({ onColorUpdate }) {
   const [text, setText] = useState("");

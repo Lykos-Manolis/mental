@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import ChatContainer from "../components/chat/ChatContainer";
+import ChatContainer from "./components/MessageContainer";
 import { useParams } from "react-router-dom";
-import ChatHeader from "../components/chat/ChatHeader";
+import ChatHeader from "./components/ChatHeader";
 import { Grid2, TextField } from "@mui/material";
-import ChatTextField from "../components/chat/ChatTextField";
+import ChatTextField from "./components/ChatTextField";
 import anime from "animejs/lib/anime.es.js";
-import ChatDrawer from "../components/chat/ChatDrawer";
-function ChatView() {
+import ChatDrawer from "./components/ChatDrawer";
+function Chat() {
   // Get chat ID from url
   const { chatId } = useParams();
 
@@ -150,4 +150,4 @@ function ChatView() {
   );
 }
 
-export default ChatView;
+export default Chat;

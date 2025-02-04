@@ -9,8 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import FaveBubbles from "../components/home/FaveBubbles";
-import ActionButtons from "../components/home/ActionButtons";
+import FaveBubbles from "./components/FaveBubbles";
+import ActionButtons from "./components/ActionButtons";
 import { Link } from "react-router-dom";
 
 const contacts = [{ name: "John" }, { name: "Dave" }];
@@ -65,10 +65,11 @@ const faves = [
   },
 ];
 
-function HomeView() {
+function Home() {
   return (
     <>
       <ActionButtons />
+
       <FaveBubbles faves={faves} />
       <Autocomplete
         sx={{ mt: 5 }}
@@ -123,4 +124,4 @@ function HomeView() {
   );
 }
 
-export default HomeView;
+export default Home;

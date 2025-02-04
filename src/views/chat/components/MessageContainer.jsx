@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import ChatMessage from "./ChatMessage";
 
-function ChatContainer({ messages }) {
+function MessageContainer({ messages }) {
   return (
     <Grid2
       container
@@ -31,4 +31,4 @@ function ChatContainer({ messages }) {
   );
 }
 
-export default ChatContainer;
+export default MessageContainer;
