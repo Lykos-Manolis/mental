@@ -5,10 +5,16 @@ import ChatHeader from "../components/chat/ChatHeader";
 import { Grid2, TextField } from "@mui/material";
 import ChatTextField from "../components/chat/ChatTextField";
 import anime from "animejs/lib/anime.es.js";
-
+import ChatDrawer from "../components/chat/ChatDrawer";
 function ChatView() {
   // Get chat ID from url
   const { chatId } = useParams();
+
+  const [openDrawer, setOpenDrawer] = useState(false);
+
+  const toggleDrawer = () => {
+    setOpenDrawer(!openDrawer);
+  };
 
   // Fetch chat info based on ID
   const chatInfo = chatId && {
@@ -135,9 +141,11 @@ function ChatView() {
       <ChatHeader
         contactAvatar={chatInfo.contactAvatar}
         contactName={chatInfo.contactName}
+        toggleDrawer={toggleDrawer}
       />
       <ChatContainer messages={reversedChat} />
       <ChatTextField onColorUpdate={updateBackgroundColor} />
+      <ChatDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
     </Grid2>
   );
 }

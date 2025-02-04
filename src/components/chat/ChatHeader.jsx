@@ -2,7 +2,7 @@ import { Avatar, Grid2, IconButton, Typography } from "@mui/material";
 import React from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-function ChatHeader({ contactName, contactAvatar }) {
+function ChatHeader({ contactName, contactAvatar, toggleDrawer }) {
   return (
     <Grid2
       container
@@ -36,7 +36,7 @@ function ChatHeader({ contactName, contactAvatar }) {
       >
         {contactName}
       </Typography>
-      <IconButton sx={{ m: 0, p: 0.5 }}>
+      <IconButton sx={{ m: 0, p: 0.5 }} onClick={toggleDrawer}>
         <SettingsIcon sx={{ color: "text.secondary" }} />
       </IconButton>
     </Grid2>

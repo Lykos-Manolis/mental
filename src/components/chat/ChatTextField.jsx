@@ -12,7 +12,7 @@ function ChatTextField({ onColorUpdate }) {
   const handleEnter = async () => {
     try {
       const { emotion, color } = await predictEmotion(text);
-      console.log(`Predicted: ${emotion} | Input: ${text}`);
+      console.log(`Predicted: ${emotion}\n---\nInput: ${text}`);
       onColorUpdate(color);
       setText("");
     } catch (error) {
