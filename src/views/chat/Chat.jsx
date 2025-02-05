@@ -1,12 +1,18 @@
 import React, { useState, useEffect } from "react";
 import ChatContainer from "./components/MessageContainer";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import ChatHeader from "./components/ChatHeader";
-import { Grid2, TextField } from "@mui/material";
+import { Grid2 } from "@mui/material";
 import ChatTextField from "./components/ChatTextField";
 import anime from "animejs/lib/anime.es.js";
 import ChatDrawer from "./components/ChatDrawer";
+import { useAuth } from "../../auth/AuthContext";
+
 function Chat() {
+  const { session } = useAuth();
+  if (!session) {
+    return <Navigate to="/unauthorized" replace />;
+  }
   // Get chat ID from url
   const { chatId } = useParams();
 

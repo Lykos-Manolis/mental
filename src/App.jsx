@@ -5,9 +5,13 @@ import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { createTheme, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import UnauthorizedPage from "./views/401";
 import NotFoundPage from "./views/404";
 import { Chat } from "./views/chat";
 import { Home } from "./views/home";
+import { Login } from "./views/login";
+import { AuthProvider } from "./auth/AuthContext";
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -16,15 +20,19 @@ const darkTheme = createTheme({
 
 function App() {
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={darkTheme}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/chat/:chatId" element={<Chat />} />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </ThemeProvider>
-    </BrowserRouter>
+    <AuthProvider>
+      <BrowserRouter>
+        <ThemeProvider theme={darkTheme}>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/chat/:chatId" element={<Chat />} />
+            <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </ThemeProvider>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 
