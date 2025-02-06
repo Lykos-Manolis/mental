@@ -11,7 +11,7 @@ import { useAuth } from "../../auth/AuthContext";
 function Chat() {
   const { session } = useAuth();
   if (!session) {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/" replace />;
   }
   // Get chat ID from url
   const { chatId } = useParams();

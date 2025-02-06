@@ -4,7 +4,7 @@ import FaveBubbles from "./components/FaveBubbles";
 import ActionButtons from "./components/ActionButtons";
 import ConversationList from "./components/ConversationList";
 import ContactSearch from "./components/ContactSearch";
-
+import LogoutButton from "../../components/buttons/LogoutButton";
 import {
   favouriteContacts,
   topConversations,
@@ -14,10 +14,11 @@ import {
 function Home() {
   const { session } = useAuth();
   if (!session) {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/" replace />;
   }
   return (
     <>
+      <LogoutButton />
       <ActionButtons />
       <FaveBubbles faves={favouriteContacts} />
       <ContactSearch userContacts={userContacts} />
