@@ -20,6 +20,7 @@ export function useEmotionPrediction() {
         const wordIndexData = await response.json();
         setWordIndex(wordIndexData);
       } catch (error) {
+        // TODO: Add an error alert
         console.error("Error loading model or word index:", error);
       } finally {
         setModelLoading(false);
@@ -30,6 +31,7 @@ export function useEmotionPrediction() {
 
   const predictEmotion = async (text) => {
     if (!model) {
+      // TODO: Add a loading state
       throw new Error("Model is still loading...");
     }
 
@@ -52,6 +54,7 @@ export function useEmotionPrediction() {
 
       return { emotion: predictedEmotion, color: newColor };
     } catch (error) {
+      // TODO: Add an error alert
       console.error("Error during prediction:", error);
       throw error;
     }
