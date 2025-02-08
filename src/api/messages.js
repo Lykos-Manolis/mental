@@ -2,10 +2,9 @@ import supabase from "../utils/supabase";
 
 export async function getConversationMessages(conversationId) {
   try {
-    const { data, error } = await supabase
-      .from("messages")
-      .select("*")
-      .eq("id", conversationId);
+    const { data, error } = await supabase.rpc("get_conversation_messages", {
+      conversation_id_param: conversationId,
+    });
 
     if (error) {
       throw error;

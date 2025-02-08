@@ -1,8 +1,8 @@
-import { Avatar, Grid2, IconButton, Typography } from "@mui/material";
+import { Avatar, Grid2, IconButton, Skeleton, Typography } from "@mui/material";
 import React from "react";
 import SettingsIcon from "@mui/icons-material/Settings";
 
-function ChatHeader({ contactName, contactAvatar, toggleDrawer }) {
+function ChatHeader({ conversationInfo, toggleDrawer, isLoading }) {
   return (
     <Grid2
       container
@@ -12,33 +12,36 @@ function ChatHeader({ contactName, contactAvatar, toggleDrawer }) {
         width: "100%",
         justifyContent: "space-between",
         alignItems: "center",
-        position: "absolute",
-        backdropFilter: "blur(2px)",
-        zIndex: 2,
-        px: 4,
+        px: 5,
         py: 1,
       }}
     >
-      <IconButton sx={{ m: 0, p: 0 }}>
-        <Avatar
-          alt={contactName}
-          src={contactAvatar}
-          sx={{ border: "3px solid lime" }}
-        />
-      </IconButton>
-      <Typography
-        variant="h5"
-        sx={{
-          m: 0,
-          p: 0,
-          fontWeight: "bold",
-        }}
-      >
-        {contactName}
-      </Typography>
-      <IconButton sx={{ m: 0, p: 0.5 }} onClick={toggleDrawer}>
-        <SettingsIcon sx={{ color: "text.secondary" }} />
-      </IconButton>
+      {isLoading ? (
+        <Skeleton variant="circular" width={40} height={40} />
+      ) : (
+        <IconButton>
+          <Avatar
+            alt={conversationInfo.full_name}
+            src={conversationInfo.avatar_url}
+            sx={{ border: "3px solid lime" }}
+          />
+        </IconButton>
+      )}
+      {isLoading ? (
+        <Skeleton variant="text" height={40} width={100} sx={{ mx: 4 }} />
+      ) : (
+        <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+          {conversationInfo.full_name}
+        </Typography>
+      )}
+
+      {isLoading ? (
+        <Skeleton variant="circular" width={40} height={40} />
+      ) : (
+        <IconButton sx={{ p: 0.5 }} onClick={toggleDrawer}>
+          <SettingsIcon sx={{ color: "text.secondary" }} />
+        </IconButton>
+      )}
     </Grid2>
   );
 }

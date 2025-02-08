@@ -37,3 +37,15 @@ export async function getUserConversations() {
     throw error;
   }
 }
+
+export async function getConversationInfo(chatId) {
+  const { data, error } = await supabase.rpc("get_conversation_partner", {
+    conversation_id: chatId,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return data;
+}

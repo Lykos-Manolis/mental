@@ -6,7 +6,10 @@ import { Grid2 } from "@mui/material";
 import ChatTextField from "./components/ChatTextField";
 import anime from "animejs/lib/anime.es.js";
 import ChatDrawer from "./components/ChatDrawer";
+
 import { useAuth } from "../../auth/AuthContext";
+import { useGetConversationMessages } from "../../hooks/useGetConversationMessages";
+import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
 
 function Chat() {
   const { session } = useAuth();
@@ -15,105 +18,22 @@ function Chat() {
   }
   // Get chat ID from url
   const { chatId } = useParams();
+  const {
+    messages,
+    isLoading: isLoadingMessages,
+    error: errorMessages,
+  } = useGetConversationMessages(chatId);
+  const {
+    conversationInfo,
+    isLoading: isLoadingConversationInfo,
+    error: errorConversationInfo,
+  } = useGetConversationInfo(chatId);
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const toggleDrawer = () => {
     setOpenDrawer(!openDrawer);
   };
-
-  // Fetch chat info based on ID
-  const chatInfo = chatId && {
-    contactName: "Jane Doe",
-    contactAvatar: "../src/assets/avatars/avatar_1.jpeg",
-    contactChat: [
-      {
-        sender: "contact",
-        messageContent: "Yo!!",
-      },
-      {
-        sender: "contact",
-        messageContent: "Hello!",
-      },
-      {
-        sender: "contact",
-        messageContent: "What's up?",
-      },
-      {
-        sender: "user",
-        messageContent: "Hey man, what's up?",
-      },
-      {
-        sender: "contact",
-        messageContent:
-          "I'm ok. I am studying really hard to pass my exams and it's taking a lot more time than I thought. When I started working I thought I'd be done in about a week or so but its been a year and still no real progress..",
-      },
-      {
-        sender: "contact",
-        messageContent: "hbu?",
-      },
-      {
-        sender: "user",
-        messageContent: "not reading allat bud",
-      },
-      {
-        sender: "contact",
-        messageContent: "bruh..",
-      },
-      {
-        sender: "contact",
-        messageContent: "...",
-      },
-      {
-        sender: "user",
-        messageContent: "👍🏻",
-      },
-      {
-        sender: "contact",
-        messageContent: "Yo!!",
-      },
-      {
-        sender: "contact",
-        messageContent: "Hello!",
-      },
-      {
-        sender: "contact",
-        messageContent: "What's up?",
-      },
-      {
-        sender: "user",
-        messageContent: "Hey man, what's up?",
-      },
-      {
-        sender: "contact",
-        messageContent:
-          "I'm ok. I am studying really hard to pass my exams and it's taking a lot more time than I thought. When I started working I thought I'd be done in about a week or so but its been a year and still no real progress..",
-      },
-      {
-        sender: "contact",
-        messageContent: "hbu?",
-      },
-      {
-        sender: "user",
-        messageContent: "not reading allat bud",
-      },
-      {
-        sender: "contact",
-        messageContent: "bruh..",
-      },
-      {
-        sender: "contact",
-        messageContent: "...",
-      },
-      {
-        sender: "user",
-        messageContent: "👍🏻",
-      },
-    ],
-  };
-
-  // Reverse the chat so it works with column-reverse, to scroll bottom to top
-  const reversedChat = chatInfo.contactChat.slice().reverse();
 
   // useState called backgroundGradient
   const [backgroundColors, setBackgroundColors] = useState([
@@ -142,14 +62,15 @@ function Chat() {
       wrap="nowrap"
       sx={{
         height: "100vh",
+        width: "100vw",
       }}
     >
       <ChatHeader
-        contactAvatar={chatInfo.contactAvatar}
-        contactName={chatInfo.contactName}
+        conversationInfo={conversationInfo}
+        isLoading={isLoadingConversationInfo}
         toggleDrawer={toggleDrawer}
       />
-      <ChatContainer messages={reversedChat} />
+      <ChatContainer messages={messages} isLoading={isLoadingMessages} />
       <ChatTextField onColorUpdate={updateBackgroundColor} />
       <ChatDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
     </Grid2>

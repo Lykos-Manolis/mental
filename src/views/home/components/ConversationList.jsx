@@ -7,32 +7,46 @@ import {
   Divider,
   Typography,
   Avatar,
+  Stack,
+  Skeleton,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 
-function ConversationList({ topConvos }) {
-  return (
+function ConversationList({ contacts, isLoading }) {
+  return isLoading ? (
+    <Skeleton
+      variant="rectangular"
+      height={100}
+      width={350}
+      sx={{ mt: 5, borderRadius: 3 }}
+    />
+  ) : (
     <List
       sx={{
         mt: 5,
-        width: "100%",
+        height: 100,
+        width: 350,
         maxWidth: 360,
         bgcolor: "black",
         borderRadius: 5,
       }}
     >
-      {topConvos.map((convo, index) => (
-        <div key={`fav-convo-${index}`}>
+      {contacts.map((contact, index) => (
+        <Stack key={`conversation-${index}`}>
           <ListItem
             component={Link}
-            to={`/chat/${convo.id}`}
+            to={`/chat/${contact.conversation_id}`}
             alignItems="flex-start"
           >
             <ListItemAvatar>
-              <Avatar alt={convo.name} src={convo.image} />
+              <Avatar
+                alt={contact.full_name}
+                src={contact.avatar_url}
+                slotProps={{ img: { referrerPolicy: "no-referrer" } }}
+              />
             </ListItemAvatar>
             <ListItemText
-              primary={convo.name}
+              primary={contact.full_name}
               sx={{ color: "text.primary" }}
               secondary={
                 <>
@@ -41,17 +55,22 @@ function ConversationList({ topConvos }) {
                     variant="body2"
                     sx={{ color: "text.primary", display: "inline" }}
                   >
-                    {convo.date}
+                    {new Date(
+                      contact.last_message.created_at,
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </Typography>
-                  {" — " + convo.message}
+                  {" — " + contact.last_message.content}
                 </>
               }
             />
           </ListItem>
-          {index < topConvos.length - 1 && (
+          {index < contacts.length - 1 && (
             <Divider variant="inset" component="li" />
           )}
-        </div>
+        </Stack>
       ))}
     </List>
   );

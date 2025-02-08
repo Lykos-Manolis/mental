@@ -11,9 +11,8 @@ function SendMessageButton({ text, modelLoading, isModelReady, handleClick }) {
       sx={{
         border: "1px solid gray",
         borderRadius: 1,
-        ml: 0.5,
+        ml: 1,
         bgcolor: "#147efb",
-        height: "50%",
       }}
     >
       <SendIcon />

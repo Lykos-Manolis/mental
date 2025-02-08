@@ -28,17 +28,11 @@ function ChatTextField({ onColorUpdate }) {
 
   return (
     <Grid2
-      container
-      direction="row"
-      wrap="nowrap"
       sx={{
-        width: "75%",
         pt: 0,
+        width: "100%",
         justifySelf: "flex-end",
-        position: "absolute",
-        top: "90%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
+        alignSelf: "flex-end",
         alignItems: "flex-end",
       }}
     >
@@ -49,16 +43,15 @@ function ChatTextField({ onColorUpdate }) {
         value={text}
         maxRows={4}
         onKeyDown={async (event) => await handleKeyDown(event.key)}
-        placeholder="Type your message"
+        placeholder="Go tell 'em champ"
         label="Type your message"
         onChange={(event) => {
           if (event.target.value !== "\n") setText(event.target.value);
         }}
         sx={{
-          width: "100%",
           border: "2px solid lightblue",
           borderRadius: "0.5em",
-          backdropFilter: "blur(7px)",
+          width: "68%",
           p: 1,
         }}
       />
