@@ -71,7 +71,10 @@ function Chat() {
         toggleDrawer={toggleDrawer}
       />
       <ChatContainer messages={messages} isLoading={isLoadingMessages} />
-      <ChatTextField onColorUpdate={updateBackgroundColor} />
+      <ChatTextField
+        onColorUpdate={updateBackgroundColor}
+        conversationId={chatId}
+      />
       <ChatDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
     </Grid2>
   );

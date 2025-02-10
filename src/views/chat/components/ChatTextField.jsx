@@ -3,16 +3,22 @@ import { useState } from "react";
 import React from "react";
 import EmoSendButton from "./SendMessageButton";
 import { useEmotionPrediction } from "../../../hooks/useEmotionPrediction";
+import { useSendMessage } from "../../../hooks/useSendMessage";
 
-function ChatTextField({ onColorUpdate }) {
+function ChatTextField({ onColorUpdate, conversationId }) {
   const [text, setText] = useState("");
+
+  const { sendMessage } = useSendMessage();
 
   const { predictEmotion, modelLoading, isModelReady } = useEmotionPrediction();
 
   const handleEnter = async () => {
     try {
       const { emotion, color } = await predictEmotion(text);
+
       console.log(`Predicted: ${emotion}\n---\nInput: ${text}`);
+      sendMessage(text, emotion, conversationId);
+
       onColorUpdate(color);
       setText("");
     } catch (error) {

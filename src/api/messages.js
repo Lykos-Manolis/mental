@@ -16,3 +16,18 @@ export async function getConversationMessages(conversationId) {
     throw error;
   }
 }
+
+export async function setMessage(message, emotion, conversationId) {
+  const { error } = await supabase.from("messages").insert({
+    content: message,
+    emotion: emotion,
+    conversation_id: conversationId,
+    sender_id: supabase.auth.getUser().id,
+  });
+
+  if (error) {
+    throw error;
+  }
+
+  return true;
+}

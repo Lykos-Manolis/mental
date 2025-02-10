@@ -1,8 +1,10 @@
 import { CircularProgress, Grid2 } from "@mui/material";
 import React from "react";
 import ChatMessage from "./ChatMessage";
+import { useGetUserId } from "../../../hooks/useGetUserId";
 
 function MessageContainer({ messages, isLoading }) {
+  const userId = useGetUserId();
   return (
     <Grid2
       container
@@ -32,9 +34,11 @@ function MessageContainer({ messages, isLoading }) {
           <ChatMessage
             key={`chat-message-${index}`}
             {...message}
+            sent_by_user={message.sender_id === userId}
             extraSpace={
               array[index + 1] &&
-              array[index + 1].sent_by_user !== message.sent_by_user
+              (array[index + 1].sender_id === userId) !==
+                (message.sender_id === userId)
             }
           />
         ))
