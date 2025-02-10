@@ -6,7 +6,6 @@ export function useGetConversationMessages(conversationId) {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  console.log(messages);
 
   useEffect(() => {
     async function fetchMessages() {

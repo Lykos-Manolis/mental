@@ -10,6 +10,7 @@ import ChatDrawer from "./components/ChatDrawer";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetConversationMessages } from "../../hooks/useGetConversationMessages";
 import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
+import { useEmotionColors } from "../../hooks/useEmotionColors";
 
 function Chat() {
   const { session } = useAuth();
@@ -18,16 +19,24 @@ function Chat() {
   }
   // Get chat ID from url
   const { chatId } = useParams();
+
   const {
     messages,
     isLoading: isLoadingMessages,
     error: errorMessages,
   } = useGetConversationMessages(chatId);
+
   const {
     conversationInfo,
     isLoading: isLoadingConversationInfo,
     error: errorConversationInfo,
   } = useGetConversationInfo(chatId);
+
+  const { backgroundColors, setBackgroundColors } = useEmotionColors(
+    messages,
+    conversationInfo,
+    session.user.id,
+  );
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -35,17 +44,10 @@ function Chat() {
     setOpenDrawer(!openDrawer);
   };
 
-  // useState called backgroundGradient
-  const [backgroundColors, setBackgroundColors] = useState([
-    "rgba(5, 25, 55, 0.1)",
-    "rgba(0, 77, 122, 0.1)",
-    "rgba(0, 135, 147, 0.1)",
-  ]);
-
   useEffect(() => {
     anime({
       targets: "#emotion-grid",
-      background: `linear-gradient(to left top, ${backgroundColors[0]},${backgroundColors[1]},${backgroundColors[2]})`,
+      background: `linear-gradient(to left top, ${backgroundColors[0]},${backgroundColors[1]})`,
       easing: "easeInOutQuad",
     });
   }, [backgroundColors]);
