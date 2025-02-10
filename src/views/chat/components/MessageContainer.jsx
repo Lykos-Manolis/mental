@@ -30,18 +30,24 @@ function MessageContainer({ messages, isLoading }) {
           <CircularProgress />
         </Grid2>
       ) : (
-        messages.map((message, index, array) => (
-          <ChatMessage
-            key={`chat-message-${index}`}
-            {...message}
-            sent_by_user={message.sender_id === userId}
-            extraSpace={
-              array[index + 1] &&
-              (array[index + 1].sender_id === userId) !==
-                (message.sender_id === userId)
-            }
-          />
-        ))
+        messages.map((message, index, array) => {
+          const currentMessage = message;
+          const nextMessage = array[index + 1];
+          const isCurrentMessageFromUser = currentMessage.sender_id === userId;
+
+          const extraSpace =
+            nextMessage &&
+            isCurrentMessageFromUser !== (nextMessage.sender_id === userId);
+
+          return (
+            <ChatMessage
+              key={`chat-message-${index}`}
+              {...message}
+              sent_by_user={isCurrentMessageFromUser}
+              extraSpace={extraSpace}
+            />
+          );
+        })
       )}
     </Grid2>
   );
