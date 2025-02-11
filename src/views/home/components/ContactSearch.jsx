@@ -19,10 +19,10 @@ const GroupItems = styled("ul")({
 
 function ContactSearch({ userContacts }) {
   const options = userContacts.map((contact) => {
-    const firstLetter = contact.name[0].toUpperCase();
+    const firstLetter = contact.full_name[0].toUpperCase();
     return {
       firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
-      title: contact.name,
+      title: contact.full_name,
       email: contact.email,
       phoneNumber: contact.phoneNumber,
     };

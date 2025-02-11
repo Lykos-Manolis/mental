@@ -9,14 +9,18 @@ import LogoutButton from "../../components/buttons/LogoutButton";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetContacts } from "../../hooks/useGetContacts";
 
-import {
-  favouriteContacts,
-  topConversations,
-  userContacts,
-} from "../../constants/mock/api";
+// import {
+//   favouriteContacts,
+//   topConversations,
+//   userContacts,
+// } from "../../constants/mock/api";
 
 function Home() {
   const { session } = useAuth();
+
+  if (!session) {
+    return <Navigate to="/" replace />;
+  }
 
   const {
     contacts,
@@ -24,16 +28,19 @@ function Home() {
     error: errorContacts,
   } = useGetContacts();
 
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
+  console.log(contacts);
+
+  const favoriteContacts =
+    contacts?.filter((contact) => contact.is_favorite) || [];
+
+  console.log(favoriteContacts);
 
   return (
     <>
       <LogoutButton />
       <ActionButtons />
-      <FaveBubbles faves={favouriteContacts} />
-      <ContactSearch userContacts={userContacts} />
+      <FaveBubbles faves={favoriteContacts} />
+      <ContactSearch userContacts={contacts} />
       <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
     </>
   );
