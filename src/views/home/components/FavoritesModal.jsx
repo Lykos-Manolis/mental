@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,9 +10,35 @@ import {
   TextField,
   Alert,
 } from "@mui/material";
+import { useSetFavoriteContacts } from "../../../hooks/useSetFavoriteContacts";
 
-function FavoritesModal({ open, onClose, favoriteContacts, contacts }) {
+function FavoritesModal({
+  open,
+  onClose,
+  favoriteContacts,
+  contacts,
+  setFavoriteContacts,
+}) {
   const [error, setError] = useState(false);
+  const [newFavoriteContacts, setNewFavoriteContacts] = useState([]);
+  const { setFavoriteContacts: updateFavorites, isLoading } =
+    useSetFavoriteContacts();
+
+  useEffect(() => {
+    setNewFavoriteContacts(favoriteContacts);
+  }, [favoriteContacts]);
+
+  const handleChangeFavorites = async () => {
+    try {
+      await updateFavorites(newFavoriteContacts);
+      setFavoriteContacts(newFavoriteContacts);
+      onClose(true);
+    } catch (err) {
+      // Handle error if needed
+      console.error(err);
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -24,7 +50,7 @@ function FavoritesModal({ open, onClose, favoriteContacts, contacts }) {
       <DialogTitle>Edit Favorites</DialogTitle>
       <DialogContent>
         <AvatarGroup max={4} sx={{ justifyContent: "center", mb: 2 }}>
-          {favoriteContacts.map((contact) => (
+          {newFavoriteContacts.map((contact) => (
             <Avatar
               key={contact.id}
               alt={contact.full_name}
@@ -45,21 +71,28 @@ function FavoritesModal({ open, onClose, favoriteContacts, contacts }) {
           id="tags-outlined"
           options={contacts}
           getOptionLabel={(option) => option.full_name}
-          defaultValue={favoriteContacts}
+          value={newFavoriteContacts}
           filterSelectedOptions
           renderInput={(params) => (
             <TextField {...params} label="Favorites" placeholder="Add more" />
           )}
           onChange={(event, newValue) => {
-            if (newValue.length > 4) {
+            if (newValue.length > 4 && !error) {
               setError(true);
+              return;
             } else if (newValue.length <= 4 && error) {
               setError(false);
             }
+            setNewFavoriteContacts(newValue);
           }}
         />
-        <Button variant="contained" disabled={error} sx={{ width: "100%" }}>
-          Change Favorites
+        <Button
+          variant="contained"
+          disabled={error || isLoading}
+          onClick={handleChangeFavorites}
+          sx={{ width: "100%" }}
+        >
+          {isLoading ? "Updating..." : "Change Favorites"}
         </Button>
       </DialogContent>
     </Dialog>

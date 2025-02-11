@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 
 import FaveBubbles from "./components/FaveBubbles";
@@ -19,17 +19,24 @@ function Home() {
     return <Navigate to="/" replace />;
   }
 
-  const [openContactModal, setOpenContactModal] = useState(false);
-  const [openFavoritesModal, setOpenFavoritesModal] = useState(false);
-
   const {
     contacts,
     isLoading: isLoadingContacts,
     error: errorContacts,
   } = useGetContacts();
 
-  const favoriteContacts =
-    contacts?.filter((contact) => contact.is_favorite) || [];
+  const [openContactModal, setOpenContactModal] = useState(false);
+  const [openFavoritesModal, setOpenFavoritesModal] = useState(false);
+  const [favoriteContacts, setFavoriteContacts] = useState(
+    contacts?.filter((contact) => contact.is_favorite) || [],
+  );
+
+  useEffect(() => {
+    setFavoriteContacts(
+      contacts?.filter((contact) => contact.is_favorite) || [],
+    );
+  }, [contacts]);
+
   return (
     <>
       <LogoutButton />
@@ -48,6 +55,7 @@ function Home() {
         open={openFavoritesModal}
         onClose={() => setOpenFavoritesModal(false)}
         favoriteContacts={favoriteContacts}
+        setFavoriteContacts={setFavoriteContacts}
         contacts={contacts}
       />
     </>

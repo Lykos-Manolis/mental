@@ -12,3 +12,18 @@ export async function getUserContacts() {
     throw error;
   }
 }
+
+export async function updateFavoriteContacts(favoriteContactIds) {
+  try {
+    const { data, error } = await supabase.rpc("update_favorite_contacts", {
+      favorite_contact_ids: favoriteContactIds,
+    });
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    console.error("Error updating favorite contacts:", error.message);
+    throw error;
+  }
+}
