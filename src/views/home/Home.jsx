@@ -10,6 +10,7 @@ import LogoutButton from "../../components/buttons/LogoutButton";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetContacts } from "../../hooks/useGetContacts";
 import ContactModal from "./components/ContactModal";
+import FavoritesModal from "./components/FavoritesModal";
 
 function Home() {
   const { session } = useAuth();
@@ -19,6 +20,7 @@ function Home() {
   }
 
   const [openContactModal, setOpenContactModal] = useState(false);
+  const [openFavoritesModal, setOpenFavoritesModal] = useState(false);
 
   const {
     contacts,
@@ -28,17 +30,25 @@ function Home() {
 
   const favoriteContacts =
     contacts?.filter((contact) => contact.is_favorite) || [];
-
   return (
     <>
       <LogoutButton />
-      <ActionButtons onOpenContactModal={() => setOpenContactModal(true)} />
+      <ActionButtons
+        onOpenContactModal={() => setOpenContactModal(true)}
+        onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
+      />
       <FaveBubbles faves={favoriteContacts} />
       <ContactSearch userContacts={contacts} />
       <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
       <ContactModal
         open={openContactModal}
         onClose={() => setOpenContactModal(false)}
+      />
+      <FavoritesModal
+        open={openFavoritesModal}
+        onClose={() => setOpenFavoritesModal(false)}
+        favoriteContacts={favoriteContacts}
+        contacts={contacts}
       />
     </>
   );

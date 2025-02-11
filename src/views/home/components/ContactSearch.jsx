@@ -35,7 +35,7 @@ function ContactSearch({ userContacts }) {
       )}
       groupBy={(option) => option.firstLetter}
       getOptionLabel={(option) => option.title}
-      sx={{ width: "70%", mt: 5 }}
+      sx={{ width: "100%", mt: 5 }}
       renderInput={(params) => (
         <TextField {...params} label="Search Contacts" />
       )}
