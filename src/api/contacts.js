@@ -27,3 +27,29 @@ export async function updateFavoriteContacts(favoriteContactIds) {
     throw error;
   }
 }
+
+export async function setContact(contact) {
+  try {
+    const { data, error } = await supabase.rpc("check_and_add_contact", {
+      contact_identifier: contact,
+    });
+
+    if (error) throw error;
+
+    switch (data) {
+      case "USER_NOT_FOUND":
+        throw new Error(
+          "User not found. Please check the email or phone number.",
+        );
+      case "CONTACT_ALREADY_EXISTS":
+        throw new Error("This contact is already in your contacts list.");
+      case "SUCCESS":
+        return true;
+      default:
+        throw new Error("An unexpected error occurred.");
+    }
+  } catch (error) {
+    console.error("Error setting contact:", error.message);
+    throw error;
+  }
+}
