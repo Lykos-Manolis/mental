@@ -24,7 +24,6 @@ function ConversationList({ contacts, isLoading }) {
     <List
       sx={{
         mt: 5,
-        height: 100,
         width: 350,
         maxWidth: 360,
         bgcolor: "black",

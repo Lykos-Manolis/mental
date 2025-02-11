@@ -1,16 +1,49 @@
 import { Autocomplete, TextField } from "@mui/material";
+import { styled, lighten, darken } from "@mui/system";
 import React from "react";
 
+const GroupHeader = styled("div")(({ theme }) => ({
+  position: "sticky",
+  top: "-8px",
+  padding: "4px 10px",
+  color: theme.palette.primary.main,
+  backgroundColor: lighten(theme.palette.primary.light, 0.85),
+  ...theme.applyStyles("dark", {
+    backgroundColor: darken(theme.palette.primary.main, 0.8),
+  }),
+}));
+
+const GroupItems = styled("ul")({
+  padding: 0,
+});
+
 function ContactSearch({ userContacts }) {
+  const options = userContacts.map((contact) => {
+    const firstLetter = contact.name[0].toUpperCase();
+    return {
+      firstLetter: /[0-9]/.test(firstLetter) ? "0-9" : firstLetter,
+      title: contact.name,
+      email: contact.email,
+      phoneNumber: contact.phoneNumber,
+    };
+  });
+
   return (
     <Autocomplete
-      sx={{ mt: 5 }}
-      options={userContacts.map(
-        (contact) =>
-          `${contact.name} - ${contact.phoneNumber || contact.email}`,
+      options={options.sort(
+        (a, b) => -b.firstLetter.localeCompare(a.firstLetter),
       )}
+      groupBy={(option) => option.firstLetter}
+      getOptionLabel={(option) => option.title}
+      sx={{ width: "70%", mt: 5 }}
       renderInput={(params) => (
-        <TextField {...params} size="small" variant="filled" label="Search" />
+        <TextField {...params} label="Search Contacts" />
+      )}
+      renderGroup={(params) => (
+        <li key={params.key}>
+          <GroupHeader>{params.group}</GroupHeader>
+          <GroupItems>{params.children}</GroupItems>
+        </li>
       )}
     />
   );
