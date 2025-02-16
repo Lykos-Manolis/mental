@@ -30,7 +30,7 @@ export const EMOTION_LABELS = [
 ];
 
 export const EMOTION_COLORS = {
-  admiration: "rgba(255, 215, 0, 1)",
+  admiration: "rgb(255, 196, 0)",
   amusement: "rgba(255, 192, 203, 1)",
   anger: "rgba(255, 0, 0, 1)",
   annoyance: "rgba(255, 99, 71, 1)",
@@ -43,12 +43,12 @@ export const EMOTION_COLORS = {
   disapproval: "rgba(139, 0, 0, 1)",
   disgust: "rgba(0, 100, 0, 1)",
   embarrassment: "rgba(219, 112, 147, 1)",
-  excitement: "rgba(255, 140, 0, 1)",
+  excitement: "rgb(228, 205, 1)",
   fear: "rgba(25, 25, 112, 1)",
   gratitude: "rgba(218, 165, 32, 1)",
   grief: "rgba(0, 0, 0, 1)",
   joy: "rgba(255, 255, 0, 1)",
-  love: "rgba(255, 0, 255, 1)",
+  love: "rgb(206, 0, 103)",
   nervousness: "rgba(176, 196, 222, 1)",
   optimism: "rgba(255, 165, 0, 1)",
   pride: "rgba(148, 0, 211, 1)",

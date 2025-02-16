@@ -201,8 +201,8 @@ function Chat() {
             y2="817.999"
             gradientUnits="userSpaceOnUse"
           >
-            <stop id="gradient-stop-1" stopOpacity=".5" />
-            <stop id="gradient-stop-2" offset="1" stopOpacity=".5" />
+            <stop id="gradient-stop-1" stopOpacity=".8" />
+            <stop id="gradient-stop-2" offset="1" stopOpacity=".8" />
           </linearGradient>
         </defs>
       </svg>
