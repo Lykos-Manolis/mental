@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function BackButton() {
   return (
-    <Grid2 size={0.8} sx={{ zIndex: 1, alignContent: "center" }}>
+    <Grid2 size={1} sx={{ zIndex: 1, alignContent: "center" }}>
       <IconButton component={Link} to="/home">
         <NavigateBeforeRoundedIcon fontSize="large" />
       </IconButton>

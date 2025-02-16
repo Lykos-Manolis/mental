@@ -4,8 +4,8 @@ import { Grid2, Badge, styled, Avatar } from "@mui/material";
 // Badge animation for the contact icon
 const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
   "& .MuiBadge-badge": {
-    backgroundColor: isonline ? "#44b700" : "#b70000",
-    color: isonline ? "#44b700" : "#b70000",
+    backgroundColor: isonline === "true" ? "#44b700" : "#b70000",
+    color: isonline === "true" ? "#44b700" : "#b70000",
     boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
@@ -14,7 +14,8 @@ const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
       width: "100%",
       height: "100%",
       borderRadius: "50%",
-      animation: isonline ? "ripple 3.2s infinite ease-in-out" : "none",
+      animation:
+        isonline === "true" ? "ripple 3.2s infinite ease-in-out" : "none",
       border: "1px solid currentColor",
       content: '""',
     },

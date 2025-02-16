@@ -3,7 +3,7 @@ import { Grid2, Stack, Typography } from "@mui/material";
 function NameStatus({ conversationInfo }) {
   return (
     <Grid2
-      size={4.8}
+      size={4.6}
       sx={{ zIndex: 1, alignContent: "center", justifyItems: "start" }}
     >
       <Typography
