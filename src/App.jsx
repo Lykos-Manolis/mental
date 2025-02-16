@@ -12,7 +12,7 @@ import { Home } from "./views/home";
 import { Login } from "./views/login";
 import { AuthProvider } from "./auth/AuthContext";
 
-const darkTheme = createTheme({
+const theme = createTheme({
   palette: {
     mode: "dark",
   },
@@ -22,7 +22,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <ThemeProvider theme={darkTheme}>
+        <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/home" element={<Home />} />

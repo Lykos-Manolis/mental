@@ -1,0 +1,33 @@
+<svg
+        style={{
+          borderRadius: "0 0 40px 40px",
+          width: "100%",
+          height: "96%",
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          left: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 1505 800"
+        preserveAspectRatio="xMaxYMin slice"
+      >
+        <path
+          fill="url(#a)"
+          d="M.5 0H1348c16.57 0 30 13.431 30 30v1.5c0 16.569 13.43 30 30 30h67c16.57 0 30 13.431 30 30V1497H.5V0Z"
+        />
+        <defs>
+          <linearGradient
+            id="a"
+            x1="1308.5"
+            x2="1308.5"
+            y1="0"
+            y2="817.999"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor={contactColor} stopOpacity=".6" />
+            <stop offset="1" stopColor={userColor} stopOpacity=".6" />
+          </linearGradient>
+        </defs>
+      </svg>

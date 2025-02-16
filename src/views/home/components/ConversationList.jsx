@@ -18,15 +18,15 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
     color: "#44b700",
-    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+    boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
-      top: 0,
-      left: 0,
+      top: -1,
+      left: -1,
       width: "100%",
       height: "100%",
       borderRadius: "50%",
-      animation: "ripple 1.2s infinite ease-in-out",
+      animation: "ripple 3.2s infinite ease-in-out",
       border: "1px solid currentColor",
       content: '""',
     },
@@ -35,6 +35,10 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     "0%": {
       transform: "scale(.8)",
       opacity: 1,
+    },
+    "50%": {
+      transform: "scale(2.4)",
+      opacity: 0,
     },
     "100%": {
       transform: "scale(2.4)",

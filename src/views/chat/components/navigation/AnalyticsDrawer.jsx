@@ -1,17 +1,17 @@
-import { Divider, Drawer, IconButton, Stack, Typography } from "@mui/material";
 import React from "react";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import EmotionPieChart from "../../../components/analytics/EmotionPieChart";
-import EmotionLineChart from "../../../components/analytics/EmotionLineChart";
-import EmotionSpecificLineChart from "../../../components/analytics/EmotionSpecificLineChart";
-import { MONTH_LABELS } from "../../../constants/chart";
+import { Drawer, Stack, Typography, IconButton, Divider } from "@mui/material";
+import { ArrowBackIos as ArrowBackIcon } from "@mui/icons-material";
+import EmotionPieChart from "../../../../components/analytics/EmotionPieChart";
+import EmotionLineChart from "../../../../components/analytics/EmotionLineChart";
+import EmotionSpecificLineChart from "../../../../components/analytics/EmotionSpecificLineChart";
+import { MONTH_LABELS } from "../../../../constants/chart";
 import {
   CHART_DATA,
   MONTHLY_EMOTIONS,
   MONTHLY_GRAPH_DATA,
-} from "../../../constants/mock/api";
+} from "../../../../constants/mock/api";
 
-function ChatDrawer({ openDrawer, toggleDrawer }) {
+function AnalyticsDrawer({ openDrawer, toggleDrawer }) {
   return (
     <Drawer
       sx={{
@@ -31,7 +31,7 @@ function ChatDrawer({ openDrawer, toggleDrawer }) {
       {/* Back button */}
       <Stack direction="row">
         <IconButton onClick={toggleDrawer}>
-          <ArrowBackIosIcon sx={{ color: "text.secondary" }} />
+          <ArrowBackIcon sx={{ color: "text.secondary" }} />
         </IconButton>
       </Stack>
 
@@ -70,4 +70,4 @@ function ChatDrawer({ openDrawer, toggleDrawer }) {
   );
 }
 
-export default ChatDrawer;
+export default AnalyticsDrawer;
