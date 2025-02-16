@@ -21,10 +21,13 @@ function Chat() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [isOnline, setIsOnline] = useState(false);
 
-  const { session } = useAuth();
-  if (!session) {
+  const { session, isLoading } = useAuth();
+
+  // Don't redirect if still loading the session
+  if (!session && !isLoading) {
     return <Navigate to="/" replace />;
   }
+
   // Get chat ID from url
   const { chatId } = useParams();
 
@@ -42,7 +45,7 @@ function Chat() {
   const { backgroundColors, setBackgroundColors } = useEmotionColors(
     messages,
     conversationInfo,
-    session.user.id,
+    session?.user?.id,
   );
 
   // Handlers
