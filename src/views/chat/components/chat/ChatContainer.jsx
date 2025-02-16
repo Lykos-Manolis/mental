@@ -14,6 +14,7 @@ function ChatContainer({ messages, isLoading }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
   return (
     <Grid2
       container
@@ -24,8 +25,9 @@ function ChatContainer({ messages, isLoading }) {
         justifyContent: "flex-start",
         width: "100vw",
         height: "78vh",
-        px: 4,
+        px: 5,
         py: 2,
+        my: 2,
         overflow: "auto",
         backgroundColor: "transparent",
         backgroundImage: "none",
@@ -33,27 +35,36 @@ function ChatContainer({ messages, isLoading }) {
         zIndex: 1,
       }}
     >
-      <>
-        {messages.map((message, index, array) => {
-          const currentMessage = message;
-          const nextMessage = array[index + 1];
-          const isCurrentMessageFromUser = currentMessage.sender_id === userId;
+      {messages.map((message, index, array) => {
+        const currentMessage = message;
+        const nextMessage = array[index + 1];
+        const isCurrentMessageFromUser = currentMessage.sender_id === userId;
 
-          const extraSpace =
-            nextMessage &&
-            isCurrentMessageFromUser !== (nextMessage.sender_id === userId);
+        const extraSpace =
+          nextMessage &&
+          isCurrentMessageFromUser !== (nextMessage.sender_id === userId);
 
-          return (
+        return (
+          <Grid2
+            key={`chat-message-${index}`}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: isCurrentMessageFromUser
+                ? "flex-end"
+                : "flex-start",
+              mb: extraSpace ? 2 : 0.5,
+            }}
+          >
             <ChatMessage
-              key={`chat-message-${index}`}
               {...message}
               sent_by_user={isCurrentMessageFromUser}
               extraSpace={extraSpace}
             />
-          );
-        })}
-        <div ref={messagesEndRef} />
-      </>
+          </Grid2>
+        );
+      })}
+      <div ref={messagesEndRef} />
     </Grid2>
   );
 }
