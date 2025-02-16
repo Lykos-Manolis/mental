@@ -18,11 +18,14 @@ function ChatMessage({ content, sent_by_user }) {
       }}
     >
       <Typography
+        variant="body1"
         sx={{
           textAlign: "left",
+          letterSpacing: "0.04em",
           whiteSpace: "pre-wrap",
           fontSize: "0.9rem",
           lineHeight: 1.4,
+          color: "rgba(0, 0, 0, 0.8)",
         }}
       >
         {content}
