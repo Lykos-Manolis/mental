@@ -4,6 +4,22 @@ import { VitePWA } from "vite-plugin-pwa";
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          tensorflow: ["@tensorflow/tfjs"],
+          "react-core": ["react", "react-dom", "react-router-dom"],
+          "mui-core": ["@mui/material", "@emotion/react", "@emotion/styled"],
+          "mui-icons": ["@mui/icons-material"],
+          charts: ["@mui/x-charts"],
+          auth: ["@supabase/auth-ui-react", "@supabase/supabase-js"],
+          anime: ["animejs"],
+        },
+      },
+    },
+    chunkSizeWarningLimit: 500,
+  },
   plugins: [
     react(),
     VitePWA({
@@ -28,6 +44,9 @@ export default defineConfig({
             type: "image/png",
           },
         ],
+      },
+      workbox: {
+        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024, // 3MB
       },
     }),
   ],

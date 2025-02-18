@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import * as tf from "@tensorflow/tfjs";
 import { EMOTION_COLORS, EMOTION_LABELS } from "../constants";
 import { processText, MAX_LENGTH } from "../utils/textProcessing";
 
@@ -11,6 +10,8 @@ export function useEmotionPrediction() {
   useEffect(() => {
     async function loadAssets() {
       try {
+        // Dynamically import TensorFlow.js
+        const tf = await import("@tensorflow/tfjs");
         const loadedModel = await tf.loadLayersModel(
           "/emo_model_js/model.json",
         );
@@ -36,6 +37,8 @@ export function useEmotionPrediction() {
     }
 
     try {
+      // Dynamically import TensorFlow.js when needed
+      const tf = await import("@tensorflow/tfjs");
       const processedSequence = processText(text, wordIndex);
       const inputTensor = tf.tensor2d([processedSequence], [1, MAX_LENGTH]);
 
