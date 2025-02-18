@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: http://localhost:5173/sitemap.xml
+Sitemap: https://mental-pi.vercel.app/sitemap.xml

@@ -1,0 +1,23 @@
+{
+  "name": "Mental - Emotion-Aware Messaging",
+  "short_name": "Mental",
+  "description": "A sentiment analysis messaging web-app that helps you understand the emotions behind your conversations.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#242424",
+  "theme_color": "#242424",
+  "icons": [
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
