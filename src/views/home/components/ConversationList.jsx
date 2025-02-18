@@ -10,52 +10,12 @@ import {
   Stack,
   Skeleton,
   Badge,
+  Grid2,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: -1,
-      left: -1,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 3.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "50%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
-
 function ConversationList({ contacts, isLoading }) {
-  const isOnlineToday = (lastSignIn) => {
-    if (!lastSignIn) return false;
-    const now = new Date();
-    const signInDate = new Date(lastSignIn);
-    const diffInMinutes = (now - signInDate) / (1000 * 60);
-    return diffInMinutes <= 60;
-  };
-
   return isLoading ? (
     <Skeleton
       variant="rectangular"
@@ -64,75 +24,79 @@ function ConversationList({ contacts, isLoading }) {
       sx={{ mt: 5, borderRadius: 3 }}
     />
   ) : (
-    <List
-      sx={{
-        mt: 5,
-        width: 350,
-        maxWidth: 360,
-        bgcolor: "black",
-        borderRadius: 5,
-      }}
-    >
+    <Grid2>
       {contacts.map((contact, index) => (
-        <Stack key={`conversation-${index}`}>
-          <ListItem
+        <Grid2 key={`conversation-${index}`} container sx={{ my: 4 }}>
+          {/* Avatar */}
+          <Grid2 size={2}>
+            <Avatar
+              alt={contact.full_name}
+              src={contact.avatar_url}
+              slotProps={{ img: { referrerPolicy: "no-referrer" } }}
+              sx={{ width: 45, height: 45 }}
+            />
+          </Grid2>
+          {/* Contents */}
+          <Grid2
+            size={10}
             component={Link}
             to={`/chat/${contact.conversation_id}`}
-            alignItems="flex-start"
+            sx={{ alignContent: "center" }}
           >
-            <ListItemAvatar>
-              {isOnlineToday(contact.last_sign_in) ? (
-                <StyledBadge
-                  overlap="circular"
-                  anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-                  variant="dot"
-                >
-                  <Avatar
-                    alt={contact.full_name}
-                    src={contact.avatar_url}
-                    slotProps={{ img: { referrerPolicy: "no-referrer" } }}
-                  />
-                </StyledBadge>
-              ) : (
-                <Avatar
-                  alt={contact.full_name}
-                  src={contact.avatar_url}
-                  slotProps={{ img: { referrerPolicy: "no-referrer" } }}
+            {/* Name and Date */}
+            <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
+              <Typography
+                variant="body1"
+                sx={{ color: "#5727C7", textAlign: "left", fontWeight: "bold" }}
+              >
+                {contact.full_name}
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ textAlign: "left", fontSize: 12 }}
+              >
+                {contact?.last_message
+                  ? new Date(
+                      contact?.last_message?.created_at,
+                    ).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })
+                  : ""}
+              </Typography>
+            </Grid2>
+            {/* Message and Read Status */}
+            <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  color: "text.secondary",
+                  textAlign: "left",
+                  fontSize: 12,
+                }}
+              >
+                {contact?.last_message?.content || "No messages yet"}
+              </Typography>
+              {/* TODO: Add read status (for now, it's read if there is a message) */}
+              {contact?.last_message?.content && (
+                <Grid2
+                  sx={{
+                    width: 10,
+                    height: 10,
+                    backgroundColor: "#5727C7",
+                    borderRadius: "50%",
+                  }}
                 />
               )}
-            </ListItemAvatar>
-            <ListItemText
-              primary={contact.full_name}
-              sx={{ color: "text.primary" }}
-              secondary={
-                <>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    sx={{ color: "text.primary", display: "inline" }}
-                  >
-                    {contact?.last_message
-                      ? new Date(
-                          contact?.last_message?.created_at,
-                        ).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                        })
-                      : ""}
-                  </Typography>
-                  {contact?.last_message
-                    ? " — " + contact?.last_message?.content
-                    : "No messages yet"}
-                </>
-              }
-            />
-          </ListItem>
-          {index < contacts.length - 1 && (
-            <Divider variant="inset" component="li" />
-          )}
-        </Stack>
+            </Grid2>
+            {/* Divider */}
+            <Grid2 size={12} sx={{ mt: 0.5 }}>
+              <Divider />
+            </Grid2>
+          </Grid2>
+        </Grid2>
       ))}
-    </List>
+    </Grid2>
   );
 }
 

@@ -14,7 +14,7 @@ import { AuthProvider } from "./auth/AuthContext";
 
 const theme = createTheme({
   palette: {
-    mode: "dark",
+    mode: "light",
   },
 });
 

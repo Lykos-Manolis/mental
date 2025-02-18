@@ -32,7 +32,7 @@ function ContactModal({ open, onClose }) {
     <Dialog
       open={open}
       onClose={onClose}
-      PaperProps={{ sx: { bgcolor: "black", borderRadius: 5, p: 1 } }}
+      PaperProps={{ sx: { borderRadius: 5, p: 1 } }}
     >
       <DialogTitle>Add Contact</DialogTitle>
       <DialogContent>

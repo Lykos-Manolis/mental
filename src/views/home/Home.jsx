@@ -11,6 +11,12 @@ import { useAuth } from "../../auth/AuthContext";
 import { useGetContacts } from "../../hooks/useGetContacts";
 import ContactModal from "./components/ContactModal";
 import FavoritesModal from "./components/FavoritesModal";
+import { Grid2, IconButton } from "@mui/material";
+import AddReactionIcon from "@mui/icons-material/AddReaction";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import HomeHeader from "./components/HomeHeader";
+import Favorites from "./components/Favorites";
+import Messages from "./components/Messages";
 
 function Home() {
   const { session } = useAuth();
@@ -38,15 +44,36 @@ function Home() {
   }, [contacts]);
 
   return (
-    <>
-      <LogoutButton />
+    <Grid2
+      container
+      direction="column"
+      spacing={4}
+      sx={{
+        px: 3,
+        bgcolor: "white",
+        color: "black",
+        width: "100vw",
+        height: "100vh",
+      }}
+    >
+      {/* Header */}
+      <HomeHeader />
+
+      {/* Favorites */}
+      <Favorites favoriteContacts={favoriteContacts} />
+
+      {/* TODO: Add or delete search bar */}
+      {/* <ContactSearch userContacts={contacts} /> */}
+
+      {/* Messages */}
+      <Messages contacts={contacts} isLoadingContacts={isLoadingContacts} />
+
+      {/* Action Buttons */}
       <ActionButtons
         onOpenContactModal={() => setOpenContactModal(true)}
         onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
       />
-      <FaveBubbles faves={favoriteContacts} />
-      <ContactSearch userContacts={contacts} />
-      <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
+
       <ContactModal
         open={openContactModal}
         onClose={() => setOpenContactModal(false)}
@@ -58,7 +85,7 @@ function Home() {
         setFavoriteContacts={setFavoriteContacts}
         contacts={contacts}
       />
-    </>
+    </Grid2>
   );
 }
 

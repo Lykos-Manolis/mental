@@ -44,7 +44,7 @@ function FavoritesModal({
       open={open}
       onClose={onClose}
       PaperProps={{
-        sx: { bgcolor: "black", borderRadius: 5, p: 1, width: "90%" },
+        sx: { borderRadius: 5, p: 1, width: "90%" },
       }}
     >
       <DialogTitle>Edit Favorites</DialogTitle>

@@ -1,13 +1,14 @@
 import React from "react";
-import { Button } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useAuth } from "../../auth/AuthContext";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 function LogoutButton() {
   const { signOut } = useAuth();
   return (
-    <Button variant="contained" color="error" onClick={signOut}>
-      Logout
-    </Button>
+    <IconButton color="error" onClick={signOut}>
+      <LogoutIcon />
+    </IconButton>
   );
 }
 

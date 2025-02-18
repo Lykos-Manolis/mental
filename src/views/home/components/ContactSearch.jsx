@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { Autocomplete, Grid2, TextField } from "@mui/material";
 import { styled, lighten, darken } from "@mui/system";
 import React from "react";
 
@@ -29,23 +29,25 @@ function ContactSearch({ userContacts }) {
   });
 
   return (
-    <Autocomplete
-      options={options.sort(
-        (a, b) => -b.firstLetter.localeCompare(a.firstLetter),
-      )}
-      groupBy={(option) => option.firstLetter}
-      getOptionLabel={(option) => option.title}
-      sx={{ width: "100%", mt: 5 }}
-      renderInput={(params) => (
-        <TextField {...params} label="Search Contacts" />
-      )}
-      renderGroup={(params) => (
-        <li key={params.key}>
-          <GroupHeader>{params.group}</GroupHeader>
-          <GroupItems>{params.children}</GroupItems>
-        </li>
-      )}
-    />
+    <Grid2 container size={12}>
+      <Autocomplete
+        options={options.sort(
+          (a, b) => -b.firstLetter.localeCompare(a.firstLetter),
+        )}
+        groupBy={(option) => option.firstLetter}
+        getOptionLabel={(option) => option.title}
+        sx={{ width: "50%" }}
+        renderInput={(params) => (
+          <TextField {...params} label="Search Contacts" />
+        )}
+        renderGroup={(params) => (
+          <li key={params.key}>
+            <GroupHeader>{params.group}</GroupHeader>
+            <GroupItems>{params.children}</GroupItems>
+          </li>
+        )}
+      />
+    </Grid2>
   );
 }
 
