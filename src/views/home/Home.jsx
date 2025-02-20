@@ -50,8 +50,8 @@ function Home() {
       spacing={4}
       sx={{
         px: 3,
-        bgcolor: "white",
-        color: "black",
+        bgcolor: "background.default",
+        color: "text.primary",
         width: "100vw",
         height: "100vh",
       }}
