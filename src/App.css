@@ -1,8 +1,11 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  /* padding: 2rem; */
+  width: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
+  margin: 0;
+  padding: 0;
   text-align: center;
+  background-color: white;
 }
 
 .logo {
@@ -41,7 +44,7 @@
   color: #888;
 }
 
-.hidden-scroll{
+.hidden-scroll {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
