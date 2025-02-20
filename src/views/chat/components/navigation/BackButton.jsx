@@ -5,9 +5,12 @@ import { Link } from "react-router-dom";
 
 function BackButton() {
   return (
-    <Grid2 size={1} sx={{ zIndex: 1, alignContent: "center" }}>
+    <Grid2>
       <IconButton aria-label="back" component={Link} to="/home">
-        <NavigateBeforeRoundedIcon fontSize="large" />
+        <NavigateBeforeRoundedIcon
+          color="black"
+          sx={{ bgcolor: "white", borderRadius: "50%" }}
+        />
       </IconButton>
     </Grid2>
   );

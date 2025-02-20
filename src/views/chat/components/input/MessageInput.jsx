@@ -19,6 +19,7 @@ function MessageInput({ text, setText, handleKeyDown }) {
         sx={{
           backgroundColor: "white",
           borderRadius: 10,
+          height: "35px",
           width: "100%",
           p: "10px 10px 10px 20px",
           ml: 5,

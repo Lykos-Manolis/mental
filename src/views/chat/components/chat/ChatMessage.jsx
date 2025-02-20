@@ -9,8 +9,10 @@ function ChatMessage({ content, sent_by_user }) {
         maxWidth: "75%",
         width: "auto",
         px: 2,
-        py: 1,
-        bgcolor: sent_by_user ? "rgba(250,250,240,1)" : "rgba(250,250,240,0.6)",
+        py: 1.2,
+        bgcolor: sent_by_user
+          ? "rgba(217, 217, 217, 0.85)"
+          : "rgba(255,255,255,0.35)",
         color: "black",
         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0)",
         wordBreak: "break-word",
@@ -21,11 +23,10 @@ function ChatMessage({ content, sent_by_user }) {
         variant="body1"
         sx={{
           textAlign: "left",
-          letterSpacing: "0.04em",
           whiteSpace: "pre-wrap",
-          fontSize: "0.9rem",
+          fontSize: "14px",
           lineHeight: 1.4,
-          color: "rgba(0, 0, 0, 0.8)",
+          color: sent_by_user ? "black" : "white",
         }}
       >
         {content}

@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Grid2 } from "@mui/material";
-import BackButton from "./components/navigation/BackButton";
-import ContactIcon from "./components/navigation/ContactIcon";
-import NameStatus from "./components/navigation/NameStatus";
-import NavButton from "./components/navigation/NavButton";
 import ChatContainer from "./components/chat/ChatContainer";
 import MessageInput from "./components/input/MessageInput";
 import SendButton from "./components/input/SendButton";
@@ -16,6 +12,9 @@ import anime from "animejs";
 import { useSendMessage } from "../../hooks/useSendMessage";
 import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
 import AnalyticsDrawer from "./components/navigation/AnalyticsDrawer";
+import ContactNav from "./components/navigation/ContactNav";
+import ChatInput from "./components/input/ChatInput";
+
 function Chat() {
   // State
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -55,29 +54,22 @@ function Chat() {
 
   // Add animation for SVG gradient stops
   useEffect(() => {
+    // Animate top (red) SVGs
     anime({
-      targets: "#analytics-button",
-      backgroundColor: backgroundColors[1],
-      easing: "easeInOutSine",
-      duration: 600,
-    });
-
-    anime({
-      targets: "#settings-button",
-      backgroundColor: backgroundColors[1],
-      easing: "easeInOutSine",
-      duration: 700,
-    });
-
-    anime({
-      targets: "#gradient-stop-1",
+      targets: [
+        "#a stop",
+        "#gradient1 stop",
+        "#gradient2 stop",
+        "#gradient3 stop",
+      ],
       stopColor: backgroundColors[1],
       easing: "easeInOutQuad",
       duration: 800,
     });
 
+    // Animate bottom (blue) SVGs
     anime({
-      targets: "#gradient-stop-2",
+      targets: ["#gradient1 stop", "#gradient2 stop", "#gradient3 stop"],
       stopColor: backgroundColors[0],
       easing: "easeInOutQuad",
       duration: 800,
@@ -134,76 +126,223 @@ function Chat() {
       sx={{
         height: "100vh",
         width: "100vw",
-        pt: "10%",
-        background:
-          "linear-gradient(180deg, rgb(255,255,255) 12%, rgb(0,0,0) 100%)",
+        pt: 2,
+        background: "black",
       }}
     >
       {/* Navigation */}
-      <BackButton />
-      <ContactIcon conversationInfo={conversationInfo} isOnline={isOnline} />
-      <NameStatus conversationInfo={conversationInfo} />
-      <NavButton
-        contactColor={backgroundColors[1]}
+      <ContactNav
+        conversationInfo={conversationInfo}
+        isOnline={isOnline}
         toggleDrawer={toggleDrawer}
-        icon="analytics"
-        title="View Analytics"
-        id="analytics-button"
-      />
-      <NavButton
-        contactColor={backgroundColors[1]}
-        icon="settings"
-        title="Settings"
-        id="settings-button"
       />
 
       {/* Chat */}
       <ChatContainer messages={messages} isLoading={isLoadingMessages} />
 
       {/* Input */}
-      <MessageInput
+      <ChatInput
         text={text}
         setText={setText}
         handleKeyDown={handleKeyDown}
-      />
-      <SendButton
-        text={text}
-        modelLoading={modelLoading}
         isModelReady={isModelReady}
-        handleClick={handleEnter}
+        modelLoading={modelLoading}
+        handleEnter={handleEnter}
       />
 
       {/* Chat Background */}
+      {/* Top */}
       <svg
         style={{
-          width: "100%",
-          height: "96%",
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          right: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="393"
+        height="852"
+        fill="none"
+        viewBox="0 0 393 852"
+      >
+        <path
+          fill="url(#a)"
+          fillOpacity=".3"
+          d="M189.5 350C52.3 303.2 6 97.167 0 0h399v851.5h-16.5c-8.667-157.833-55.8-454.7-193-501.5Z"
+        />
+        <defs>
+          <radialGradient
+            id="a"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="scale(199.5 425.75) rotate(90 0 1)"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="red" />
+            <stop offset="1" stopColor="red" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
+      <svg
+        style={{
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          right: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="352"
+        height="851"
+        fill="none"
+        viewBox="0 0 352 851"
+      >
+        <path
+          fill="url(#a)"
+          fillOpacity=".3"
+          d="M173.2 339.639C38.388 286.349 1.966 78.342.607-19L399.153.028l-40.607 850.531-16.481-.787c-1.13-158.067-34.053-456.844-168.865-510.133Z"
+        />
+        <defs>
+          <radialGradient
+            id="a"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="matrix(-20.30348 425.2656 -199.27302 -9.5139 179.576 415.78)"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="red" />
+            <stop offset="1" stopColor="red" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
+      <svg
+        style={{
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          right: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="304"
+        height="848"
+        fill="none"
+        viewBox="0 0 304 848"
+      >
+        <path
+          fill="url(#a)"
+          fillOpacity=".3"
+          d="M153.88 327.253C22.07 266.918-3.316 57.278.467-40L397.452.049l-85.467 847.2-16.417-1.657c7.22-157.906-9.878-458.004-141.688-518.339Z"
+        />
+        <defs>
+          <radialGradient
+            id="a"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="matrix(-42.73344 423.59995 -198.49252 -20.02424 156.226 403.624)"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="red" />
+            <stop offset="1" stopColor="red" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
+      {/* Bottom */}
+      <svg
+        style={{
           position: "absolute",
           zIndex: 0,
           bottom: 0,
           left: 0,
         }}
         xmlns="http://www.w3.org/2000/svg"
+        width="291"
+        height="803"
         fill="none"
-        viewBox="0 0 1505 800"
-        preserveAspectRatio="xMaxYMin slice"
+        viewBox="0 0 291 803"
       >
         <path
-          fill="url(#a)"
-          d="M.5 0H1348c16.57 0 30 13.431 30 30v1.5c0 16.569 13.43 30 30 30h67c16.57 0 30 13.431 30 30V1497H.5V0Z"
+          fill="url(#gradient1)"
+          fillOpacity=".3"
+          d="M100.952 501.5c137.2 46.8 183.5 252.833 189.5 350h-399V0h16.5c8.667 157.833 55.8 454.7 193 501.5Z"
         />
         <defs>
-          <linearGradient
-            id="a"
-            x1="1308.5"
-            x2="1308.5"
-            y1="0"
-            y2="817.999"
+          <radialGradient
+            id="gradient1"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="matrix(0 -425.75 199.5 0 90.952 425.75)"
             gradientUnits="userSpaceOnUse"
           >
-            <stop id="gradient-stop-1" stopOpacity=".8" />
-            <stop id="gradient-stop-2" offset="1" stopOpacity=".8" />
-          </linearGradient>
+            <stop stopColor="blue" />
+            <stop offset="1" stopColor="blue" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
+      <svg
+        style={{
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          left: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="249"
+        height="803"
+        fill="none"
+        viewBox="0 0 249 803"
+      >
+        <path
+          fill="url(#gradient2)"
+          fillOpacity=".3"
+          d="M76.252 511.861c134.812 53.29 171.234 261.297 172.593 358.639l-398.546-19.028L-109.094.941l16.481.787c1.13 158.067 34.053 456.844 168.865 510.133Z"
+        />
+        <defs>
+          <radialGradient
+            id="gradient2"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="matrix(20.30348 -425.2656 199.27302 9.5139 69.876 435.72)"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="blue" />
+            <stop offset="1" stopColor="blue" stopOpacity="0" />
+          </radialGradient>
+        </defs>
+      </svg>
+      <svg
+        style={{
+          position: "absolute",
+          zIndex: 0,
+          bottom: 0,
+          left: 0,
+        }}
+        xmlns="http://www.w3.org/2000/svg"
+        width="202"
+        height="799"
+        fill="none"
+        viewBox="0 0 202 799"
+      >
+        <path
+          fill="url(#gradient3)"
+          fillOpacity=".3"
+          d="M47.572 520.247c131.81 60.335 157.196 269.975 153.413 367.253L-196 847.451l85.467-847.2 16.417 1.657c-7.22 157.906 9.879 458.004 141.688 518.339Z"
+        />
+        <defs>
+          <radialGradient
+            id="gradient3"
+            cx="0"
+            cy="0"
+            r="1"
+            gradientTransform="matrix(42.73344 -423.59995 198.49252 20.02424 45.226 443.876)"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="blue" />
+            <stop offset="1" stopColor="blue" stopOpacity="0" />
+          </radialGradient>
         </defs>
       </svg>
 

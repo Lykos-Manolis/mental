@@ -6,17 +6,17 @@ const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: isonline === "true" ? "#44b700" : "#b70000",
     color: isonline === "true" ? "#44b700" : "#b70000",
-    boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
+    boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     "&::after": {
       position: "absolute",
-      top: -1,
-      left: -1,
+      top: -2,
+      left: -2,
       width: "100%",
       height: "100%",
       borderRadius: "50%",
       animation:
         isonline === "true" ? "ripple 3.2s infinite ease-in-out" : "none",
-      border: "1px solid currentColor",
+      border: "2px solid currentColor",
       content: '""',
     },
   },
@@ -38,16 +38,16 @@ const StyledBadge = styled(Badge)(({ theme, isonline }) => ({
 
 function ContactIcon({ conversationInfo, isOnline }) {
   return (
-    <Grid2 size={2.2} sx={{ zIndex: 1, alignContent: "center" }}>
+    <Grid2>
       <StyledBadge
         overlap="circular"
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         variant="dot"
         sx={{ mx: 2 }}
         isonline={isOnline.toString()}
       >
         <Avatar
-          sx={{ width: 45, height: 45 }}
+          sx={{ width: 50, height: 50, border: "2px solid white" }}
           alt={conversationInfo?.full_name}
           src={conversationInfo?.avatar_url}
         />
