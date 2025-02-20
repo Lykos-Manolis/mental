@@ -18,8 +18,6 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
         disabled={modelLoading || !isModelReady || !text.replace(/\s/g, "")}
         sx={{
           borderRadius: 10,
-          height: "35px",
-          width: "35px",
           ml: 1,
           bgcolor: "white",
           color: "purple",
@@ -27,10 +25,10 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="14"
+          width="16"
           height="16"
           fill="none"
-          viewBox="0 0 14 16"
+          viewBox="0 0 16 16"
         >
           <path
             fill="#5928CB"

@@ -17,6 +17,8 @@ function ChatInput({
       container
       sx={{
         justifyContent: "space-around",
+        height: "10vh",
+        zIndex: 1,
       }}
     >
       <MessageInput

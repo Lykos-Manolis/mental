@@ -47,7 +47,7 @@ function ContactIcon({ conversationInfo, isOnline }) {
         isonline={isOnline.toString()}
       >
         <Avatar
-          sx={{ width: 50, height: 50, border: "2px solid white" }}
+          sx={{ border: "2px solid white" }}
           alt={conversationInfo?.full_name}
           src={conversationInfo?.avatar_url}
         />

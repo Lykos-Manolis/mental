@@ -6,7 +6,16 @@ import ModalButton from "./ModalButton";
 
 function ContactNav({ conversationInfo, isOnline, toggleDrawer }) {
   return (
-    <Grid2 size={12} container sx={{ justifyContent: "space-around" }}>
+    <Grid2
+      size={12}
+      container
+      sx={{
+        justifyContent: "space-around",
+        alignContent: "end",
+        height: "15vh",
+        zIndex: 1,
+      }}
+    >
       <BackButton />
       <ContactInfo conversationInfo={conversationInfo} isOnline={isOnline} />
       <ModalButton

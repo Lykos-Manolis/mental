@@ -24,7 +24,7 @@ function ChatContainer({ messages, isLoading }) {
       sx={{
         justifyContent: "flex-start",
         width: "100vw",
-        height: "78vh",
+        height: "68vh",
         px: 5,
         my: 2,
         overflow: "auto",
