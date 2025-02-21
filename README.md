@@ -44,10 +44,12 @@ After splitting the text into tokens, the Tokenizer assigns each unique token (w
 
 The Tokenizer builds a **vocabulary** based on the entire text dataset. It collects all unique words, ranks them by frequency, and assigns an index to each word.
 
->[!question]- Why tokenize?
+>[!TIP]
+>### Why tokenize?
 Neural networks and other machine learning algorithms **cannot understand raw text**. They require numerical input, which is why we need to convert words into numbers. The Tokenizer provides an easy and efficient way to do this.
 
->[!question]- Why limit to 10k words
+>[!TIP]
+>### Why limit to 10k words
 >- **Text data can have an extremely large vocabulary**: In any large corpus, there can be millions of unique words (including variations, rare words, typos, etc.). If you were to use all of these words, the size of your vocabulary would grow substantially, which would make the model harder to train (more parameters, larger embeddings, etc.).
 >- By setting `num_words=10000`, you limit the vocabulary to the **most common 10,000 words**. This reduces the complexity and ensures that the model focuses on the words that are most relevant or frequent in the dataset.
 >- Including too many rare words can lead to overfitting, especially if the model memorizes them. By limiting the vocabulary to the most frequent words, you help ensure that the model generalizes better.
@@ -59,10 +61,11 @@ Neural networks and other machine learning algorithms **cannot understand raw te
 # Exporting the Model
 
 # Creating the Web-App
->[!note]- Notes
+>[!NOTE]
 >As of now, all backend will be handled in supabase
 
->[!abstract]- Glossary
+>[!IMPORTANT]
+>### Glossary
 >- Wrapper
 >- Routing
 >- Element
@@ -73,7 +76,8 @@ Neural networks and other machine learning algorithms **cannot understand raw te
 >- Tag
 >- Single Page Application (SPA)
 
->[!example]- Bibliography
+>[!TIP]
+>### Bibliography
 >[Vite](https://www.reddit.com/r/reactjs/comments/yuxa16/createreactapp_or_vite_for_new_project/?rdt=40058)
 >  It's faster and does not need ejecting
 >  
@@ -261,7 +265,8 @@ Breakpoints help define the different changes based on the current screen size. 
 
 This way we can make sure that every component has the correct layout for each screen and every bit is visible both in mobile and desktop screens.
 
->[!info]- Difference between breakpoints
+>[!NOTE]
+>### Difference between breakpoints
 >MUI's pre-defined breakpoints include:
 >`xs`: screen width of `0px` - `599px`
 >`sm`: screen width of `600px` - `899px`
