@@ -6,7 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 function LogoutButton() {
   const { signOut } = useAuth();
   return (
-    <IconButton color="error" onClick={signOut}>
+    <IconButton aria-label="logout" color="error" onClick={signOut}>
       <LogoutIcon />
     </IconButton>
   );

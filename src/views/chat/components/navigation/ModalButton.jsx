@@ -5,7 +5,7 @@ import DonutLargeIcon from "@mui/icons-material/DonutLarge";
 function ModalButton({ id, toggleDrawer }) {
   return (
     <Grid2>
-      <IconButton id={id} onClick={toggleDrawer}>
+      <IconButton aria-label="toggle drawer" id={id} onClick={toggleDrawer}>
         <DonutLargeIcon
           sx={{
             color: "primary.main",

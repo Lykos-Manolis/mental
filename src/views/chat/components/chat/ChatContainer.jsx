@@ -33,6 +33,7 @@ function ChatContainer({ messages, isLoading }) {
         zIndex: 1,
       }}
     >
+      {/* TODO: Add react-window to render messages efficiently */}
       {messages.map((message, index, array) => {
         const currentMessage = message;
         const nextMessage = array[index + 1];

@@ -62,6 +62,8 @@ function Home() {
       {/* Favorites */}
       <Favorites favoriteContacts={favoriteContacts} />
 
+      {/* TODO: Add contrast to the text */}
+
       {/* TODO: Add or delete search bar */}
       {/* <ContactSearch userContacts={contacts} /> */}
 

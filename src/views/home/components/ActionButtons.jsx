@@ -18,14 +18,17 @@ function ActionButtons({ onOpenContactModal, onOpenFavoritesModal }) {
       }}
     >
       <Grid2>
-        <IconButton onClick={onOpenContactModal}>
+        <IconButton aria-label="add contact" onClick={onOpenContactModal}>
           <ControlPointIcon
             sx={{ color: "primary.main", width: 30, height: 30 }}
           />
         </IconButton>
       </Grid2>
       <Grid2>
-        <IconButton onClick={onOpenFavoritesModal}>
+        <IconButton
+          aria-label="add to favorites"
+          onClick={onOpenFavoritesModal}
+        >
           <FavoriteBorderIcon
             sx={{ color: "primary.main", width: 30, height: 30 }}
           />
