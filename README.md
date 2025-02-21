@@ -12,7 +12,7 @@ from kaggle we get:
 - group1-shard1of1.bin weights
 
 ---
-# Preparing the Data
+## Preparing the Data
 Machine learning models cant process text. so we prepare the text data for use in neural networks by converting raw text into numerical form (which machine learning models can understand)
 
 To achieve this we use a process called word-to-idex mapping. In our case, we used the `Tokenizer` method from `tensorflow`
@@ -54,11 +54,11 @@ Neural networks and other machine learning algorithms **cannot understand raw te
 >- By setting `num_words=10000`, you limit the vocabulary to the **most common 10,000 words**. This reduces the complexity and ensures that the model focuses on the words that are most relevant or frequent in the dataset.
 >- Including too many rare words can lead to overfitting, especially if the model memorizes them. By limiting the vocabulary to the most frequent words, you help ensure that the model generalizes better.
 
-# Training the Model
+## Training the Model
 
-# Analyzing Performance
+## Analyzing Performance
 
-# Exporting the Model
+## Exporting the Model
 
 # Creating the Web-App
 >[!NOTE]
@@ -89,7 +89,7 @@ Neural networks and other machine learning algorithms **cannot understand raw te
 >[React Router Dom](https://v5.reactrouter.com/web/guides/quick-start)
 >  For routing between views
 
-# Routing
+## Routing
 A well known React library is integrated to handle "page" routing, called `react-router-dom`.
 This library helps define components as "pages" that the app can route to.
 
@@ -140,7 +140,7 @@ Each element is being defined as a link component and includes the link of the v
 The "component" prop will render the component as a `Link` and the "to" prop will define where it will link to when clicked.
 
 ---
-# Styling
+## Styling
 For styling, a popular component library is used called Material UI or [MUI](https://mui.com/material-ui/)
 
 ### 1. About MUI
@@ -275,15 +275,15 @@ This way we can make sure that every component has the correct layout for each s
 >`xl`: screen width of `1536px`+
 
 
-# Database
+## Database
 
-# API
+## API
 
-# Hooks
+## Hooks
 
-# Host
+## Host
 
-# Authentication
+## Authentication
 
 # Migrating to Mobile
 The app can migrate to mobile by making it into a progressive web-app (PWA). To do that, a developer tool is used when navigating through chrome's developer tools while on the website and selecting Lighthouse.
