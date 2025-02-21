@@ -11,6 +11,7 @@ function HomeHeader() {
         justifyContent: "space-between",
         alignItems: "center",
         mt: 4,
+        zIndex: 1,
       }}
     >
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
