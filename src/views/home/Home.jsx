@@ -12,7 +12,7 @@ import HomeHeader from "./components/HomeHeader";
 import Favorites from "./components/Favorites";
 import Messages from "./components/Messages";
 import anime from "animejs";
-
+import { EMOTION_COLORS } from "../../constants/emotions";
 function Home() {
   const { session } = useAuth();
 
@@ -47,6 +47,12 @@ function Home() {
       direction: "alternate",
       easing: "easeInOutSine",
     });
+    anime({
+      targets: "#shape-path-1 stop",
+      stopColor: EMOTION_COLORS[contacts[0]?.last_message?.emotion],
+      duration: 3000,
+      easing: "easeOutElastic",
+    });
 
     anime({
       targets: "#shape-size-2",
@@ -65,6 +71,13 @@ function Home() {
       direction: "alternate",
       easing: "easeOutElastic",
     });
+    anime({
+      targets: "#shape-path-2 stop",
+      stopColor: EMOTION_COLORS[contacts[1]?.last_message?.emotion],
+      duration: 3000,
+      easing: "easeOutElastic",
+      delay: 500,
+    });
 
     anime({
       targets: "#shape-size-3",
@@ -81,6 +94,13 @@ function Home() {
       loop: true,
       direction: "alternate",
       easing: "easeInOutSine",
+    });
+    anime({
+      targets: "#shape-path-3 stop",
+      stopColor: EMOTION_COLORS[contacts[2]?.last_message?.emotion],
+      duration: 3000,
+      easing: "easeOutElastic",
+      delay: 1000,
     });
 
     anime({
@@ -101,6 +121,13 @@ function Home() {
       easing: "easeInOutSine",
       delay: 1000,
     });
+    anime({
+      targets: "#shape-path-4 stop",
+      stopColor: EMOTION_COLORS[contacts[3]?.last_message?.emotion],
+      duration: 3000,
+      easing: "easeOutElastic",
+      delay: 1300,
+    });
 
     anime({
       targets: "#shape-size-5",
@@ -120,7 +147,14 @@ function Home() {
       easing: "easeInOutSine",
       delay: 2000,
     });
-  }, []);
+    anime({
+      targets: "#shape-path-5 stop",
+      stopColor: EMOTION_COLORS[contacts[4]?.last_message?.emotion],
+      duration: 3000,
+      easing: "easeOutElastic",
+      delay: 1500,
+    });
+  }, [contacts]);
 
   return (
     <Grid2
@@ -195,8 +229,8 @@ function Home() {
             gradientTransform="rotate(77.158 60.54 225.045) scale(436.416 423.647)"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#6532DB" stopOpacity=".65" />
-            <stop offset="1" stopColor="#6532DB" stopOpacity=".15" />
+            <stop stopColor="#808080" stopOpacity=".55" />
+            <stop offset="1" stopColor="#808080" stopOpacity=".15" />
           </radialGradient>
         </defs>
       </svg>
@@ -225,8 +259,8 @@ function Home() {
             y2="108"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#6532DB" stopOpacity=".15" />
-            <stop offset="1" stopColor="#6532DB" stopOpacity=".65" />
+            <stop stopColor="#808080" stopOpacity=".15" />
+            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
           </linearGradient>
         </defs>
       </svg>
@@ -250,8 +284,8 @@ function Home() {
             y2="62"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#6532DB" stopOpacity=".15" />
-            <stop offset="1" stopColor="#6532DB" stopOpacity=".65" />
+            <stop stopColor="#808080" stopOpacity=".15" />
+            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
           </linearGradient>
         </defs>
       </svg>
@@ -275,8 +309,8 @@ function Home() {
             y2="22"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#6532DB" stopOpacity=".15" />
-            <stop offset="1" stopColor="#6532DB" stopOpacity=".65" />
+            <stop stopColor="#808080" stopOpacity=".15" />
+            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
           </linearGradient>
         </defs>
       </svg>
@@ -300,8 +334,8 @@ function Home() {
             y2="8"
             gradientUnits="userSpaceOnUse"
           >
-            <stop stopColor="#6532DB" stopOpacity=".15" />
-            <stop offset="1" stopColor="#6532DB" stopOpacity=".65" />
+            <stop stopColor="#808080" stopOpacity=".15" />
+            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
           </linearGradient>
         </defs>
       </svg>
