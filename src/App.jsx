@@ -17,10 +17,19 @@ const theme = createTheme({
     mode: "dark",
     background: {
       default: "#000000",
+      inverse: "#ffffff",
       paper: "#000000",
     },
     text: {
       primary: "#ffffff",
+      inverse: "#000000",
+    },
+    primary: {
+      main: "#5727C7",
+    },
+    activity: {
+      online: "#44b700",
+      offline: "#b70000",
     },
   },
 });

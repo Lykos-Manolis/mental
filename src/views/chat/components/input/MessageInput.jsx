@@ -17,13 +17,13 @@ function MessageInput({ text, setText, handleKeyDown }) {
         placeholder="Go tell 'em champ"
         label="Type your message"
         sx={{
-          backgroundColor: "white",
+          backgroundColor: "text.primary",
           borderRadius: 10,
           height: "35px",
           width: "100%",
           p: "10px 10px 10px 20px",
           ml: 5,
-          color: "black",
+          color: "text.inverse",
         }}
       />
     </Grid2>

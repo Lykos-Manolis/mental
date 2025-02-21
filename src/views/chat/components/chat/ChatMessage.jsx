@@ -13,7 +13,7 @@ function ChatMessage({ content, sent_by_user }) {
         bgcolor: sent_by_user
           ? "rgba(217, 217, 217, 0.85)"
           : "rgba(255,255,255,0.35)",
-        color: "black",
+        color: "text.inverse",
         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0)",
         wordBreak: "break-word",
         overflowWrap: "break-word",
@@ -26,7 +26,7 @@ function ChatMessage({ content, sent_by_user }) {
           whiteSpace: "pre-wrap",
           fontSize: "14px",
           lineHeight: 1.4,
-          color: sent_by_user ? "black" : "white",
+          color: sent_by_user ? "text.inverse" : "text.primary",
         }}
       >
         {content}

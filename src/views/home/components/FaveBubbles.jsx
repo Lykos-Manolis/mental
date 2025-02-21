@@ -5,7 +5,7 @@ import { Stack, Grid2 } from "@mui/material";
 function FaveBubbles({ faves }) {
   return (
     <Grid2 size={12}>
-      <Stack direction="row" sx={{ m: 1, justifyContent: "start" }}>
+      <Stack direction="row" spacing={2} sx={{ m: 1, justifyContent: "start" }}>
         {faves.map((fave) => (
           <FaveBubble key={fave.id} {...fave} />
         ))}

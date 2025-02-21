@@ -1,15 +1,19 @@
 import React from "react";
+import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 import { Grid2, IconButton } from "@mui/material";
-import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import { Link } from "react-router-dom";
 
 function BackButton() {
   return (
     <Grid2>
       <IconButton aria-label="back" component={Link} to="/home">
-        <NavigateBeforeRoundedIcon
-          color="black"
-          sx={{ bgcolor: "white", borderRadius: "50%" }}
+        <KeyboardDoubleArrowLeftIcon
+          sx={{
+            color: "primary.main",
+            bgcolor: "background.inverse",
+            borderRadius: "50%",
+            p: 0.5,
+          }}
         />
       </IconButton>
     </Grid2>

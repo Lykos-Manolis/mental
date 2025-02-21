@@ -1,6 +1,6 @@
 import React from "react";
 import { Grid2, IconButton } from "@mui/material";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
+import UploadIcon from "@mui/icons-material/Upload";
 
 function SendButton({ handleClick, modelLoading, isModelReady, text }) {
   return (
@@ -19,25 +19,11 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
         sx={{
           borderRadius: 10,
           ml: 1,
-          bgcolor: "white",
-          color: "purple",
+          bgcolor: "background.inverse",
+          color: "primary.main",
         }}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          fill="none"
-          viewBox="0 0 16 16"
-        >
-          <path
-            fill="#5928CB"
-            stroke="#5928CB"
-            strokeLinecap="round"
-            strokeWidth="3"
-            d="m11.596 6.78-7.93-4.637c-.912-.533-1.92.527-1.342 1.41l.262.4a7 7 0 0 1 .166 7.397l-.59.998c-.538.908.516 1.922 1.403 1.349l8.07-5.214a1 1 0 0 0-.039-1.704Z"
-          />
-        </svg>
+        <UploadIcon sx={{ width: 20, height: 20 }} />
       </IconButton>
     </Grid2>
   );

@@ -19,13 +19,15 @@ function ActionButtons({ onOpenContactModal, onOpenFavoritesModal }) {
     >
       <Grid2>
         <IconButton onClick={onOpenContactModal}>
-          <ControlPointIcon sx={{ color: "#5727C7", width: 30, height: 30 }} />
+          <ControlPointIcon
+            sx={{ color: "primary.main", width: 30, height: 30 }}
+          />
         </IconButton>
       </Grid2>
       <Grid2>
         <IconButton onClick={onOpenFavoritesModal}>
           <FavoriteBorderIcon
-            sx={{ color: "#5727C7", width: 30, height: 30 }}
+            sx={{ color: "primary.main", width: 30, height: 30 }}
           />
         </IconButton>
       </Grid2>

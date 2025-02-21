@@ -47,7 +47,11 @@ function ConversationList({ contacts, isLoading }) {
             <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
               <Typography
                 variant="body1"
-                sx={{ color: "#5727C7", textAlign: "left", fontWeight: "bold" }}
+                sx={{
+                  color: "primary.main",
+                  textAlign: "left",
+                  fontWeight: "bold",
+                }}
               >
                 {contact.full_name}
               </Typography>
@@ -83,7 +87,7 @@ function ConversationList({ contacts, isLoading }) {
                   sx={{
                     width: 10,
                     height: 10,
-                    backgroundColor: "#5727C7",
+                    backgroundColor: "primary.main",
                     borderRadius: "50%",
                   }}
                 />

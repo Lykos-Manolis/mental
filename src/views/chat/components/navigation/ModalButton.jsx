@@ -7,8 +7,12 @@ function ModalButton({ id, toggleDrawer }) {
     <Grid2>
       <IconButton id={id} onClick={toggleDrawer}>
         <DonutLargeIcon
-          color="black"
-          sx={{ bgcolor: "white", borderRadius: "50%" }}
+          sx={{
+            color: "primary.main",
+            bgcolor: "background.inverse",
+            borderRadius: "50%",
+            p: 0.5,
+          }}
         />
       </IconButton>
     </Grid2>

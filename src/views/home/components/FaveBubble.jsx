@@ -1,48 +1,17 @@
 import { Avatar, Badge, styled } from "@mui/material";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import StyledBadge from "../../../components/styled/StyledBadge";
+import { useOnlineStatus } from "../../../hooks/useOnlineStatus";
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    backgroundColor: "#44b700",
-    color: "#44b700",
-    boxShadow: `0 0 0 1px ${theme.palette.background.paper}`,
-    "&::after": {
-      position: "absolute",
-      top: -1,
-      left: -1,
-      width: "100%",
-      height: "100%",
-      borderRadius: "50%",
-      animation: "ripple 3.2s infinite ease-in-out",
-      border: "1px solid currentColor",
-      content: '""',
-    },
-  },
-  "@keyframes ripple": {
-    "0%": {
-      transform: "scale(.8)",
-      opacity: 1,
-    },
-    "50%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-    "100%": {
-      transform: "scale(2.4)",
-      opacity: 0,
-    },
-  },
-}));
-
-function FaveBubble({ conversation_id, avatar_url, full_name, activity, sx }) {
-  const isOnlineToday = (lastSignIn) => {
-    if (!lastSignIn) return false;
-    const now = new Date();
-    const signInDate = new Date(lastSignIn);
-    const diffInMinutes = (now - signInDate) / (1000 * 60);
-    return diffInMinutes <= 60;
-  };
+function FaveBubble({
+  conversation_id,
+  avatar_url,
+  full_name,
+  last_sign_in,
+  sx,
+}) {
+  const isOnline = useOnlineStatus(last_sign_in);
 
   return (
     <>
@@ -50,7 +19,8 @@ function FaveBubble({ conversation_id, avatar_url, full_name, activity, sx }) {
         overlap="circular"
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         variant="dot"
-        invisible={!isOnlineToday(activity)}
+        isonline={isOnline.toString()}
+        invisible={!isOnline}
       >
         <Avatar
           component={Link}
