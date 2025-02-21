@@ -1,4 +1,5 @@
 import supabase from "../utils/supabase";
+import { useGetUserId } from "../hooks/useGetUserId";
 
 export async function getUserConversations() {
   try {
@@ -48,4 +49,46 @@ export async function getConversationInfo(chatId) {
   }
 
   return data;
+}
+
+export async function updateConversationReadStatus(conversationId) {
+  const {
+    data: {
+      user: { id: currentUserId },
+    },
+  } = await supabase.auth.getUser();
+
+  const { data: conversation, error: fetchError } = await supabase
+    .from("conversations")
+    .select("user_1, user_2")
+    .eq("id", conversationId)
+    .single();
+
+  if (fetchError) {
+    throw fetchError;
+  }
+
+  const { user_1, user_2 } = conversation;
+
+  console.log(
+    user_1,
+    user_2,
+    currentUserId,
+    user_1 === currentUserId,
+    user_2 === currentUserId,
+  );
+
+  const { error } = await supabase
+    .from("conversations")
+    .update({
+      user_1_read: user_1 === currentUserId,
+      user_2_read: user_2 === currentUserId,
+    })
+    .eq("id", conversationId);
+
+  if (error) {
+    throw error;
+  }
+
+  return true;
 }

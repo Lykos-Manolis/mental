@@ -81,8 +81,8 @@ function ConversationList({ contacts, isLoading }) {
               >
                 {contact?.last_message?.content || "No messages yet"}
               </Typography>
-              {/* TODO: Add read status (for now, it's read if there is a message) */}
-              {contact?.last_message?.content && (
+
+              {!contact?.is_read && (
                 <Grid2
                   sx={{
                     width: 10,

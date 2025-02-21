@@ -1,4 +1,5 @@
 import supabase from "../utils/supabase";
+import { updateConversationReadStatus } from "./conversations";
 
 export async function getConversationMessages(conversationId) {
   try {
@@ -28,6 +29,8 @@ export async function setMessage(message, emotion, conversationId) {
   if (error) {
     throw error;
   }
+
+  await updateConversationReadStatus(conversationId);
 
   return true;
 }
