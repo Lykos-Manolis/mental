@@ -109,6 +109,7 @@ export function useGetContacts() {
           event: "UPDATE",
           schema: "public",
           table: "conversations",
+          filter: `last_message_at.neq.NULL`,
         },
         async () => {
           const lastMessages = await getContactsLastMessages();
