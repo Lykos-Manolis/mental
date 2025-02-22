@@ -53,3 +53,15 @@ export async function setContact(contact) {
     throw error;
   }
 }
+
+export async function getBasicContacts() {
+  const { data, error } = await supabase.rpc("get_basic_contacts");
+  if (error) throw error;
+  return data;
+}
+
+export async function getContactsLastMessages() {
+  const { data, error } = await supabase.rpc("get_contacts_last_messages");
+  if (error) throw error;
+  return data;
+}

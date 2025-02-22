@@ -70,14 +70,6 @@ export async function updateConversationReadStatus(conversationId) {
 
   const { user_1, user_2 } = conversation;
 
-  console.log(
-    user_1,
-    user_2,
-    currentUserId,
-    user_1 === currentUserId,
-    user_2 === currentUserId,
-  );
-
   const { error } = await supabase
     .from("conversations")
     .update({
