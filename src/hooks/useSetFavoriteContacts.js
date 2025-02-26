@@ -9,7 +9,9 @@ export function useSetFavoriteContacts() {
     try {
       setIsLoading(true);
       setError(null);
-      await updateFavoriteContacts(contacts.map((contact) => contact.id));
+      await updateFavoriteContacts(
+        contacts.map((contact) => contact.contact_id),
+      );
     } catch (err) {
       setError(err);
       throw err;
