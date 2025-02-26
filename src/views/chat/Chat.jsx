@@ -38,7 +38,7 @@ function Chat() {
 
   // Message Handler Hook
   const updateBackgroundColor = (newColor) => {
-    setBackgroundColors((prev) => [...prev.slice(1), newColor]);
+    setBackgroundColors((prev) => [...prev.slice(0), newColor]);
   };
 
   // Message Handler Hook
