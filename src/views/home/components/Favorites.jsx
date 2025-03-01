@@ -6,7 +6,7 @@ import FaveBubbles from "./FaveBubbles";
 function Favorites({ favoriteContacts }) {
   return (
     <Grid2 size={12} sx={{ zIndex: 1 }}>
-      <Heading alignment="start" variant="h6" content="Favorites" />
+      {/* <Heading alignment="start" variant="h6" content="Favorites" /> */}
       <FaveBubbles faves={favoriteContacts} />
     </Grid2>
   );

@@ -8,13 +8,22 @@ function HomeHeader() {
       size={12}
       container
       sx={{
-        justifyContent: "space-between",
         alignItems: "center",
         mt: 4,
         zIndex: 1,
+        position: "relative",
+        width: "100%",
       }}
     >
-      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      <Typography
+        variant="h5"
+        sx={{
+          fontWeight: "bold",
+          position: "absolute",
+          width: "100%",
+          textAlign: "center",
+        }}
+      >
         Mental
       </Typography>
       <LogoutButton />

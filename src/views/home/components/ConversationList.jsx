@@ -1,19 +1,8 @@
 import React from "react";
-import {
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Divider,
-  Typography,
-  Avatar,
-  Stack,
-  Skeleton,
-  Badge,
-  Grid2,
-} from "@mui/material";
+import { Divider, Typography, Avatar, Skeleton, Grid2 } from "@mui/material";
 import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+
+const avatarSize = 45;
 
 function ConversationList({ contacts, isLoading }) {
   return isLoading ? (
@@ -26,14 +15,19 @@ function ConversationList({ contacts, isLoading }) {
   ) : (
     <Grid2>
       {contacts.map((contact, index) => (
-        <Grid2 key={`conversation-${index}`} container sx={{ my: 4 }}>
+        <Grid2
+          key={`conversation-${index}`}
+          container
+          sx={{ my: 4 }}
+          spacing={3}
+        >
           {/* Avatar */}
           <Grid2 size={2}>
             <Avatar
               alt={contact.full_name}
-              src={contact.avatar_url}
+              src={contact.avatar_url?.replace("=s96-c", `=s${avatarSize}-c`)}
               slotProps={{ img: { referrerPolicy: "no-referrer" } }}
-              sx={{ width: 45, height: 45 }}
+              sx={{ width: avatarSize, height: avatarSize }}
             />
           </Grid2>
           {/* Contents */}

@@ -2,6 +2,8 @@ import React from "react";
 import { Grid2, Badge, styled, Avatar } from "@mui/material";
 import StyledBadge from "../../../../components/styled/StyledBadge";
 
+const avatarSize = 45;
+
 function ContactIcon({ conversationInfo, isOnline }) {
   return (
     <Grid2>
@@ -13,9 +15,16 @@ function ContactIcon({ conversationInfo, isOnline }) {
         isonline={isOnline.toString()}
       >
         <Avatar
-          sx={{ border: "2px solid white" }}
+          sx={{
+            border: "2px solid white",
+            width: avatarSize,
+            height: avatarSize,
+          }}
           alt={conversationInfo?.full_name}
-          src={conversationInfo?.avatar_url}
+          src={conversationInfo?.avatar_url?.replace(
+            "=s96-c",
+            `=s${avatarSize}-c`,
+          )}
         />
       </StyledBadge>
     </Grid2>

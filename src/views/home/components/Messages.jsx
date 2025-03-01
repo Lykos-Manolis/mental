@@ -6,7 +6,7 @@ import ConversationList from "./ConversationList";
 function Messages({ contacts, isLoadingContacts }) {
   return (
     <Grid2 size={12} sx={{ zIndex: 1 }}>
-      <Heading alignment="start" variant="h6" content="Messages" />
+      {/* <Heading alignment="start" variant="h6" content="Messages" /> */}
       <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
     </Grid2>
   );

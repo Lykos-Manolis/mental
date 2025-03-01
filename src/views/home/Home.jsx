@@ -162,7 +162,7 @@ function Home() {
       direction="column"
       spacing={4}
       sx={{
-        px: 3,
+        p: 6,
         bgcolor: "background.default",
         color: "text.primary",
         width: "100vw",
