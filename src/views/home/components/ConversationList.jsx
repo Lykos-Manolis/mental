@@ -6,12 +6,38 @@ const avatarSize = 45;
 
 function ConversationList({ contacts, isLoading }) {
   return isLoading ? (
-    <Skeleton
-      variant="rectangular"
-      height={100}
-      width={350}
-      sx={{ mt: 5, borderRadius: 3 }}
-    />
+    <Grid2>
+      {[...Array(4)].map((_, index) => (
+        <Grid2 container sx={{ my: 4 }} spacing={3} key={`skeleton-${index}`}>
+          {/* Avatar */}
+          <Grid2 size={2}>
+            <Skeleton
+              variant="circular"
+              height={avatarSize}
+              width={avatarSize}
+            />
+          </Grid2>
+          {/* Contents */}
+          <Grid2 size={10} sx={{ alignContent: "center" }}>
+            {/* Name and Date */}
+            <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
+              <Skeleton variant="text" height={25} width={100} />
+              <Skeleton variant="text" height={25} width={100} />
+            </Grid2>
+            {/* Message and Read Status */}
+            <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
+              <Skeleton variant="text" height={25} width={100} />
+              <Skeleton
+                variant="circular"
+                height={10}
+                width={10}
+                sx={{ alignSelf: "center" }}
+              />
+            </Grid2>
+          </Grid2>
+        </Grid2>
+      ))}
+    </Grid2>
   ) : (
     <Grid2>
       {contacts.map((contact, index) => (

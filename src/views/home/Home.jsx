@@ -173,7 +173,10 @@ function Home() {
       <HomeHeader />
 
       {/* Favorites */}
-      <Favorites favoriteContacts={favoriteContacts} />
+      <Favorites
+        favoriteContacts={favoriteContacts}
+        favoritesLoading={isLoadingContacts}
+      />
 
       {/* TODO: Add contrast to the text */}
 

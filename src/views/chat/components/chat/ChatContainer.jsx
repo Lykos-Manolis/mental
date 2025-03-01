@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Grid2 } from "@mui/material";
+import { Grid2, Skeleton } from "@mui/material";
 import ChatMessage from "./ChatMessage";
 import { useGetUserId } from "../../../../hooks/useGetUserId";
 
@@ -15,7 +15,161 @@ function ChatContainer({ messages, isLoading }) {
     scrollToBottom();
   }, [messages]);
 
-  return (
+  return isLoading ? (
+    <Grid2
+      container
+      className="hidden-scroll"
+      direction="column"
+      wrap="nowrap"
+      sx={{
+        justifyContent: "flex-start",
+        width: "100vw",
+        height: "68vh",
+        px: 5,
+        my: 2,
+        overflow: "auto",
+        backgroundImage: "none",
+        position: "relative",
+        zIndex: 1,
+      }}
+    >
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-start",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={100}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 0.5,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={100}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={200}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-start",
+          mb: 0.5,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={150}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-start",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={70}
+          width={200}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={75}
+          width={200}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-start",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={100}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 0.5,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={100}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+      <Grid2
+        sx={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "flex-end",
+          mb: 2,
+        }}
+      >
+        <Skeleton
+          variant="rounded"
+          height={35}
+          width={200}
+          sx={{ borderRadius: 1 }}
+        />
+      </Grid2>
+    </Grid2>
+  ) : (
     <Grid2
       container
       className="hidden-scroll"

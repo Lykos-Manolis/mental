@@ -72,6 +72,7 @@ function Chat() {
     >
       <ContactNav
         conversationInfo={conversationInfo}
+        isLoading={isLoadingConversationInfo}
         isOnline={isOnline}
         toggleDrawer={toggleDrawer}
       />
