@@ -44,7 +44,7 @@ function ConversationList({ contacts, isLoading }) {
         <Grid2
           key={`conversation-${index}`}
           container
-          sx={{ my: 4 }}
+          sx={{ mb: 4 }}
           spacing={3}
         >
           {/* Avatar */}
@@ -66,9 +66,9 @@ function ConversationList({ contacts, isLoading }) {
             {/* Name and Date */}
             <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
               <Typography
-                variant="body1"
+                variant="body2"
                 sx={{
-                  color: "primary.main",
+                  color: "white",
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -77,7 +77,11 @@ function ConversationList({ contacts, isLoading }) {
               </Typography>
               <Typography
                 variant="body1"
-                sx={{ textAlign: "left", fontSize: 12 }}
+                sx={{
+                  textAlign: "left",
+                  fontSize: 12,
+                  color: "text.secondary",
+                }}
               >
                 {contact?.last_message
                   ? new Date(
@@ -92,11 +96,10 @@ function ConversationList({ contacts, isLoading }) {
             {/* Message and Read Status */}
             <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
               <Typography
-                variant="body1"
+                variant="caption"
                 sx={{
                   color: "text.secondary",
                   textAlign: "left",
-                  fontSize: 12,
                 }}
               >
                 {contact?.last_message?.content || "No messages yet"}
@@ -107,7 +110,7 @@ function ConversationList({ contacts, isLoading }) {
                   sx={{
                     width: 10,
                     height: 10,
-                    backgroundColor: "primary.main",
+                    backgroundColor: "white",
                     borderRadius: "50%",
                   }}
                 />

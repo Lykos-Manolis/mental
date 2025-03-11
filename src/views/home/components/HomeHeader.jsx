@@ -16,17 +16,18 @@ function HomeHeader() {
       }}
     >
       <Typography
-        variant="h5"
+        variant="h3"
         sx={{
           fontWeight: "bold",
           position: "absolute",
           width: "100%",
           textAlign: "center",
+          fontFamily: "Agbalumo",
         }}
       >
         Mental
       </Typography>
-      <LogoutButton />
+      {/* <LogoutButton /> */}
     </Grid2>
   );
 }

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
-
-import ActionButtons from "./components/ActionButtons";
+import ConversationList from "./components/ConversationList";
 
 import { useAuth } from "../../auth/AuthContext";
 import { useGetContacts } from "../../hooks/useGetContacts";
@@ -10,9 +9,9 @@ import FavoritesModal from "./components/FavoritesModal";
 import { Grid2 } from "@mui/material";
 import HomeHeader from "./components/HomeHeader";
 import Favorites from "./components/Favorites";
-import Messages from "./components/Messages";
 import anime from "animejs";
 import { EMOTION_COLORS } from "../../constants/emotions";
+import SideDrawer from "./components/SideDrawer";
 function Home() {
   const { session } = useAuth();
 
@@ -160,9 +159,10 @@ function Home() {
     <Grid2
       container
       direction="column"
-      spacing={4}
+      spacing={7}
       sx={{
-        p: 6,
+        px: 4,
+        pt: 6,
         bgcolor: "background.default",
         color: "text.primary",
         width: "100vw",
@@ -178,16 +178,10 @@ function Home() {
         favoritesLoading={isLoadingContacts}
       />
 
-      {/* TODO: Add contrast to the text */}
-
-      {/* TODO: Add or delete search bar */}
-      {/* <ContactSearch userContacts={contacts} /> */}
-
       {/* Messages */}
-      <Messages contacts={contacts} isLoadingContacts={isLoadingContacts} />
+      <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
 
-      {/* Action Buttons */}
-      <ActionButtons
+      <SideDrawer
         onOpenContactModal={() => setOpenContactModal(true)}
         onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
       />
@@ -207,8 +201,8 @@ function Home() {
       <svg
         id="shape-size-1"
         style={{
-          position: "absolute",
-          bottom: -15,
+          position: "fixed",
+          bottom: -5,
           right: 0,
           width: "100vw",
           height: "auto",
@@ -241,7 +235,7 @@ function Home() {
       <svg
         id="shape-size-2"
         style={{
-          position: "absolute",
+          position: "fixed",
           top: 0,
           right: 0,
           zIndex: 0,
@@ -270,7 +264,7 @@ function Home() {
 
       <svg
         id="shape-size-3"
-        style={{ position: "absolute", top: 65, right: 140, zIndex: 0 }}
+        style={{ position: "fixed", top: 65, right: 140, zIndex: 0 }}
         xmlns="http://www.w3.org/2000/svg"
         width="72"
         height="72"
@@ -295,7 +289,7 @@ function Home() {
 
       <svg
         id="shape-size-4"
-        style={{ position: "absolute", top: 25, right: 107, zIndex: 0 }}
+        style={{ position: "fixed", top: 25, right: 107, zIndex: 0 }}
         xmlns="http://www.w3.org/2000/svg"
         width="48"
         height="48"
@@ -320,7 +314,7 @@ function Home() {
 
       <svg
         id="shape-size-5"
-        style={{ position: "absolute", top: 70, right: 112, zIndex: 0 }}
+        style={{ position: "fixed", top: 70, right: 112, zIndex: 0 }}
         xmlns="http://www.w3.org/2000/svg"
         width="15"
         height="15"
