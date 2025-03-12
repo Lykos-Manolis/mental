@@ -49,6 +49,7 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
         disableBackdropTransition={!iOS}
         disableDiscovery={iOS}
         disableSwipeToOpen={false}
+        swipeAreaWidth={60}
         anchor="left"
         open={drawerOpen}
         onClose={toggleDrawer(false)}
