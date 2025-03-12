@@ -39,9 +39,11 @@ function ConversationList({ contacts, isLoading }) {
       ))}
     </Grid2>
   ) : (
-    <Grid2>
+    <Grid2 sx={{ zIndex: 1 }}>
       {contacts.map((contact, index) => (
         <Grid2
+          component={Link}
+          to={`/chat/${contact.conversation_id}`}
           key={`conversation-${index}`}
           container
           sx={{ mb: 4 }}
@@ -57,12 +59,7 @@ function ConversationList({ contacts, isLoading }) {
             />
           </Grid2>
           {/* Contents */}
-          <Grid2
-            size={10}
-            component={Link}
-            to={`/chat/${contact.conversation_id}`}
-            sx={{ alignContent: "center" }}
-          >
+          <Grid2 size={10} sx={{ alignContent: "center" }}>
             {/* Name and Date */}
             <Grid2 container size={12} sx={{ justifyContent: "space-between" }}>
               <Typography
