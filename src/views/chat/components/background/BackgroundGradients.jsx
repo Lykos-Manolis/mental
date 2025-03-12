@@ -54,7 +54,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient1)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M189.5 350C52.3 303.2 6 97.167 0 0h399v851.5h-16.5c-8.667-157.833-55.8-454.7-193-501.5Z"
         />
         <defs>
@@ -87,7 +87,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient2)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M173.2 339.639C38.388 286.349 1.966 78.342.607-19L399.153.028l-40.607 850.531-16.481-.787c-1.13-158.067-34.053-456.844-168.865-510.133Z"
         />
         <defs>
@@ -120,7 +120,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient3)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M153.88 327.253C22.07 266.918-3.316 57.278.467-40L397.452.049l-85.467 847.2-16.417-1.657c7.22-157.906-9.878-458.004-141.688-518.339Z"
         />
         <defs>
@@ -154,7 +154,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient4)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M100.952 501.5c137.2 46.8 183.5 252.833 189.5 350h-399V0h16.5c8.667 157.833 55.8 454.7 193 501.5Z"
         />
         <defs>
@@ -187,7 +187,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient5)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M76.252 511.861c134.812 53.29 171.234 261.297 172.593 358.639l-398.546-19.028L-109.094.941l16.481.787c1.13 158.067 34.053 456.844 168.865 510.133Z"
         />
         <defs>
@@ -220,7 +220,7 @@ function BackgroundGradients({ backgroundColors }) {
       >
         <path
           fill="url(#gradient6)"
-          fillOpacity=".3"
+          fillOpacity=".15"
           d="M47.572 520.247c131.81 60.335 157.196 269.975 153.413 367.253L-196 847.451l85.467-847.2 16.417 1.657c-7.22 157.906 9.879 458.004 141.688 518.339Z"
         />
         <defs>
