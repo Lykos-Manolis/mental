@@ -12,9 +12,7 @@ export function useEmotionPrediction() {
       try {
         // Dynamically import TensorFlow.js
         const tf = await import("@tensorflow/tfjs");
-        const loadedModel = await tf.loadLayersModel(
-          "/emo_model_js/model.json",
-        );
+        const loadedModel = await tf.loadGraphModel("/emo_model_js/model.json");
         setModel(loadedModel);
 
         const response = await fetch("/word_index.json");
