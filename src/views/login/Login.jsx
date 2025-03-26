@@ -3,7 +3,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import supabase from "../../utils/supabase";
-import { Stack } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 function Login() {
   const { session } = useAuth();
@@ -20,7 +20,25 @@ function Login() {
       height="100vh"
       width="100vw"
       bgcolor="background.default"
+      sx={{
+        backgroundImage: "url(/svg/login.svg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
     >
+      <Typography
+        variant="h3"
+        sx={{
+          fontWeight: "bold",
+          color: "white",
+          mb: 5,
+          width: "100%",
+          textAlign: "center",
+          fontFamily: "Agbalumo",
+        }}
+      >
+        Mental
+      </Typography>
       <Auth
         supabaseClient={supabase}
         providers={["google", "github"]}

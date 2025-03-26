@@ -12,6 +12,7 @@ import Favorites from "./components/Favorites";
 import anime from "animejs";
 import { EMOTION_COLORS } from "../../constants/emotions";
 import SideDrawer from "./components/SideDrawer";
+
 function Home() {
   const { session } = useAuth();
 
@@ -38,121 +39,38 @@ function Home() {
   }, [contacts]);
 
   useEffect(() => {
-    anime({
-      targets: "#shape-size-1",
-      translateY: [5, -5],
-      duration: 4000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-    });
-    anime({
-      targets: "#shape-path-1 stop",
-      stopColor: EMOTION_COLORS[contacts[0]?.last_message?.emotion],
-      duration: 3000,
-      easing: "easeOutElastic",
-    });
-
-    anime({
-      targets: "#shape-size-2",
-      width: ["100", "108"],
-      height: ["100", "108"],
-      duration: 2000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeOutElastic",
-    });
-    anime({
-      targets: "#shape-path-2",
-      translateY: [5, -5],
-      duration: 2000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeOutElastic",
-    });
-    anime({
-      targets: "#shape-path-2 stop",
-      stopColor: EMOTION_COLORS[contacts[1]?.last_message?.emotion],
-      duration: 3000,
-      easing: "easeOutElastic",
-      delay: 500,
-    });
-
-    anime({
-      targets: "#shape-size-3",
-      translateY: [-5, 5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-    });
-    anime({
-      targets: "#shape-path-3",
-      translateY: [5, -5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-    });
-    anime({
-      targets: "#shape-path-3 stop",
-      stopColor: EMOTION_COLORS[contacts[2]?.last_message?.emotion],
-      duration: 3000,
-      easing: "easeOutElastic",
-      delay: 1000,
-    });
-
-    anime({
-      targets: "#shape-size-4",
-      translateY: [-5, 5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-      delay: 1000,
-    });
-    anime({
-      targets: "#shape-path-4",
-      translateY: [5, -5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-      delay: 1000,
-    });
-    anime({
-      targets: "#shape-path-4 stop",
-      stopColor: EMOTION_COLORS[contacts[3]?.last_message?.emotion],
-      duration: 3000,
-      easing: "easeOutElastic",
-      delay: 1300,
-    });
-
-    anime({
-      targets: "#shape-size-5",
-      translateY: [-5, 5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-      delay: 2000,
-    });
-    anime({
-      targets: "#shape-path-5",
-      translateY: [-5, 5],
-      duration: 3000,
-      loop: true,
-      direction: "alternate",
-      easing: "easeInOutSine",
-      delay: 2000,
-    });
-    anime({
-      targets: "#shape-path-5 stop",
-      stopColor: EMOTION_COLORS[contacts[4]?.last_message?.emotion],
-      duration: 3000,
-      easing: "easeOutElastic",
-      delay: 1500,
-    });
+    if (contacts && contacts.length > 0) {
+      anime({
+        targets: "#svg-path-1",
+        fill: EMOTION_COLORS[contacts[0]?.last_message?.emotion] || "#fa7268",
+        duration: 3000,
+        easing: "easeOutElastic",
+      });
+      anime({
+        targets: "#svg-path-2",
+        fill: EMOTION_COLORS[contacts[1]?.last_message?.emotion] || "#ef5f67",
+        duration: 3000,
+        easing: "easeOutElastic",
+      });
+      anime({
+        targets: "#svg-path-3",
+        fill: EMOTION_COLORS[contacts[2]?.last_message?.emotion] || "#e34c67",
+        duration: 3000,
+        easing: "easeOutElastic",
+      });
+      anime({
+        targets: "#svg-path-4",
+        fill: EMOTION_COLORS[contacts[3]?.last_message?.emotion] || "#d53867",
+        duration: 3000,
+        easing: "easeOutElastic",
+      });
+      anime({
+        targets: "#svg-path-5",
+        fill: EMOTION_COLORS[contacts[4]?.last_message?.emotion] || "#c62368",
+        duration: 3000,
+        easing: "easeOutElastic",
+      });
+    }
   }, [contacts]);
 
   return (
@@ -164,6 +82,9 @@ function Home() {
         px: 4,
         pt: 6,
         bgcolor: "background.default",
+        backgroundImage: "url(/svg/home.svg)",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         color: "text.primary",
         width: "100vw",
         height: "100vh",
@@ -197,144 +118,47 @@ function Home() {
         setFavoriteContacts={setFavoriteContacts}
         contacts={contacts}
       />
-
       <svg
-        id="shape-size-1"
+        id="visual"
         style={{
-          position: "fixed",
-          bottom: -5,
-          right: 0,
-          width: "100vw",
-          height: "auto",
-          preserveAspectRatio: "xMidYMax meet",
-          zIndex: 0,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
         }}
+        viewBox="0 0 393 852"
+        width="393"
+        height="852"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 392 548"
-        preserveAspectRatio="xMidYMax meet"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        version="1.1"
       >
         <path
-          fill="url(#shape-path-1)"
-          d="M302.389 273.098C370.874 223.05 390.665 70.179 392 0v548H-10v-72.786c27.534 27.27 93.79 51.612 161 18.286 92.817-46.024 65.782-157.842 151.389-220.402Z"
-        />
-        <defs>
-          <radialGradient
-            id="shape-path-1"
-            cx="0"
-            cy="0"
-            r="1"
-            gradientTransform="rotate(77.158 60.54 225.045) scale(436.416 423.647)"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#808080" stopOpacity=".55" />
-            <stop offset="1" stopColor="#808080" stopOpacity=".15" />
-          </radialGradient>
-        </defs>
-      </svg>
-
-      <svg
-        id="shape-size-2"
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          zIndex: 0,
-        }}
-        xmlns="http://www.w3.org/2000/svg"
-        width="100"
-        height="100"
-        fill="none"
-        viewBox="0 0 92 82"
-      >
-        <circle cx="74" cy="8" r="74" fill="url(#shape-path-2)" />
-        <defs>
-          <linearGradient
-            id="shape-path-2"
-            x1="104"
-            x2="69.5"
-            y1="-6"
-            y2="108"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#808080" stopOpacity=".15" />
-            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <svg
-        id="shape-size-3"
-        style={{ position: "fixed", top: 65, right: 140, zIndex: 0 }}
-        xmlns="http://www.w3.org/2000/svg"
-        width="72"
-        height="72"
-        fill="none"
-        viewBox="0 0 62 62"
-      >
-        <circle cx="31" cy="31" r="31" fill="url(#shape-path-3)" />
-        <defs>
-          <linearGradient
-            id="shape-path-3"
-            x1="66.5"
-            x2="31"
-            y1="-10"
-            y2="62"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#808080" stopOpacity=".15" />
-            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <svg
-        id="shape-size-4"
-        style={{ position: "fixed", top: 25, right: 107, zIndex: 0 }}
-        xmlns="http://www.w3.org/2000/svg"
-        width="48"
-        height="48"
-        fill="none"
-        viewBox="0 0 30 30"
-      >
-        <circle cx="11" cy="11" r="11" fill="url(#shape-path-4)" />
-        <defs>
-          <linearGradient
-            id="shape-path-4"
-            x1="20"
-            x2="3.5"
-            y1="0"
-            y2="22"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#808080" stopOpacity=".15" />
-            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
-          </linearGradient>
-        </defs>
-      </svg>
-
-      <svg
-        id="shape-size-5"
-        style={{ position: "fixed", top: 70, right: 112, zIndex: 0 }}
-        xmlns="http://www.w3.org/2000/svg"
-        width="15"
-        height="15"
-        fill="none"
-        viewBox="0 0 10 10"
-      >
-        <circle cx="5" cy="5" r="5" fill="url(#shape-path-5)" opacity=".64" />
-        <defs>
-          <linearGradient
-            id="shape-path-5"
-            x1="13"
-            x2="3.5"
-            y1="-1.5"
-            y2="8"
-            gradientUnits="userSpaceOnUse"
-          >
-            <stop stopColor="#808080" stopOpacity=".15" />
-            <stop offset="1" stopColor="#808080" stopOpacity=".55" />
-          </linearGradient>
-        </defs>
+          id="svg-path-1"
+          d="M0 599L9.3 599.5C18.7 600 37.3 601 56 592.5C74.7 584 93.3 566 112 571C130.7 576 149.3 604 168.2 604.7C187 605.3 206 578.7 224.8 559.5C243.7 540.3 262.3 528.7 281 530.8C299.7 533 318.3 549 337 564.7C355.7 580.3 374.3 595.7 383.7 603.3L393 611L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
+          fill="#fa7268"
+        ></path>
+        <path
+          id="svg-path-2"
+          d="M0 658L9.3 661.7C18.7 665.3 37.3 672.7 56 660C74.7 647.3 93.3 614.7 112 598.8C130.7 583 149.3 584 168.2 589.3C187 594.7 206 604.3 224.8 606.2C243.7 608 262.3 602 281 608.7C299.7 615.3 318.3 634.7 337 629.2C355.7 623.7 374.3 593.3 383.7 578.2L393 563L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
+          fill="#ef5f67"
+        ></path>
+        <path
+          id="svg-path-3"
+          d="M0 639L9.3 643.2C18.7 647.3 37.3 655.7 56 656.2C74.7 656.7 93.3 649.3 112 646.7C130.7 644 149.3 646 168.2 649.8C187 653.7 206 659.3 224.8 665.7C243.7 672 262.3 679 281 674C299.7 669 318.3 652 337 653.7C355.7 655.3 374.3 675.7 383.7 685.8L393 696L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
+          fill="#e34c67"
+        ></path>
+        <path
+          id="svg-path-4"
+          d="M0 762L9.3 756.8C18.7 751.7 37.3 741.3 56 735.7C74.7 730 93.3 729 112 729.3C130.7 729.7 149.3 731.3 168.2 729.8C187 728.3 206 723.7 224.8 729.8C243.7 736 262.3 753 281 755.2C299.7 757.3 318.3 744.7 337 744.5C355.7 744.3 374.3 756.7 383.7 762.8L393 769L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
+          fill="#d53867"
+        ></path>
+        <path
+          id="svg-path-5"
+          d="M0 801L9.3 802.2C18.7 803.3 37.3 805.7 56 804.3C74.7 803 93.3 798 112 798C130.7 798 149.3 803 168.2 796.7C187 790.3 206 772.7 224.8 765.8C243.7 759 262.3 763 281 761.3C299.7 759.7 318.3 752.3 337 755.8C355.7 759.3 374.3 773.7 383.7 780.8L393 788L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
+          fill="#c62368"
+        ></path>
       </svg>
     </Grid2>
   );
