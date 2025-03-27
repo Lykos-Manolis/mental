@@ -66,8 +66,6 @@ function Chat() {
       sx={{
         height: "100vh",
         width: "100vw",
-        pt: 2,
-        background: "black",
       }}
     >
       <ContactNav

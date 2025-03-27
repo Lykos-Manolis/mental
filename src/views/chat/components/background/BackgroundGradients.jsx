@@ -22,12 +22,15 @@ function BackgroundGradients({ backgroundColors }) {
     <svg
       id="visual"
       style={{
-        position: "absolute",
+        position: "fixed",
         top: 0,
         left: 0,
         width: "100%",
         height: "100%",
         overflow: "hidden",
+        pointerEvents: "none",
+        objectFit: "cover",
+        objectPosition: "bottom",
       }}
       preserveAspectRatio="none"
       viewBox="0 0 450 900"

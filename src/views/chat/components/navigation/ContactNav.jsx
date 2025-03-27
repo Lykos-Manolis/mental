@@ -14,6 +14,7 @@ function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
         alignContent: "end",
         height: "15vh",
         zIndex: 1,
+        mt: 2,
       }}
     >
       <BackButton />
@@ -38,6 +39,7 @@ function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
         justifyContent: "space-around",
         alignContent: "end",
         height: "15vh",
+        mt: 2,
         zIndex: 1,
       }}
     >
