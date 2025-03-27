@@ -3,6 +3,7 @@ import { Grid2, Skeleton } from "@mui/material";
 import BackButton from "./BackButton";
 import ContactInfo from "./ContactInfo";
 import ModalButton from "./ModalButton";
+import DashboardButton from "./DashboardButton";
 
 function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
   return isLoading ? (
@@ -45,12 +46,13 @@ function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
     >
       <BackButton />
       <ContactInfo conversationInfo={conversationInfo} isOnline={isOnline} />
-      <ModalButton
+      <DashboardButton />
+      {/* <ModalButton
         toggleDrawer={toggleDrawer}
         icon="analytics"
         title="View Analytics"
         id="analytics-button"
-      />
+      /> */}
     </Grid2>
   );
 }

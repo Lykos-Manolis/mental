@@ -7,12 +7,12 @@ import { createTheme, ThemeProvider } from "@mui/material";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UnauthorizedPage from "./views/401";
 import NotFoundPage from "./views/404";
+import { Dashboard } from "./views/dashboard";
 import { Chat } from "./views/chat";
 import { Home } from "./views/home";
 import { Login } from "./views/login";
 import { AuthProvider } from "./auth/AuthContext";
 import { ModelProvider } from "./context/ModelContext";
-
 const theme = createTheme({
   palette: {
     mode: "dark",
@@ -45,6 +45,7 @@ function App() {
               <Route path="/" element={<Login />} />
               <Route path="/home" element={<Home />} />
               <Route path="/chat/:chatId" element={<Chat />} />
+              <Route path="/dashboard/:dashboardId" element={<Dashboard />} />
               <Route path="/unauthorized" element={<UnauthorizedPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
