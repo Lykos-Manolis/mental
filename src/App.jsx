@@ -11,6 +11,7 @@ import { Chat } from "./views/chat";
 import { Home } from "./views/home";
 import { Login } from "./views/login";
 import { AuthProvider } from "./auth/AuthContext";
+import { ModelProvider } from "./context/ModelContext";
 
 const theme = createTheme({
   palette: {
@@ -37,17 +38,19 @@ const theme = createTheme({
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/chat/:chatId" element={<Chat />} />
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </ThemeProvider>
-      </BrowserRouter>
+      <ModelProvider>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/chat/:chatId" element={<Chat />} />
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </ThemeProvider>
+        </BrowserRouter>
+      </ModelProvider>
     </AuthProvider>
   );
 }
