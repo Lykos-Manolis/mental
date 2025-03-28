@@ -12,7 +12,7 @@ import {
 } from "../../../../../constants/mock/api";
 import { MONTH_LABELS } from "../../../../../constants/chart";
 
-function MapCard() {
+function MapCard({ monthlyData }) {
   const legendPlacement = {
     slotProps: {
       legend: {
@@ -44,7 +44,7 @@ function MapCard() {
       </Typography>
       <ScatterChart
         height={400}
-        series={MONTHLY_SCATTER_DATA}
+        series={monthlyData}
         xAxis={[{ min: 0 }]}
         {...legendPlacement}
       />

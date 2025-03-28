@@ -8,7 +8,12 @@ function DashboardInfoBlock({ title, value, text }) {
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
         {value}
         <span
-          style={{ fontSize: "0.7rem", fontWeight: "normal", color: "gray" }}
+          style={{
+            fontSize: "0.7rem",
+            fontWeight: "normal",
+            color: "white",
+            marginLeft: "0.2rem",
+          }}
         >
           {text}
         </span>

@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid2, Typography } from "@mui/material";
 
-function StatisticCard() {
+function StatisticCard({ prevailingEmotion, underlyingEmotion }) {
   return (
     <Grid2
       container
@@ -21,8 +21,14 @@ function StatisticCard() {
         </Typography>
         <Typography variant="body2" sx={{ fontSize: "12px" }}>
           Your conversations seem to have a prevailing emotion of{" "}
-          <span style={{ color: "#00FF55" }}>happiness</span> and an underlying
-          emotion of <span style={{ color: "#FF0055" }}>anger</span>.
+          <span style={{ color: prevailingEmotion.color }}>
+            {prevailingEmotion.label}
+          </span>{" "}
+          and an underlying emotion of{" "}
+          <span style={{ color: underlyingEmotion.color }}>
+            {underlyingEmotion.label}
+          </span>
+          .
         </Typography>
         <Typography
           variant="subtitle1"

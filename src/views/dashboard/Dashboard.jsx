@@ -1,10 +1,37 @@
 import { Grid2 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import DashboardNav from "./components/navigation/DashboardNav";
 import DashboardInfo from "./components/information/DashboardInfo";
 import Analytics from "./components/analytics/Analytics";
+import { EMOTION_ANALYTICS } from "../../constants/mock/api";
 
 function Dashboard() {
+  const [emotionAnalytics, setEmotionAnalytics] = useState(EMOTION_ANALYTICS);
+  const [activeEmotion, setActiveEmotion] = useState(emotionAnalytics[1]);
+
+  const totalMessages = emotionAnalytics.reduce(
+    (sum, emotion) => sum + emotion.totalMessages,
+    0,
+  );
+
+  const sortedEmotions = [...emotionAnalytics].sort(
+    (a, b) => b.totalMessages - a.totalMessages,
+  );
+  const prevailingEmotion = {
+    label: sortedEmotions[0].label,
+    color: sortedEmotions[0].color,
+  };
+  const underlyingEmotion = {
+    label: sortedEmotions[sortedEmotions.length - 1].label,
+    color: sortedEmotions[sortedEmotions.length - 1].color,
+  };
+
+  const monthlyData = emotionAnalytics.map((emotion) => ({
+    data: emotion.monthlyData,
+    label: emotion.label,
+    color: emotion.color,
+  }));
+
   return (
     <Grid2
       container
@@ -18,8 +45,16 @@ function Dashboard() {
       }}
     >
       <DashboardNav />
-      <DashboardInfo />
-      <Analytics />
+      <DashboardInfo totalMessages={totalMessages} />
+      <Analytics
+        emotionAnalytics={emotionAnalytics}
+        activeEmotion={activeEmotion}
+        setActiveEmotion={setActiveEmotion}
+        totalMessages={totalMessages}
+        prevailingEmotion={prevailingEmotion}
+        underlyingEmotion={underlyingEmotion}
+        monthlyData={monthlyData}
+      />
       <svg
         id="visual"
         width="100%"
@@ -51,13 +86,18 @@ function Dashboard() {
             ></feGaussianBlur>
           </filter>
         </defs>
-        <rect width="100%" height="100%" fill="#ff0055" opacity="0"></rect>
+        <rect
+          width="100%"
+          height="100%"
+          fill={activeEmotion.color}
+          opacity="0"
+        ></rect>
         <g filter="url(#blur1)">
           <circle cx="65" cy="418" fill="#000000" r="310"></circle>
-          <circle cx="303" cy="245" fill="#ff0055" r="310"></circle>
+          <circle cx="303" cy="245" fill={activeEmotion.color} r="310"></circle>
           <circle cx="170" cy="592" fill="#000000" r="310"></circle>
           <circle cx="232" cy="751" fill="#000000" r="310"></circle>
-          <circle cx="260" cy="400" fill="#ff0055" r="310"></circle>
+          <circle cx="260" cy="400" fill={activeEmotion.color} r="310"></circle>
           <circle cx="67" cy="204" fill="#000000" r="310"></circle>
         </g>
       </svg>

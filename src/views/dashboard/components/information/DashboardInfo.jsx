@@ -5,7 +5,7 @@ import ContactIcon from "../../../../components/profile/ContactIcon";
 
 const avatarSize = 48;
 
-function DashboardInfo() {
+function DashboardInfo({ totalMessages }) {
   const isOnline = true;
   const conversationInfo = {
     full_name: "Jasmine Davinson",
@@ -17,15 +17,12 @@ function DashboardInfo() {
       container
       sx={{ justifyContent: "space-evenly", width: "100%", mb: 5, zIndex: 1 }}
     >
-      {/* messages */}
-      <DashboardInfoBlock title="Messages" value={95} text="Total" />
-      {/* pfp */}
+      <DashboardInfoBlock title="Messages" value={totalMessages} text="Total" />
       <ContactIcon
         conversationInfo={conversationInfo}
         isOnline={isOnline}
         avatarSize={avatarSize}
       />
-      {/* duration */}
       <DashboardInfoBlock title="Duration" value={12} text="Days" />
     </Grid2>
   );

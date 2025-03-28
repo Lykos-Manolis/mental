@@ -6,7 +6,17 @@ import StatisticCard from "../cards/StatisticCard";
 import LineCard from "../cards/LineCard";
 import MapCard from "../cards/MapCard";
 
-function AnalyticsBody() {
+function AnalyticsBody({
+  activeEmotion,
+  totalMessages,
+  prevailingEmotion,
+  underlyingEmotion,
+  monthlyData,
+}) {
+  const percentage = Math.round(
+    (activeEmotion.totalMessages / totalMessages) * 100,
+  );
+
   return (
     <Grid2
       container
@@ -23,12 +33,18 @@ function AnalyticsBody() {
         spacing={3}
         sx={{ justifyContent: "center", width: "100%", flexWrap: "nowrap" }}
       >
-        <PercentageCard />
-        <PieCard />
+        <PercentageCard
+          percentage={percentage}
+          background={activeEmotion.color}
+        />
+        <PieCard emotionPercentage={percentage} activeEmotion={activeEmotion} />
       </Grid2>
-      <StatisticCard />
-      <LineCard />
-      <MapCard />
+      <StatisticCard
+        prevailingEmotion={prevailingEmotion}
+        underlyingEmotion={underlyingEmotion}
+      />
+      <LineCard activeEmotion={activeEmotion} />
+      <MapCard monthlyData={monthlyData} />
     </Grid2>
   );
 }

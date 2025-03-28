@@ -1,11 +1,11 @@
 import React from "react";
 import { Grid2, Typography } from "@mui/material";
-function PercentageCard() {
+function PercentageCard({ percentage, background }) {
   return (
     <Grid2
       width="100%"
       sx={{
-        bgcolor: "#FF0055",
+        bgcolor: background,
         padding: 2,
         borderRadius: 7,
         color: "black",
@@ -14,7 +14,8 @@ function PercentageCard() {
       }}
     >
       <Typography variant="h2" sx={{ fontWeight: "bold" }}>
-        24<span style={{ fontSize: "16px" }}>%</span>
+        {percentage}
+        <span style={{ fontSize: "16px" }}>%</span>
       </Typography>
       <Typography variant="subtitle2">
         Of your messages have this <b>emotion</b>

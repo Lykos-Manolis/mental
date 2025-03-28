@@ -1,11 +1,11 @@
 import React from "react";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
 
-function EmotionMenu() {
-  const [emotion, setEmotion] = React.useState(2);
-
+function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
   const handleChange = (event) => {
-    setEmotion(event.target.value);
+    setActiveEmotion(
+      emotionAnalytics.find((emotion) => emotion.id === event.target.value),
+    );
   };
 
   return (
@@ -17,7 +17,7 @@ function EmotionMenu() {
       <Select
         sx={{
           minWidth: 80,
-          bgcolor: "#FF0055",
+          bgcolor: activeEmotion.color,
           borderRadius: 2,
           color: "white",
           fontWeight: "bold",
@@ -27,12 +27,14 @@ function EmotionMenu() {
         }}
         labelId="emotion-select-label"
         id="emotion-select"
-        value={emotion}
+        value={activeEmotion.id}
         onChange={handleChange}
       >
-        <MenuItem value={0}>Happiness</MenuItem>
-        <MenuItem value={1}>Sadness</MenuItem>
-        <MenuItem value={2}>Anger</MenuItem>
+        {emotionAnalytics.map((emotion) => (
+          <MenuItem value={emotion.id}>
+            {emotion.label.charAt(0).toUpperCase() + emotion.label.slice(1)}
+          </MenuItem>
+        ))}
       </Select>
     </FormControl>
   );
