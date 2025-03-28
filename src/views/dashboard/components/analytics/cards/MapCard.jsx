@@ -18,7 +18,7 @@ function MapCard() {
       legend: {
         position: {
           vertical: "bottom",
-          horizontal: "bottom",
+          horizontal: "middle",
         },
         direction: "row",
         itemGap: 10,
