@@ -1,0 +1,39 @@
+import React from "react";
+import { Grid2, Typography } from "@mui/material";
+import { LineChart, AreaPlot } from "@mui/x-charts";
+import { MONTHLY_GRAPH_DATA } from "../../../../../constants/mock/api";
+import { MONTH_LABELS } from "../../../../../constants/chart";
+
+function LineCard() {
+  return (
+    <Grid2
+      container
+      width="100%"
+      sx={{ bgcolor: "black", borderRadius: 7, pt: 2, position: "relative" }}
+    >
+      <Typography
+        variant="h6"
+        sx={{ fontWeight: "bold", textAlign: "center", width: "100%" }}
+      >
+        Monthly <span style={{ color: "#FF0055" }}>anger</span>
+      </Typography>
+      <LineChart
+        width={350}
+        height={200}
+        series={[MONTHLY_GRAPH_DATA[1]]}
+        xAxis={[
+          {
+            scaleType: "point",
+            data: MONTH_LABELS,
+          },
+        ]}
+        slotProps={{ legend: { hidden: true } }}
+        sx={{ position: "absolute", top: -20, left: 0 }}
+      >
+        <AreaPlot />
+      </LineChart>
+    </Grid2>
+  );
+}
+
+export default LineCard;
