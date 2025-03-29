@@ -3,7 +3,7 @@ import { Grid2, Typography, IconButton } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 
-function DashboardNav() {
+function DashboardNav({ conversationInfo }) {
   const { dashboardId: chatId } = useParams();
 
   return (
@@ -31,7 +31,7 @@ function DashboardNav() {
         />
       </IconButton>
       <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-        Jasmine Davinson
+        {conversationInfo?.full_name}
       </Typography>
     </Grid2>
   );

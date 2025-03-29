@@ -31,7 +31,7 @@ function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
         onChange={handleChange}
       >
         {emotionAnalytics.map((emotion) => (
-          <MenuItem value={emotion.id}>
+          <MenuItem value={emotion.id} key={emotion.id}>
             {emotion.label.charAt(0).toUpperCase() + emotion.label.slice(1)}
           </MenuItem>
         ))}

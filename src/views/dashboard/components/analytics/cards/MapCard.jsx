@@ -13,23 +13,6 @@ import {
 import { MONTH_LABELS } from "../../../../../constants/chart";
 
 function MapCard({ monthlyData }) {
-  const legendPlacement = {
-    slotProps: {
-      legend: {
-        position: {
-          vertical: "bottom",
-          horizontal: "middle",
-        },
-        direction: "row",
-        itemGap: 10,
-      },
-    },
-    margin: {
-      top: 10,
-      bottom: 150,
-    },
-  };
-
   return (
     <Grid2
       container
@@ -43,10 +26,14 @@ function MapCard({ monthlyData }) {
         Monthly scatter
       </Typography>
       <ScatterChart
-        height={400}
+        height={300}
         series={monthlyData}
-        xAxis={[{ min: 0 }]}
-        {...legendPlacement}
+        xAxis={[{ min: 1, max: 12 }]}
+        slotProps={{
+          legend: {
+            hidden: true,
+          },
+        }}
       />
     </Grid2>
   );

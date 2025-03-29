@@ -1,36 +1,65 @@
 import { Grid2 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardNav from "./components/navigation/DashboardNav";
 import DashboardInfo from "./components/information/DashboardInfo";
 import Analytics from "./components/analytics/Analytics";
-import { EMOTION_ANALYTICS } from "../../constants/mock/api";
+import { useGetConversationEmotionAnalytics } from "../../hooks/useGetConversationEmotionAnalytics";
+import { useParams } from "react-router-dom";
+import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
 
 function Dashboard() {
-  const [emotionAnalytics, setEmotionAnalytics] = useState(EMOTION_ANALYTICS);
-  const [activeEmotion, setActiveEmotion] = useState(emotionAnalytics[1]);
+  const { dashboardId } = useParams();
 
-  const totalMessages = emotionAnalytics.reduce(
-    (sum, emotion) => sum + emotion.totalMessages,
-    0,
-  );
+  const { conversationInfo, isLoading: isLoadingConversationInfo } =
+    useGetConversationInfo(dashboardId);
 
-  const sortedEmotions = [...emotionAnalytics].sort(
-    (a, b) => b.totalMessages - a.totalMessages,
-  );
-  const prevailingEmotion = {
-    label: sortedEmotions[0].label,
-    color: sortedEmotions[0].color,
-  };
-  const underlyingEmotion = {
-    label: sortedEmotions[sortedEmotions.length - 1].label,
-    color: sortedEmotions[sortedEmotions.length - 1].color,
-  };
+  const { emotionAnalytics, isLoading, error } =
+    useGetConversationEmotionAnalytics(dashboardId);
+  const [activeEmotion, setActiveEmotion] = useState(null);
 
-  const monthlyData = emotionAnalytics.map((emotion) => ({
-    data: emotion.monthlyData,
-    label: emotion.label,
-    color: emotion.color,
-  }));
+  useEffect(() => {
+    if (!isLoading && emotionAnalytics.length > 0) {
+      setActiveEmotion(emotionAnalytics[0]);
+    }
+  }, [isLoading, emotionAnalytics]);
+
+  const totalMessages =
+    !isLoading && emotionAnalytics.length > 0
+      ? emotionAnalytics.reduce(
+          (sum, emotion) => sum + emotion.totalMessages,
+          0,
+        )
+      : 0;
+
+  const sortedEmotions =
+    !isLoading && emotionAnalytics.length > 0
+      ? [...emotionAnalytics].sort((a, b) => b.totalMessages - a.totalMessages)
+      : [];
+
+  const prevailingEmotion =
+    !isLoading && sortedEmotions.length > 0
+      ? {
+          label: sortedEmotions[0].label,
+          color: sortedEmotions[0].color,
+        }
+      : { label: "", color: "" };
+
+  const underlyingEmotion =
+    !isLoading && sortedEmotions.length > 0
+      ? {
+          label: sortedEmotions[sortedEmotions.length - 1].label,
+          color: sortedEmotions[sortedEmotions.length - 1].color,
+        }
+      : { label: "", color: "" };
+
+  const monthlyData =
+    !isLoading && emotionAnalytics.length > 0
+      ? emotionAnalytics.map((emotion) => ({
+          data: emotion.monthlyData,
+          label: emotion.label,
+          color: emotion.color,
+        }))
+      : [];
 
   return (
     <Grid2
@@ -44,17 +73,24 @@ function Dashboard() {
         pt: 10,
       }}
     >
-      <DashboardNav />
-      <DashboardInfo totalMessages={totalMessages} />
-      <Analytics
-        emotionAnalytics={emotionAnalytics}
-        activeEmotion={activeEmotion}
-        setActiveEmotion={setActiveEmotion}
-        totalMessages={totalMessages}
-        prevailingEmotion={prevailingEmotion}
-        underlyingEmotion={underlyingEmotion}
-        monthlyData={monthlyData}
-      />
+      {!isLoading && !error && activeEmotion && !isLoadingConversationInfo && (
+        <>
+          <DashboardNav conversationInfo={conversationInfo} />
+          <DashboardInfo
+            conversationInfo={conversationInfo}
+            totalMessages={totalMessages}
+          />
+          <Analytics
+            emotionAnalytics={emotionAnalytics}
+            activeEmotion={activeEmotion}
+            setActiveEmotion={setActiveEmotion}
+            totalMessages={totalMessages}
+            prevailingEmotion={prevailingEmotion}
+            underlyingEmotion={underlyingEmotion}
+            monthlyData={monthlyData}
+          />
+        </>
+      )}
       <svg
         id="visual"
         width="100%"
@@ -89,15 +125,25 @@ function Dashboard() {
         <rect
           width="100%"
           height="100%"
-          fill={activeEmotion.color}
+          fill={activeEmotion?.color ?? "#000000"}
           opacity="0"
         ></rect>
         <g filter="url(#blur1)">
           <circle cx="65" cy="418" fill="#000000" r="310"></circle>
-          <circle cx="303" cy="245" fill={activeEmotion.color} r="310"></circle>
+          <circle
+            cx="303"
+            cy="245"
+            fill={activeEmotion?.color ?? "#000000"}
+            r="310"
+          ></circle>
           <circle cx="170" cy="592" fill="#000000" r="310"></circle>
           <circle cx="232" cy="751" fill="#000000" r="310"></circle>
-          <circle cx="260" cy="400" fill={activeEmotion.color} r="310"></circle>
+          <circle
+            cx="260"
+            cy="400"
+            fill={activeEmotion?.color ?? "#000000"}
+            r="310"
+          ></circle>
           <circle cx="67" cy="204" fill="#000000" r="310"></circle>
         </g>
       </svg>

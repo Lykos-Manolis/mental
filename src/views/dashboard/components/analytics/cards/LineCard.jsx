@@ -22,7 +22,7 @@ function LineCard({ activeEmotion }) {
       </Typography>
       <LineChart
         width={350}
-        height={200}
+        height={300}
         series={[
           {
             label: activeEmotion.label,

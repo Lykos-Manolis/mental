@@ -2,15 +2,11 @@ import React from "react";
 import { Grid2 } from "@mui/material";
 import DashboardInfoBlock from "./DashboardInfoBlock";
 import ContactIcon from "../../../../components/profile/ContactIcon";
-
+import { useOnlineStatus } from "../../../../hooks/useOnlineStatus";
 const avatarSize = 48;
 
-function DashboardInfo({ totalMessages }) {
-  const isOnline = true;
-  const conversationInfo = {
-    full_name: "Jasmine Davinson",
-    avatar_url: "",
-  };
+function DashboardInfo({ totalMessages, conversationInfo }) {
+  const isOnline = useOnlineStatus(conversationInfo?.last_sign_in);
 
   return (
     <Grid2
