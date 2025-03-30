@@ -40,13 +40,35 @@ export function ModelProvider({ children }) {
     try {
       // Dynamically import TensorFlow.js when needed
       const tf = await import("@tensorflow/tfjs");
+
+      // Create the main input tensor (tokenized text)
+      // Note: You'll need to use the proper tokenization for RoBERTa
       const processedSequence = processText(text, wordIndex);
-      const inputTensor = tf.tensor2d(
+      const inputIds = tf.tensor2d(
         [processedSequence],
         [1, MODEL_CONSTANTS.MAX_LENGTH],
+        "int32",
       );
 
-      const predictionTensor = model.predict(inputTensor);
+      // Create attention mask (1 for real tokens, 0 for padding)
+      // This tells the model which tokens to pay attention to and which to ignore
+      const attentionMask = tf.tensor2d(
+        [processedSequence.map((token) => (token > 0 ? 1 : 0))],
+        [1, MODEL_CONSTANTS.MAX_LENGTH],
+        "int32",
+      );
+
+      // Create token type ids (all zeros for single-segment input)
+      // For RoBERTa with a single text input, this is typically all zeros
+      const tokenTypeIds = tf.zeros([1, MODEL_CONSTANTS.MAX_LENGTH], "int32");
+
+      // Pass all three required tensors to the model in the correct order
+      const predictionTensor = model.predict({
+        input_ids: inputIds,
+        attention_mask: attentionMask,
+        token_type_ids: tokenTypeIds,
+      });
+
       const predictionArray = await predictionTensor.array();
       const predictedClassIndex = predictionArray[0].indexOf(
         Math.max(...predictionArray[0]),
@@ -56,7 +78,9 @@ export function ModelProvider({ children }) {
       const newColor = EMOTION_COLORS[predictedEmotion];
 
       // Cleanup tensors
-      inputTensor.dispose();
+      inputIds.dispose();
+      attentionMask.dispose();
+      tokenTypeIds.dispose();
       predictionTensor.dispose();
 
       return { emotion: predictedEmotion, color: newColor };
