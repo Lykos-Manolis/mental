@@ -42,31 +42,31 @@ function Home() {
     if (contacts && contacts.length > 0) {
       anime({
         targets: "#svg-path-1",
-        fill: EMOTION_COLORS[contacts[0]?.last_message?.emotion] || "#fa7268",
+        fill: EMOTION_COLORS[contacts[0]?.last_message?.emotion],
         duration: 3000,
         easing: "easeOutElastic",
       });
       anime({
         targets: "#svg-path-2",
-        fill: EMOTION_COLORS[contacts[1]?.last_message?.emotion] || "#ef5f67",
+        fill: EMOTION_COLORS[contacts[1]?.last_message?.emotion],
         duration: 3000,
         easing: "easeOutElastic",
       });
       anime({
         targets: "#svg-path-3",
-        fill: EMOTION_COLORS[contacts[2]?.last_message?.emotion] || "#e34c67",
+        fill: EMOTION_COLORS[contacts[2]?.last_message?.emotion],
         duration: 3000,
         easing: "easeOutElastic",
       });
       anime({
         targets: "#svg-path-4",
-        fill: EMOTION_COLORS[contacts[3]?.last_message?.emotion] || "#d53867",
+        fill: EMOTION_COLORS[contacts[3]?.last_message?.emotion],
         duration: 3000,
         easing: "easeOutElastic",
       });
       anime({
         targets: "#svg-path-5",
-        fill: EMOTION_COLORS[contacts[4]?.last_message?.emotion] || "#c62368",
+        fill: EMOTION_COLORS[contacts[4]?.last_message?.emotion],
         duration: 3000,
         easing: "easeOutElastic",
       });
@@ -118,6 +118,7 @@ function Home() {
         setFavoriteContacts={setFavoriteContacts}
         contacts={contacts}
       />
+
       <svg
         id="visual"
         style={{
@@ -129,43 +130,129 @@ function Home() {
           pointerEvents: "none",
           objectFit: "cover",
           objectPosition: "bottom",
+          overflow: "hidden",
         }}
-        viewBox="0 0 393 852"
-        preserveAspectRatio="none"
+        width="100%"
+        height="100%"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         version="1.1"
       >
-        <path
-          id="svg-path-5"
-          d="M0 599L9.3 599.5C18.7 600 37.3 601 56 592.5C74.7 584 93.3 566 112 571C130.7 576 149.3 604 168.2 604.7C187 605.3 206 578.7 224.8 559.5C243.7 540.3 262.3 528.7 281 530.8C299.7 533 318.3 549 337 564.7C355.7 580.3 374.3 595.7 383.7 603.3L393 611L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
-          fill="#fa7268"
-          opacity={0.4}
-        ></path>
-        <path
-          id="svg-path-4"
-          d="M0 658L9.3 661.7C18.7 665.3 37.3 672.7 56 660C74.7 647.3 93.3 614.7 112 598.8C130.7 583 149.3 584 168.2 589.3C187 594.7 206 604.3 224.8 606.2C243.7 608 262.3 602 281 608.7C299.7 615.3 318.3 634.7 337 629.2C355.7 623.7 374.3 593.3 383.7 578.2L393 563L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
-          fill="#ef5f67"
-          opacity={0.5}
-        ></path>
-        <path
-          id="svg-path-3"
-          d="M0 639L9.3 643.2C18.7 647.3 37.3 655.7 56 656.2C74.7 656.7 93.3 649.3 112 646.7C130.7 644 149.3 646 168.2 649.8C187 653.7 206 659.3 224.8 665.7C243.7 672 262.3 679 281 674C299.7 669 318.3 652 337 653.7C355.7 655.3 374.3 675.7 383.7 685.8L393 696L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
-          fill="#e34c67"
-          opacity={0.6}
-        ></path>
-        <path
-          id="svg-path-2"
-          d="M0 762L9.3 756.8C18.7 751.7 37.3 741.3 56 735.7C74.7 730 93.3 729 112 729.3C130.7 729.7 149.3 731.3 168.2 729.8C187 728.3 206 723.7 224.8 729.8C243.7 736 262.3 753 281 755.2C299.7 757.3 318.3 744.7 337 744.5C355.7 744.3 374.3 756.7 383.7 762.8L393 769L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
-          fill="#d53867"
-          opacity={0.7}
-        ></path>
-        <path
-          id="svg-path-1"
-          d="M0 801L9.3 802.2C18.7 803.3 37.3 805.7 56 804.3C74.7 803 93.3 798 112 798C130.7 798 149.3 803 168.2 796.7C187 790.3 206 772.7 224.8 765.8C243.7 759 262.3 763 281 761.3C299.7 759.7 318.3 752.3 337 755.8C355.7 759.3 374.3 773.7 383.7 780.8L393 788L393 853L383.7 853C374.3 853 355.7 853 337 853C318.3 853 299.7 853 281 853C262.3 853 243.7 853 224.8 853C206 853 187 853 168.2 853C149.3 853 130.7 853 112 853C93.3 853 74.7 853 56 853C37.3 853 18.7 853 9.3 853L0 853Z"
-          fill="#c62368"
-          opacity={0.8}
-        ></path>
+        <rect x="0" y="0" width="450" height="900" fill="#000000"></rect>
+        <defs>
+          <linearGradient id="grad1_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#fbae3c" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#fbae3c" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad1_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#fbae3c" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#c07c00" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad1_2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#874d00" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#c07c00" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad1_3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#874d00" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#552100" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad1_4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#000000" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#552100" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad2_0" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#fbae3c" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#fbae3c" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad2_1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#c07c00" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#fbae3c" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad2_2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#c07c00" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#874d00" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad2_3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#552100" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#874d00" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <defs>
+          <linearGradient id="grad2_4" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="30%" stopColor="#552100" stopOpacity="1"></stop>
+            <stop offset="70%" stopColor="#000000" stopOpacity="1"></stop>
+          </linearGradient>
+        </defs>
+        <g transform="translate(450, 0)">
+          <path
+            id="svg-path-5"
+            d="M0 405C-55.9 402.6 -111.8 400.3 -155 374.2C-198.2 348.1 -228.7 298.3 -256 256C-283.3 213.7 -307.4 178.8 -331.7 137.4C-356 96 -380.5 48 -405 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-4"
+            d="M0 324C-44.7 322.1 -89.4 320.2 -124 299.3C-158.5 278.5 -182.9 238.6 -204.8 204.8C-226.6 170.9 -245.9 143 -265.3 109.9C-284.8 76.8 -304.4 38.4 -324 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-3"
+            d="M0 243C-33.5 241.6 -67.1 240.2 -93 224.5C-118.9 208.9 -137.2 179 -153.6 153.6C-170 128.2 -184.4 107.3 -199 82.4C-213.6 57.6 -228.3 28.8 -243 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-2"
+            d="M0 162C-22.4 161.1 -44.7 160.1 -62 149.7C-79.3 139.2 -91.5 119.3 -102.4 102.4C-113.3 85.5 -122.9 71.5 -132.7 55C-142.4 38.4 -152.2 19.2 -162 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-1"
+            d="M0 81C-11.2 80.5 -22.4 80.1 -31 74.8C-39.6 69.6 -45.7 59.7 -51.2 51.2C-56.7 42.7 -61.5 35.8 -66.3 27.5C-71.2 19.2 -76.1 9.6 -81 0L0 0Z"
+            fill="#000000"
+          ></path>
+        </g>
+        <g transform="translate(0, 950)">
+          <path
+            id="svg-path-5"
+            d="M0 -405C58.7 -405.7 117.5 -406.4 155 -374.2C192.5 -342 208.8 -276.8 233.3 -233.3C257.9 -189.9 290.6 -168.1 320.6 -132.8C350.6 -97.5 377.8 -48.8 405 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-4"
+            d="M0 -324C47 -324.6 94 -325.1 124 -299.3C154 -273.6 167.1 -221.5 186.7 -186.7C206.3 -151.9 232.5 -134.5 256.5 -106.2C280.5 -78 302.2 -39 324 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-3"
+            d="M0 -243C35.2 -243.4 70.5 -243.8 93 -224.5C115.5 -205.2 125.3 -166.1 140 -140C154.7 -113.9 174.4 -100.8 192.4 -79.7C210.3 -58.5 226.7 -29.3 243 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-2"
+            d="M0 -162C23.5 -162.3 47 -162.6 62 -149.7C77 -136.8 83.5 -110.7 93.3 -93.3C103.1 -76 116.2 -67.2 128.2 -53.1C140.2 -39 151.1 -19.5 162 0L0 0Z"
+            fill="#000000"
+          ></path>
+          <path
+            id="svg-path-1"
+            d="M0 -81C11.7 -81.1 23.5 -81.3 31 -74.8C38.5 -68.4 41.8 -55.4 46.7 -46.7C51.6 -38 58.1 -33.6 64.1 -26.6C70.1 -19.5 75.6 -9.8 81 0L0 0Z"
+            fill="#000000"
+          ></path>
+        </g>
       </svg>
     </Grid2>
   );
