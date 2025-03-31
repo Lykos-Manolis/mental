@@ -39,7 +39,7 @@ export const EMOTION_COLORS = {
   confusion: "rgba(147, 112, 219, 1)",
   curiosity: "rgba(135, 206, 235, 1)",
   desire: "rgba(255, 20, 147, 1)",
-  disappointment: "rgba(128, 128, 128, 1)",
+  disappointment: "rgb(68, 5, 77)",
   disapproval: "rgba(139, 0, 0, 1)",
   disgust: "rgba(0, 100, 0, 1)",
   embarrassment: "rgba(219, 112, 147, 1)",

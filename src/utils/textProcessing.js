@@ -1,19 +1,44 @@
-export const MAX_LENGTH = 100;
+import { RobertaTokenizer, env } from "@xenova/transformers";
+import { MODEL_CONSTANTS } from "../constants/model";
 
-const textToSequences = (text, wordIndex) => {
-  return text
-    .toLowerCase()
-    .split(" ")
-    .map((word) => wordIndex[word] || 0);
+env.localModelPath = "./";
+
+const { MAX_LENGTH } = MODEL_CONSTANTS;
+
+let tokenizer = null;
+
+export const loadTokenizer = async () => {
+  try {
+    tokenizer = await RobertaTokenizer.from_pretrained("tokenizer");
+    console.log("Tokenizer loaded successfully");
+    return tokenizer;
+  } catch (error) {
+    console.error("Error loading tokenizer:", error);
+    throw error;
+  }
 };
 
-const padSequence = (sequence) => {
-  const paddedSequence = [...sequence];
-  while (paddedSequence.length < MAX_LENGTH) paddedSequence.push(0);
-  return paddedSequence.slice(0, MAX_LENGTH);
-};
+export const processTextWithTokenizer = async (
+  text,
+  paddingLength = MAX_LENGTH,
+) => {
+  if (!tokenizer) {
+    throw new Error("Tokenizer not loaded. Call loadTokenizer() first.");
+  }
 
-export const processText = (text, wordIndex) => {
-  const sequences = textToSequences(text, wordIndex);
-  return padSequence(sequences);
+  if (text === null || text === undefined) {
+    throw new Error("Text may not be null or undefined");
+  }
+
+  const encoded = await tokenizer(text, {
+    padding: "max_length",
+    max_length: paddingLength,
+    truncation: true,
+    return_tensors: "tf",
+  });
+
+  return {
+    inputIds: encoded.input_ids,
+    attentionMask: encoded.attention_mask,
+  };
 };

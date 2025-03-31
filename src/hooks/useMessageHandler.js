@@ -4,19 +4,47 @@ import { useEmotionPrediction } from "./useEmotionPrediction";
 
 export function useMessageHandler(chatId, onColorUpdate) {
   const [text, setText] = useState("");
+  const [optimisticMessages, setOptimisticMessages] = useState([]);
 
   const { sendMessage } = useSendMessage();
   const { predictEmotion, modelLoading, isModelReady } = useEmotionPrediction();
 
   const handleEnter = async () => {
+    if (!text.trim()) return;
+
+    // Create a temporary message ID for optimistic updates
+    const tempId = `temp-${Date.now()}`;
+
+    // Add optimistic message to local state
+    const optimisticMessage = {
+      id: tempId,
+      content: text,
+      emotion: "neutral", // Default emotion until prediction completes
+      conversation_id: chatId,
+      sender_id: "currentUser", // You'll need to replace this with actual user ID
+      created_at: new Date().toISOString(),
+      is_optimistic: true,
+    };
+
+    setOptimisticMessages((prev) => [...prev, optimisticMessage]);
+
+    // Clear input immediately for better UX
+    const messageCopy = text;
+    setText("");
+
     try {
-      const { emotion, color } = await predictEmotion(text);
-      console.log(`Predicted: ${emotion}\n---\nInput: ${text}`);
-      await sendMessage(text, emotion, chatId);
+      // Process in background
+      const { emotion, color } = await predictEmotion(messageCopy);
+      console.log(`Predicted: ${emotion}\n---\nInput: ${messageCopy}`);
+      await sendMessage(messageCopy, emotion, chatId);
       onColorUpdate(color);
-      setText("");
+
+      // Remove optimistic message after the real one is saved
+      // (it will appear through the Supabase subscription)
+      setOptimisticMessages((prev) => prev.filter((msg) => msg.id !== tempId));
     } catch (error) {
       console.error("Prediction failed:", error);
+      // Could show an error state for the optimistic message here
     }
   };
 
@@ -33,5 +61,6 @@ export function useMessageHandler(chatId, onColorUpdate) {
     handleKeyDown,
     modelLoading,
     isModelReady,
+    optimisticMessages,
   };
 }
