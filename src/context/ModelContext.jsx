@@ -71,6 +71,9 @@ export function ModelProvider({ children }) {
   // Only keep loading states in React
   const [modelLoading, setModelLoading] = useState(true);
   const [tokenizerLoading, setTokenizerLoading] = useState(true);
+  // Add progress tracking states
+  const [modelProgress, setModelProgress] = useState(0);
+  const [tokenizerProgress, setTokenizerProgress] = useState(0);
 
   useEffect(() => {
     async function loadAssets() {
@@ -88,6 +91,7 @@ export function ModelProvider({ children }) {
             console.log("Loading model from local storage...");
             model = await tf.loadGraphModel(tf.io.fromMemory(modelFromStorage));
             console.log("Model loaded from local storage");
+            setModelProgress(100); // Set to 100% when loaded from cache
           } catch (error) {
             console.warn(
               "Error loading model from storage, will download fresh",
@@ -100,7 +104,14 @@ export function ModelProvider({ children }) {
         // If model not in storage, download it
         if (!model) {
           console.log("Downloading emotion prediction model...");
-          model = await tf.loadGraphModel("/emo_model_js/model.json");
+          model = await tf.loadGraphModel("/emo_model_js/model.json", {
+            onProgress: (fraction) => {
+              // Convert to percentage and log
+              const percent = Math.round(fraction * 100);
+              console.log(`Model download progress: ${percent}%`);
+              setModelProgress(percent);
+            },
+          });
 
           // Save model to IndexedDB for future use
           try {
@@ -120,7 +131,13 @@ export function ModelProvider({ children }) {
         try {
           // Always load the tokenizer directly - we can't serialize it
           console.log("Loading tokenizer...");
-          tokenizer = await loadTokenizer();
+
+          // The @xenova/transformers library has built-in progress callbacks
+          tokenizer = await loadTokenizer((progress) => {
+            const percent = Math.round(progress * 100);
+            console.log(`Tokenizer loading progress: ${percent}%`);
+            setTokenizerProgress(percent);
+          });
 
           // Just store a flag that we've loaded it once
           if (tokenizer && !tokenizerLoaded) {
@@ -295,11 +312,11 @@ export function ModelProvider({ children }) {
   };
 
   // Move debug function to useEffect to avoid running on every render
-  useEffect(() => {
-    if (model && !modelLoading && !tokenizerLoading && tokenizer) {
-      debugPrediction();
-    }
-  }, [model, modelLoading, tokenizerLoading, tokenizer]);
+  // useEffect(() => {
+  //   if (model && !modelLoading && !tokenizerLoading && tokenizer) {
+  //     debugPrediction();
+  //   }
+  // }, [model, modelLoading, tokenizerLoading, tokenizer]);
 
   return (
     <ModelContext.Provider
@@ -308,6 +325,8 @@ export function ModelProvider({ children }) {
         modelLoading,
         tokenizerLoading,
         isModelReady: !!model && !!tokenizer,
+        modelProgress, // Add progress to context
+        tokenizerProgress, // Add progress to context
       }}
     >
       {children}

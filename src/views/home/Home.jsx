@@ -12,9 +12,12 @@ import Favorites from "./components/Favorites";
 import anime from "animejs";
 import { EMOTION_COLORS } from "../../constants/emotions";
 import SideDrawer from "./components/SideDrawer";
+import ModelProgressLinear from "../../components/progress/ModelProgressLinear";
+import { useModel } from "../../context/ModelContext";
 
 function Home() {
   const { session } = useAuth();
+  const { modelProgress } = useModel();
 
   if (!session) {
     return <Navigate to="/" replace />;
@@ -90,6 +93,10 @@ function Home() {
         height: "100vh",
       }}
     >
+      {modelProgress < 100 && modelProgress > 0 && (
+        <ModelProgressLinear modelProgress={modelProgress} />
+      )}
+
       {/* Header */}
       <HomeHeader />
 
