@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid2 } from "@mui/material";
+import { Alert, Button, Collapse, Grid2, Typography } from "@mui/material";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetConversationMessages } from "../../hooks/useGetConversationMessages";
@@ -23,6 +23,7 @@ function Chat() {
 
   // UI State
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [showErrorDetails, setShowErrorDetails] = useState(false);
 
   // Data Hooks
   const { messages, isLoading: isLoadingMessages } =
@@ -49,6 +50,8 @@ function Chat() {
     handleKeyDown,
     modelLoading,
     isModelReady,
+    error,
+    dismissError,
   } = useMessageHandler(chatId, updateBackgroundColor);
 
   // UI Handlers
@@ -68,6 +71,57 @@ function Chat() {
         width: "100vw",
       }}
     >
+      {error && (
+        <Alert
+          severity="error"
+          onClose={dismissError}
+          sx={{
+            position: "absolute",
+            top: "10%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: { xs: "90vw", sm: "60vw", md: "50vw" },
+            zIndex: 1000,
+            boxShadow: 4,
+          }}
+          action={
+            <>
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => setShowErrorDetails(!showErrorDetails)}
+              >
+                {showErrorDetails ? "Hide Details" : "Details"}
+              </Button>
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  dismissError();
+                  if (text.trim()) {
+                    handleEnter();
+                  }
+                }}
+              >
+                Retry
+              </Button>
+            </>
+          }
+        >
+          <div>
+            <Typography variant="body1">{error.message}</Typography>
+            <Collapse in={showErrorDetails}>
+              <Typography
+                variant="caption"
+                sx={{ display: "block", mt: 1, fontFamily: "monospace" }}
+              >
+                {error.details}
+              </Typography>
+            </Collapse>
+          </div>
+        </Alert>
+      )}
+
       <ContactNav
         conversationInfo={conversationInfo}
         isLoading={isLoadingConversationInfo}
