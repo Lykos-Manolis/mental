@@ -31,7 +31,7 @@ function Login() {
         variant="h3"
         sx={{
           fontWeight: "bold",
-          color: theme.palette.text.primary,
+          color: "white",
           mb: 5,
           width: "100%",
           textAlign: "center",
