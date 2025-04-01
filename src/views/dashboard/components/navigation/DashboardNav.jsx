@@ -1,11 +1,11 @@
 import React from "react";
-import { Grid2, Typography, IconButton } from "@mui/material";
+import { Grid2, Typography, IconButton, useTheme } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
 import KeyboardDoubleArrowLeftIcon from "@mui/icons-material/KeyboardDoubleArrowLeft";
 
 function DashboardNav({ conversationInfo }) {
   const { dashboardId: chatId } = useParams();
-
+  const theme = useTheme();
   return (
     <Grid2
       container
@@ -26,11 +26,15 @@ function DashboardNav({ conversationInfo }) {
       >
         <KeyboardDoubleArrowLeftIcon
           sx={{
-            color: "white",
+            color: theme.palette.text.primary,
           }}
         />
       </IconButton>
-      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      <Typography
+        variant="h5"
+        color={theme.palette.text.primary}
+        sx={{ fontWeight: "bold" }}
+      >
         {conversationInfo?.full_name}
       </Typography>
     </Grid2>

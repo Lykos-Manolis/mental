@@ -3,10 +3,11 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import supabase from "../../utils/supabase";
-import { Stack, Typography } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 
 function Login() {
   const { session } = useAuth();
+  const theme = useTheme();
 
   if (session) {
     return <Navigate to="/home" replace />;
@@ -30,7 +31,7 @@ function Login() {
         variant="h3"
         sx={{
           fontWeight: "bold",
-          color: "white",
+          color: theme.palette.text.primary,
           mb: 5,
           width: "100%",
           textAlign: "center",

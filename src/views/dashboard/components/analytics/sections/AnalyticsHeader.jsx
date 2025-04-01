@@ -1,11 +1,12 @@
 import React from "react";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, useTheme } from "@mui/material";
 import EmotionMenu from "../menu/EmotionMenu";
 function AnalyticsHeader({
   emotionAnalytics,
   activeEmotion,
   setActiveEmotion,
 }) {
+  const theme = useTheme();
   return (
     <Grid2
       container
@@ -16,7 +17,11 @@ function AnalyticsHeader({
         mb: 3,
       }}
     >
-      <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+      <Typography
+        variant="h5"
+        color={theme.palette.text.primary}
+        sx={{ fontWeight: "bold" }}
+      >
         Chat analytics
       </Typography>
       <EmotionMenu

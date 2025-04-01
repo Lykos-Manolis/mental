@@ -7,7 +7,14 @@ function PieCard({ emotionPercentage, activeEmotion }) {
   const theme = useTheme();
 
   return (
-    <Grid2 width="100%" sx={{ bgcolor: "black", padding: 2, borderRadius: 7 }}>
+    <Grid2
+      width="100%"
+      sx={{
+        bgcolor: "black",
+        padding: 2,
+        borderRadius: 7,
+      }}
+    >
       <PieChart
         series={[
           {
@@ -16,9 +23,7 @@ function PieCard({ emotionPercentage, activeEmotion }) {
                 id: 0,
                 value: emotionPercentage,
                 label: activeEmotion.label,
-                color:
-                  theme.palette.emotion[activeEmotion.label] ??
-                  theme.palette.background.default,
+                color: theme.palette.emotion[activeEmotion.label] ?? "black",
               },
               {
                 id: 1,

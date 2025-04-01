@@ -40,7 +40,13 @@ function BackgroundGradients({ backgroundColors }) {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       version="1.1"
     >
-      <rect x="0" y="0" width="100%" height="100%" fill="#000000"></rect>
+      <rect
+        x="0"
+        y="0"
+        width="100%"
+        height="100%"
+        fill={theme.palette.background.default}
+      ></rect>
       <g transform="translate(450, 900)">
         <path
           id="gradient-1"

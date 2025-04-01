@@ -23,7 +23,7 @@ function MessageInput({ text, setText, handleKeyDown }) {
           width: "100%",
           p: "10px 10px 10px 20px",
           ml: 5,
-          color: "text.inverse",
+          color: "text.contrast",
         }}
       />
     </Grid2>

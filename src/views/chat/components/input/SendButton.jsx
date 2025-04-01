@@ -19,7 +19,7 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
         sx={{
           borderRadius: 10,
           ml: 1,
-          bgcolor: "background.inverse",
+          bgcolor: "background.contrast",
           color: "primary.main",
         }}
       >

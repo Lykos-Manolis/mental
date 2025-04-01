@@ -1,10 +1,18 @@
 import React from "react";
-import { Divider, Typography, Avatar, Skeleton, Grid2 } from "@mui/material";
+import {
+  Divider,
+  Typography,
+  Avatar,
+  Skeleton,
+  Grid2,
+  useTheme,
+} from "@mui/material";
 import { Link } from "react-router-dom";
 
 const avatarSize = 45;
 
 function ConversationList({ contacts, isLoading }) {
+  const theme = useTheme();
   return isLoading ? (
     <Grid2>
       {[...Array(4)].map((_, index) => (
@@ -65,7 +73,7 @@ function ConversationList({ contacts, isLoading }) {
               <Typography
                 variant="body2"
                 sx={{
-                  color: "white",
+                  color: theme.palette.text.primary,
                   textAlign: "left",
                   fontWeight: "bold",
                 }}
@@ -107,7 +115,7 @@ function ConversationList({ contacts, isLoading }) {
                   sx={{
                     width: 10,
                     height: 10,
-                    backgroundColor: "white",
+                    backgroundColor: theme.palette.background.contrast,
                     borderRadius: "50%",
                   }}
                 />

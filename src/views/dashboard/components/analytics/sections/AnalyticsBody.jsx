@@ -39,7 +39,7 @@ function AnalyticsBody({
           percentage={percentage}
           background={
             theme.palette.emotion[activeEmotion.label] ??
-            theme.palette.background.default
+            theme.palette.background.paper
           }
         />
         <PieCard emotionPercentage={percentage} activeEmotion={activeEmotion} />

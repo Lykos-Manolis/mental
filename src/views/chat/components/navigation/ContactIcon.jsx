@@ -1,10 +1,11 @@
 import React from "react";
-import { Grid2, Badge, styled, Avatar } from "@mui/material";
+import { Grid2, Badge, styled, Avatar, useTheme } from "@mui/material";
 import StyledBadge from "../../../../components/styled/StyledBadge";
 
 const avatarSize = 45;
 
 function ContactIcon({ conversationInfo, isOnline }) {
+  const theme = useTheme();
   return (
     <Grid2>
       <StyledBadge
@@ -16,7 +17,7 @@ function ContactIcon({ conversationInfo, isOnline }) {
       >
         <Avatar
           sx={{
-            border: "2px solid white",
+            border: `2px solid ${theme.palette.background.contrast}`,
             width: avatarSize,
             height: avatarSize,
           }}

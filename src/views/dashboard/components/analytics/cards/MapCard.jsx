@@ -1,10 +1,11 @@
 import React from "react";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, useTheme } from "@mui/material";
 import {
   AreaPlot,
   ChartContainer,
   LineChart,
   ScatterChart,
+  axisClasses,
 } from "@mui/x-charts";
 import {
   MONTHLY_GRAPH_DATA,
@@ -13,11 +14,18 @@ import {
 import { MONTH_LABELS } from "../../../../../constants/chart";
 
 function MapCard({ monthlyData }) {
+  const theme = useTheme();
+
   return (
     <Grid2
       container
       width="100%"
-      sx={{ bgcolor: "black", borderRadius: 7, p: 2, mb: 4 }}
+      sx={{
+        bgcolor: "black",
+        borderRadius: 7,
+        p: 2,
+        mb: 4,
+      }}
     >
       <Typography
         variant="h6"
@@ -32,6 +40,17 @@ function MapCard({ monthlyData }) {
         slotProps={{
           legend: {
             hidden: true,
+          },
+        }}
+        sx={{
+          [`.${axisClasses.root}`]: {
+            [`.${axisClasses.tick}, .${axisClasses.line}`]: {
+              stroke: "white",
+              strokeWidth: 2,
+            },
+            [`.${axisClasses.tickLabel}`]: {
+              fill: "white",
+            },
           },
         }}
       />

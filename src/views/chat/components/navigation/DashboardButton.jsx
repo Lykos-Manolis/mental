@@ -15,7 +15,7 @@ function DashboardButton() {
         <MenuIcon
           sx={{
             color: "primary.main",
-            bgcolor: "background.inverse",
+            bgcolor: "background.contrast",
             borderRadius: "50%",
             p: 0.5,
           }}

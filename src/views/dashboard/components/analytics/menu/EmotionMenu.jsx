@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  useTheme,
-} from "@mui/material";
+import { FormControl, Select, MenuItem, useTheme } from "@mui/material";
 
 function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
   const theme = useTheme();
@@ -27,7 +21,7 @@ function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
           minWidth: 80,
           bgcolor: theme.palette.emotion[activeEmotion.label],
           borderRadius: 2,
-          color: "white",
+          color: "black",
           fontWeight: "bold",
           fontSize: 14,
           px: 1,

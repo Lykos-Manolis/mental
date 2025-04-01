@@ -121,7 +121,7 @@ function Dashboard() {
               result="shape"
             ></feBlend>
             <feGaussianBlur
-              stdDeviation="140"
+              stdDeviation="100"
               result="effect1_foregroundBlur"
             ></feGaussianBlur>
           </filter>

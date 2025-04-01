@@ -1,7 +1,8 @@
-import { Paper, Tooltip, Typography, Zoom } from "@mui/material";
+import { Paper, Tooltip, Typography, Zoom, useTheme } from "@mui/material";
 import React from "react";
 
 function ChatMessage({ content, sent_by_user, emotion }) {
+  const theme = useTheme();
   return (
     <Tooltip
       title={emotion}
@@ -18,9 +19,8 @@ function ChatMessage({ content, sent_by_user, emotion }) {
           px: 2,
           py: 1.2,
           bgcolor: sent_by_user
-            ? "rgba(217, 217, 217, 0.85)"
-            : "rgba(255,255,255,0.35)",
-          color: "text.inverse",
+            ? theme.palette.bubble.user
+            : theme.palette.bubble.partner,
           boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0)",
           wordBreak: "break-word",
           overflowWrap: "break-word",
@@ -33,7 +33,9 @@ function ChatMessage({ content, sent_by_user, emotion }) {
             whiteSpace: "pre-wrap",
             fontSize: "14px",
             lineHeight: 1.4,
-            color: sent_by_user ? "text.inverse" : "text.primary",
+            color: sent_by_user
+              ? theme.palette.text.contrast
+              : theme.palette.text.primary,
           }}
         >
           {content}

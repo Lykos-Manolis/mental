@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Divider,
   Grid2,
@@ -17,6 +17,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import { ThemeContext } from "../../../App";
 
 import { useAuth } from "../../../auth/AuthContext";
 
@@ -32,6 +33,7 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
     /iPad|iPhone|iPod/.test(navigator.userAgent);
 
   const { signOut } = useAuth();
+  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
 
   return (
     <Grid2
@@ -110,11 +112,18 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
             <Divider />
 
             <ListItem key="theme">
-              <ListItemButton>
+              <ListItemButton onClick={toggleTheme}>
                 <ListItemIcon>
-                  <LightModeIcon sx={{ color: "#FFCAA4" }} />
+                  {isDarkMode ? (
+                    <LightModeIcon sx={{ color: "#FFCAA4" }} />
+                  ) : (
+                    <DarkModeIcon sx={{ color: "#FFCAA4" }} />
+                  )}
                 </ListItemIcon>
-                <ListItemText primary="Light Mode" sx={{ color: "#FFCAA4" }} />
+                <ListItemText
+                  primary={isDarkMode ? "Light Mode" : "Dark Mode"}
+                  sx={{ color: "#FFCAA4" }}
+                />
               </ListItemButton>
             </ListItem>
 
