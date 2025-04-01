@@ -140,6 +140,7 @@ function Home() {
         id="visual"
         style={{
           position: "fixed",
+          filter: "blur(3px)",
           top: 0,
           left: 0,
           width: "100%",
