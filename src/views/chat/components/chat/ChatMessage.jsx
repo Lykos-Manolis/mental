@@ -1,11 +1,37 @@
-import { Paper, Tooltip, Typography, Zoom, useTheme } from "@mui/material";
-import React from "react";
+import {
+  Paper,
+  Tooltip,
+  Typography,
+  Zoom,
+  useTheme,
+  tooltipClasses,
+  styled,
+} from "@mui/material";
+import React, { useMemo } from "react";
+
+// Move the styled component outside the function component
+const createStyledTooltip = (emotion) =>
+  styled(({ className, ...props }) => (
+    <Tooltip {...props} arrow classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: theme.palette.emotion[emotion],
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.emotion[emotion],
+      color: "black",
+    },
+  }));
 
 function ChatMessage({ content, sent_by_user, emotion }) {
   const theme = useTheme();
+
+  // Use useMemo to avoid recreating the component on every render
+  const StyledTooltip = useMemo(() => createStyledTooltip(emotion), [emotion]);
+
   return (
-    <Tooltip
-      title={emotion}
+    <StyledTooltip
+      title={`Detected emotion: ${emotion}`}
       disableFocusListener
       slots={{
         transition: Zoom,
@@ -41,7 +67,7 @@ function ChatMessage({ content, sent_by_user, emotion }) {
           {content}
         </Typography>
       </Paper>
-    </Tooltip>
+    </StyledTooltip>
   );
 }
 
