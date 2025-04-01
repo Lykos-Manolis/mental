@@ -1,4 +1,4 @@
-import { Grid2 } from "@mui/material";
+import { Grid2, useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import DashboardNav from "./components/navigation/DashboardNav";
 import DashboardInfo from "./components/information/DashboardInfo";
@@ -9,6 +9,7 @@ import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
 
 function Dashboard() {
   const { dashboardId } = useParams();
+  const theme = useTheme();
 
   const { conversationInfo, isLoading: isLoadingConversationInfo } =
     useGetConversationInfo(dashboardId);
@@ -17,6 +18,7 @@ function Dashboard() {
     useGetConversationEmotionAnalytics(dashboardId);
   const [activeEmotion, setActiveEmotion] = useState(null);
 
+  console.log(emotionAnalytics);
   useEffect(() => {
     if (!isLoading && emotionAnalytics.length > 0) {
       setActiveEmotion(emotionAnalytics[0]);
@@ -40,7 +42,7 @@ function Dashboard() {
     !isLoading && sortedEmotions.length > 0
       ? {
           label: sortedEmotions[0].label,
-          color: sortedEmotions[0].color,
+          color: theme.palette.emotion[sortedEmotions[0].label],
         }
       : { label: "", color: "" };
 
@@ -48,7 +50,10 @@ function Dashboard() {
     !isLoading && sortedEmotions.length > 0
       ? {
           label: sortedEmotions[sortedEmotions.length - 1].label,
-          color: sortedEmotions[sortedEmotions.length - 1].color,
+          color:
+            theme.palette.emotion[
+              sortedEmotions[sortedEmotions.length - 1].label
+            ],
         }
       : { label: "", color: "" };
 
@@ -57,7 +62,7 @@ function Dashboard() {
       ? emotionAnalytics.map((emotion) => ({
           data: emotion.monthlyData,
           label: emotion.label,
-          color: emotion.color,
+          color: theme.palette.emotion[emotion.label],
         }))
       : [];
 
@@ -125,26 +130,55 @@ function Dashboard() {
         <rect
           width="100%"
           height="100%"
-          fill={activeEmotion?.color ?? "#000000"}
+          fill={
+            theme.palette.emotion[activeEmotion?.label] ??
+            theme.palette.background.default
+          }
           opacity="0"
         ></rect>
         <g filter="url(#blur1)">
-          <circle cx="65" cy="418" fill="#000000" r="310"></circle>
+          <circle
+            cx="65"
+            cy="418"
+            fill={theme.palette.background.default}
+            r="310"
+          ></circle>
           <circle
             cx="303"
             cy="245"
-            fill={activeEmotion?.color ?? "#000000"}
+            fill={
+              theme.palette.emotion[activeEmotion?.label] ??
+              theme.palette.background.default
+            }
             r="310"
           ></circle>
-          <circle cx="170" cy="592" fill="#000000" r="310"></circle>
-          <circle cx="232" cy="751" fill="#000000" r="310"></circle>
+          <circle
+            cx="170"
+            cy="592"
+            fill={theme.palette.background.default}
+            r="310"
+          ></circle>
+          <circle
+            cx="232"
+            cy="751"
+            fill={theme.palette.background.default}
+            r="310"
+          ></circle>
           <circle
             cx="260"
             cy="400"
-            fill={activeEmotion?.color ?? "#000000"}
+            fill={
+              theme.palette.emotion[activeEmotion?.label] ??
+              theme.palette.background.default
+            }
             r="310"
           ></circle>
-          <circle cx="67" cy="204" fill="#000000" r="310"></circle>
+          <circle
+            cx="67"
+            cy="204"
+            fill={theme.palette.background.default}
+            r="310"
+          ></circle>
         </g>
       </svg>
     </Grid2>

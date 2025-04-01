@@ -1,10 +1,12 @@
 import React from "react";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, useTheme } from "@mui/material";
 import { LineChart, AreaPlot } from "@mui/x-charts";
 import { MONTHLY_GRAPH_DATA } from "../../../../../constants/mock/api";
 import { MONTH_LABELS } from "../../../../../constants/chart";
 
 function LineCard({ activeEmotion }) {
+  const theme = useTheme();
+
   return (
     <Grid2
       container
@@ -16,7 +18,7 @@ function LineCard({ activeEmotion }) {
         sx={{ fontWeight: "bold", textAlign: "center", width: "100%" }}
       >
         Daily{" "}
-        <span style={{ color: activeEmotion.color }}>
+        <span style={{ color: theme.palette.emotion[activeEmotion.label] }}>
           {activeEmotion.label}
         </span>
       </Typography>
@@ -26,7 +28,9 @@ function LineCard({ activeEmotion }) {
         series={[
           {
             label: activeEmotion.label,
-            color: activeEmotion.color,
+            color:
+              theme.palette.emotion[activeEmotion.label] ??
+              theme.palette.background.default,
             data: activeEmotion.dailyData,
             type: "line",
             showMark: false,

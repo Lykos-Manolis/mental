@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import { EMOTION_COLORS } from "../constants/emotions";
+import { useTheme } from "@mui/material";
 
 export function useEmotionColors(messages, conversationInfo, userId) {
+  const theme = useTheme();
   const [backgroundColors, setBackgroundColors] = useState([
-    EMOTION_COLORS.default,
-    EMOTION_COLORS.default,
+    theme.palette.background.default,
+    theme.palette.background.default,
   ]);
 
   const getLastEmotions = () => {
@@ -31,12 +32,17 @@ export function useEmotionColors(messages, conversationInfo, userId) {
 
   useEffect(() => {
     const { userEmotion, participantEmotion } = getLastEmotions();
-    const userBgColor = EMOTION_COLORS[userEmotion] || EMOTION_COLORS.default;
+    const userBgColor =
+      userEmotion && theme.palette.emotion[userEmotion]
+        ? theme.palette.emotion[userEmotion]
+        : theme.palette.background.default;
     const participantBgColor =
-      EMOTION_COLORS[participantEmotion] || EMOTION_COLORS.default;
+      participantEmotion && theme.palette.emotion[participantEmotion]
+        ? theme.palette.emotion[participantEmotion]
+        : theme.palette.background.default;
 
     setBackgroundColors([userBgColor, participantBgColor]);
-  }, [messages, conversationInfo, userId]);
+  }, [messages, conversationInfo, userId, theme]);
 
   return {
     backgroundColors,

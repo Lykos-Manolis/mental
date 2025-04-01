@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, useTheme } from "@mui/material";
 import PercentageCard from "../cards/PercentageCard";
 import PieCard from "../cards/PieCard";
 import StatisticCard from "../cards/StatisticCard";
@@ -13,6 +13,8 @@ function AnalyticsBody({
   underlyingEmotion,
   monthlyData,
 }) {
+  const theme = useTheme();
+
   const percentage = Math.round(
     (activeEmotion.totalMessages / totalMessages) * 100,
   );
@@ -35,7 +37,10 @@ function AnalyticsBody({
       >
         <PercentageCard
           percentage={percentage}
-          background={activeEmotion.color}
+          background={
+            theme.palette.emotion[activeEmotion.label] ??
+            theme.palette.background.default
+          }
         />
         <PieCard emotionPercentage={percentage} activeEmotion={activeEmotion} />
       </Grid2>

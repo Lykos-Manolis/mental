@@ -1,7 +1,15 @@
 import React from "react";
-import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  useTheme,
+} from "@mui/material";
 
 function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
+  const theme = useTheme();
+
   const handleChange = (event) => {
     setActiveEmotion(
       emotionAnalytics.find((emotion) => emotion.id === event.target.value),
@@ -17,7 +25,7 @@ function EmotionMenu({ emotionAnalytics, activeEmotion, setActiveEmotion }) {
       <Select
         sx={{
           minWidth: 80,
-          bgcolor: activeEmotion.color,
+          bgcolor: theme.palette.emotion[activeEmotion.label],
           borderRadius: 2,
           color: "white",
           fontWeight: "bold",

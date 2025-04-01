@@ -1,9 +1,11 @@
 import React from "react";
-import { Grid2, Typography } from "@mui/material";
+import { Grid2, Typography, useTheme } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 import { CHART_DATA } from "../../../../../constants/mock/api";
 
 function PieCard({ emotionPercentage, activeEmotion }) {
+  const theme = useTheme();
+
   return (
     <Grid2 width="100%" sx={{ bgcolor: "black", padding: 2, borderRadius: 7 }}>
       <PieChart
@@ -14,7 +16,9 @@ function PieCard({ emotionPercentage, activeEmotion }) {
                 id: 0,
                 value: emotionPercentage,
                 label: activeEmotion.label,
-                color: activeEmotion.color,
+                color:
+                  theme.palette.emotion[activeEmotion.label] ??
+                  theme.palette.background.default,
               },
               {
                 id: 1,

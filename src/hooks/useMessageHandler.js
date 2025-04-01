@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useSendMessage } from "./useSendMessage";
 import { useEmotionPrediction } from "./useEmotionPrediction";
+import { useTheme } from "@mui/material";
 
 export function useMessageHandler(chatId, onColorUpdate) {
   const [text, setText] = useState("");
   const [optimisticMessages, setOptimisticMessages] = useState([]);
+  const theme = useTheme();
 
   const { sendMessage } = useSendMessage();
   const { predictEmotion, modelLoading, isModelReady } = useEmotionPrediction();
@@ -34,9 +36,13 @@ export function useMessageHandler(chatId, onColorUpdate) {
 
     try {
       // Process in background
-      const { emotion, color } = await predictEmotion(messageCopy);
+      const { emotion } = await predictEmotion(messageCopy);
       console.log(`Predicted: ${emotion}\n---\nInput: ${messageCopy}`);
       await sendMessage(messageCopy, emotion, chatId);
+
+      // Get color from theme
+      const color =
+        theme.palette.emotion[emotion] || theme.palette.background.default;
       onColorUpdate(color);
 
       // Remove optimistic message after the real one is saved

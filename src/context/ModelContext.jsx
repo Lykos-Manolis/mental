@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { EMOTION_COLORS, EMOTION_LABELS } from "../constants/emotions";
+import { EMOTION_LABELS } from "../constants/emotions";
 import {
   loadTokenizer,
   processTextWithTokenizer,
@@ -291,7 +291,6 @@ export function ModelProvider({ children }) {
 
       // Fall back to a default emotion if we couldn't predict properly
       const predictedEmotion = EMOTION_LABELS[predictedClassIndex] || "neutral";
-      const newColor = EMOTION_COLORS[predictedEmotion] || "#808080"; // default gray
 
       console.log("predictedEmotion:", predictedEmotion);
 
@@ -304,7 +303,8 @@ export function ModelProvider({ children }) {
       }
       predictionTensor.dispose();
 
-      return { emotion: predictedEmotion, color: newColor };
+      // Return just the emotion, let consumers use theme for colors
+      return { emotion: predictedEmotion };
     } catch (error) {
       console.error("Error during prediction:", error);
       throw error;
