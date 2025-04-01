@@ -18,7 +18,6 @@ function Dashboard() {
     useGetConversationEmotionAnalytics(dashboardId);
   const [activeEmotion, setActiveEmotion] = useState(null);
 
-  console.log(emotionAnalytics);
   useEffect(() => {
     if (!isLoading && emotionAnalytics.length > 0) {
       setActiveEmotion(emotionAnalytics[0]);

@@ -1,7 +1,7 @@
 import { RobertaTokenizer, env } from "@xenova/transformers";
 import { MODEL_CONSTANTS } from "../constants/model";
 
-env.localModelPath = "./";
+env.localModelPath = "/";
 
 const { MAX_LENGTH } = MODEL_CONSTANTS;
 
