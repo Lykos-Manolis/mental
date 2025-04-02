@@ -9,7 +9,7 @@ function ChatInput({
   handleKeyDown,
   isModelReady,
   modelLoading,
-  handleEnter,
+  handleSend,
 }) {
   return (
     <Grid2
@@ -30,7 +30,7 @@ function ChatInput({
         text={text}
         modelLoading={modelLoading}
         isModelReady={isModelReady}
-        handleClick={handleEnter}
+        handleClick={handleSend}
       />
     </Grid2>
   );

@@ -7,14 +7,12 @@ import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
 import { useEmotionColors } from "../../hooks/useEmotionColors";
 import { useParams, Navigate } from "react-router-dom";
 import anime from "animejs";
-import { useSendMessage } from "../../hooks/useSendMessage";
-import { useEmotionPrediction } from "../../hooks/useEmotionPrediction";
-import AnalyticsDrawer from "./components/navigation/AnalyticsDrawer";
-import ContactNav from "./components/navigation/ContactNav";
-import ChatInput from "./components/input/ChatInput";
 import { useOnlineStatus } from "../../hooks/useOnlineStatus";
 import BackgroundGradients from "./components/background/BackgroundGradients";
 import { useMessageHandler } from "../../hooks/useMessageHandler";
+import AnalyticsDrawer from "./components/navigation/AnalyticsDrawer";
+import ContactNav from "./components/navigation/ContactNav";
+import ChatInput from "./components/input/ChatInput";
 
 function Chat() {
   // Auth & Navigation
@@ -23,7 +21,6 @@ function Chat() {
 
   // UI State
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [showErrorDetails, setShowErrorDetails] = useState(false);
 
   // Data Hooks
   const { messages, isLoading: isLoadingMessages } =
@@ -37,22 +34,14 @@ function Chat() {
   );
   const isOnline = useOnlineStatus(conversationInfo?.last_sign_in);
 
-  // Message Handler Hook
+  // Update background color function
   const updateBackgroundColor = (newColor) => {
     setBackgroundColors((prev) => [...prev.slice(0), newColor]);
   };
 
   // Message Handler Hook
-  const {
-    text,
-    setText,
-    handleEnter,
-    handleKeyDown,
-    modelLoading,
-    isModelReady,
-    error,
-    dismissError,
-  } = useMessageHandler(chatId, updateBackgroundColor);
+  const { text, setText, handleSend, error, dismissError, handleKeyDown } =
+    useMessageHandler(chatId, updateBackgroundColor, session?.user?.id);
 
   // UI Handlers
   const toggleDrawer = () => setOpenDrawer(!openDrawer);
@@ -84,41 +73,8 @@ function Chat() {
             zIndex: 1000,
             boxShadow: 4,
           }}
-          action={
-            <>
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => setShowErrorDetails(!showErrorDetails)}
-              >
-                {showErrorDetails ? "Hide Details" : "Details"}
-              </Button>
-              <Button
-                color="inherit"
-                size="small"
-                onClick={() => {
-                  dismissError();
-                  if (text.trim()) {
-                    handleEnter();
-                  }
-                }}
-              >
-                Retry
-              </Button>
-            </>
-          }
         >
-          <div>
-            <Typography variant="body1">{error.message}</Typography>
-            <Collapse in={showErrorDetails}>
-              <Typography
-                variant="caption"
-                sx={{ display: "block", mt: 1, fontFamily: "monospace" }}
-              >
-                {error.details}
-              </Typography>
-            </Collapse>
-          </div>
+          {error}
         </Alert>
       )}
 
@@ -135,9 +91,9 @@ function Chat() {
         text={text}
         setText={setText}
         handleKeyDown={handleKeyDown}
-        isModelReady={isModelReady}
-        modelLoading={modelLoading}
-        handleEnter={handleEnter}
+        isModelReady={true}
+        modelLoading={false}
+        handleSend={handleSend}
       />
 
       <BackgroundGradients backgroundColors={backgroundColors} />

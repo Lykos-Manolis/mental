@@ -19,18 +19,36 @@ export async function getConversationMessages(conversationId) {
 }
 
 export async function setMessage(message, emotion, conversationId) {
-  const { error } = await supabase.from("messages").insert({
-    content: message,
-    emotion: emotion,
-    conversation_id: conversationId,
-    sender_id: supabase.auth.getUser().id,
-  });
+  try {
+    // Get the current user
+    const { data: userData, error: userError } = await supabase.auth.getUser();
 
-  if (error) {
+    if (userError) {
+      throw userError;
+    }
+
+    if (!userData || !userData.user) {
+      throw new Error("User not authenticated");
+    }
+
+    // Insert the message
+    const { error } = await supabase.from("messages").insert({
+      content: message,
+      emotion: emotion,
+      conversation_id: conversationId,
+      sender_id: userData.user.id,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+    // Update conversation read status
+    await updateConversationReadStatus(conversationId);
+
+    return true;
+  } catch (error) {
+    console.error("Error sending message:", error.message);
     throw error;
   }
-
-  await updateConversationReadStatus(conversationId);
-
-  return true;
 }

@@ -20,7 +20,7 @@ export function ModelProvider({ children }) {
 
     try {
       setPredictionLoading(true);
-      setPredictionError(null); // Clear any previous errors
+      setPredictionError(null);
 
       // Call Hugging Face API
       const response = await fetch(HF_API_URL, {
