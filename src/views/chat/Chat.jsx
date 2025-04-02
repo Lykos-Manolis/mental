@@ -91,8 +91,6 @@ function Chat() {
         text={text}
         setText={setText}
         handleKeyDown={handleKeyDown}
-        isModelReady={true}
-        modelLoading={false}
         handleSend={handleSend}
       />
 

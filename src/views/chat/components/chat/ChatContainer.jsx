@@ -45,7 +45,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={100}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -60,7 +60,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={100}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -75,7 +75,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={200}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -90,7 +90,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={150}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -105,7 +105,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={70}
           width={200}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -120,7 +120,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={75}
           width={200}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -135,7 +135,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={100}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -150,7 +150,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={100}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
       <Grid2
@@ -165,7 +165,7 @@ function ChatContainer({ messages, isLoading }) {
           variant="rounded"
           height={35}
           width={200}
-          sx={{ borderRadius: 1 }}
+          sx={{ borderRadius: 5 }}
         />
       </Grid2>
     </Grid2>

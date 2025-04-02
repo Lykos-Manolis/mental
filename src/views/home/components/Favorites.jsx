@@ -15,7 +15,8 @@ function Favorites({ favoriteContacts, favoritesLoading }) {
           sx={{ justifyContent: "center", alignItems: "center" }}
         >
           <Skeleton variant="circular" height={70} width={70} />
-          <Skeleton variant="circular" height={80} width={80} />
+          <Skeleton variant="circular" height={70} width={70} />
+          <Skeleton variant="circular" height={70} width={70} />
           <Skeleton variant="circular" height={70} width={70} />
         </Grid2>
       ) : (

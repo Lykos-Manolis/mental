@@ -13,7 +13,7 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
   const { sendMessage, error: sendError } = useSendMessage();
 
   const handleSend = async () => {
-    if (!text.trim()) return;
+    if (!text.replace(/\s/g, "")) return;
 
     // Clear any previous errors
     setError(null);

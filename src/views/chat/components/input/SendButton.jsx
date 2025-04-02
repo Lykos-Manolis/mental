@@ -2,7 +2,7 @@ import React from "react";
 import { Grid2, IconButton } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 
-function SendButton({ handleClick, modelLoading, isModelReady, text }) {
+function SendButton({ handleClick }) {
   return (
     <Grid2
       size={4}
@@ -10,12 +10,14 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
         zIndex: 1,
         alignSelf: "end",
         mb: 4,
+        position: "fixed",
+        bottom: 10,
+        right: 0,
       }}
     >
       <IconButton
         aria-label="send"
         onClick={handleClick}
-        disabled={modelLoading || !isModelReady || !text.replace(/\s/g, "")}
         sx={{
           borderRadius: 10,
           ml: 1,
@@ -23,7 +25,7 @@ function SendButton({ handleClick, modelLoading, isModelReady, text }) {
           color: "primary.main",
         }}
       >
-        <UploadIcon sx={{ width: 20, height: 20 }} />
+        <UploadIcon sx={{ width: 27, height: 27 }} />
       </IconButton>
     </Grid2>
   );

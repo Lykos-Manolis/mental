@@ -3,14 +3,7 @@ import React from "react";
 import MessageInput from "./MessageInput";
 import SendButton from "./SendButton";
 
-function ChatInput({
-  text,
-  setText,
-  handleKeyDown,
-  isModelReady,
-  modelLoading,
-  handleSend,
-}) {
+function ChatInput({ text, setText, handleKeyDown, handleSend }) {
   return (
     <Grid2
       size={12}
@@ -26,12 +19,7 @@ function ChatInput({
         setText={setText}
         handleKeyDown={handleKeyDown}
       />
-      <SendButton
-        text={text}
-        modelLoading={modelLoading}
-        isModelReady={isModelReady}
-        handleClick={handleSend}
-      />
+      <SendButton handleClick={handleSend} />
     </Grid2>
   );
 }

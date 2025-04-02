@@ -3,7 +3,17 @@ import { Grid2, InputBase } from "@mui/material";
 
 function MessageInput({ text, setText, handleKeyDown }) {
   return (
-    <Grid2 size={8} sx={{ zIndex: 1, alignSelf: "end", mb: 4 }}>
+    <Grid2
+      size={8}
+      sx={{
+        zIndex: 1,
+        alignSelf: "end",
+        mb: 4,
+        position: "fixed",
+        bottom: 10,
+        left: 0,
+      }}
+    >
       <InputBase
         id="message-input"
         multiline
@@ -19,7 +29,7 @@ function MessageInput({ text, setText, handleKeyDown }) {
         sx={{
           backgroundColor: "text.primary",
           borderRadius: 10,
-          height: "35px",
+          minHeight: "35px",
           width: "100%",
           p: "10px 10px 10px 20px",
           ml: 5,
