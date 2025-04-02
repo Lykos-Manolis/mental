@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid2, IconButton } from "@mui/material";
 import { Link, useParams } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
+import DataSaverOffIcon from "@mui/icons-material/DataSaverOff";
 
 function DashboardButton() {
   const { chatId: dashboardId } = useParams();
@@ -12,7 +12,7 @@ function DashboardButton() {
         component={Link}
         to={`/dashboard/${dashboardId}`}
       >
-        <MenuIcon
+        <DataSaverOffIcon
           sx={{
             color: "primary.main",
             bgcolor: "background.contrast",

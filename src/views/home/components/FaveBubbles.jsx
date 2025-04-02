@@ -17,7 +17,7 @@ function FaveBubbles({ faves }) {
             alt={fave.full_name}
             src={fave.avatar_url?.replace("=s96-c", `=s${avatarSize}-c`)}
             sx={{
-              border: `4px solid ${theme.palette.background.contrast}`,
+              border: `3px solid ${theme.palette.background.contrast}`,
               ":hover": { color: theme.palette.text.primary },
               width: avatarSize,
               height: avatarSize,
