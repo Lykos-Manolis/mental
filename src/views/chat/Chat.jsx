@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Alert, Button, Collapse, Grid2, Typography } from "@mui/material";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useAuth } from "../../auth/AuthContext";
@@ -13,11 +13,13 @@ import { useMessageHandler } from "../../hooks/useMessageHandler";
 import AnalyticsDrawer from "./components/navigation/AnalyticsDrawer";
 import ContactNav from "./components/navigation/ContactNav";
 import ChatInput from "./components/input/ChatInput";
+import { useTheme } from "@mui/material";
 
 function Chat() {
   // Auth & Navigation
   const { session, isLoading } = useAuth();
   const { chatId } = useParams();
+  const theme = useTheme();
 
   // UI State
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -34,10 +36,41 @@ function Chat() {
   );
   const isOnline = useOnlineStatus(conversationInfo?.last_sign_in);
 
-  // Update background color function
+  // Update background color function for message sending
   const updateBackgroundColor = (newColor) => {
     setBackgroundColors((prev) => [...prev.slice(0), newColor]);
   };
+
+  // Separate update functions for user and partner emotion detection
+  const updateUserEmotion = useCallback(
+    (emotion) => {
+      if (emotion && theme.palette.emotion[emotion]) {
+        // Animate user gradients (1-3)
+        anime({
+          targets: ["#gradient-1", "#gradient-2", "#gradient-3"],
+          fill: theme.palette.emotion[emotion],
+          easing: "easeInOutQuad",
+          duration: 800,
+        });
+      }
+    },
+    [theme.palette.emotion],
+  );
+
+  const updatePartnerEmotion = useCallback(
+    (emotion) => {
+      if (emotion && theme.palette.emotion[emotion]) {
+        // Animate partner gradients (4-6)
+        anime({
+          targets: ["#gradient-4", "#gradient-5", "#gradient-6"],
+          fill: theme.palette.emotion[emotion],
+          easing: "easeInOutQuad",
+          duration: 800,
+        });
+      }
+    },
+    [theme.palette.emotion],
+  );
 
   // Message Handler Hook
   const { text, setText, handleSend, error, dismissError, handleKeyDown } =
@@ -85,7 +118,13 @@ function Chat() {
         toggleDrawer={toggleDrawer}
       />
 
-      <ChatContainer messages={messages} isLoading={isLoadingMessages} />
+      <ChatContainer
+        messages={messages}
+        isLoading={isLoadingMessages}
+        updateUserEmotion={updateUserEmotion}
+        updatePartnerEmotion={updatePartnerEmotion}
+        userId={session?.user?.id}
+      />
 
       <ChatInput
         text={text}

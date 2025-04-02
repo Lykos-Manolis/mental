@@ -1,11 +1,26 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Grid2, Skeleton } from "@mui/material";
 import ChatMessage from "./ChatMessage";
 import { useGetUserId } from "../../../../hooks/useGetUserId";
 
-function ChatContainer({ messages, isLoading }) {
-  const userId = useGetUserId();
+function ChatContainer({
+  messages,
+  isLoading,
+  updateUserEmotion,
+  updatePartnerEmotion,
+  userId: propUserId,
+}) {
+  const hookUserId = useGetUserId();
+  const userId = propUserId || hookUserId;
   const messagesEndRef = useRef(null);
+  const containerRef = useRef(null);
+  const [visibleMessages, setVisibleMessages] = useState({});
+  const [bottomEdgeMessages, setBottomEdgeMessages] = useState(new Set());
+  // Track animated emotions per sender to avoid duplicates
+  const [animatedEmotions, setAnimatedEmotions] = useState({
+    user: new Set(),
+    partner: new Set(),
+  });
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -14,6 +29,177 @@ function ChatContainer({ messages, isLoading }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    // Fade effect observer - uses 100px margin for gradual fade
+    const fadeOptions = {
+      root: containerRef.current,
+      rootMargin: "0px 0px 100px 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    };
+
+    // Animation observer - uses 0px margin for precise edge detection
+    const animationOptions = {
+      root: containerRef.current,
+      rootMargin: "0px 0px 0px 0px",
+      threshold: [0, 0.25, 0.5, 0.75, 1],
+    };
+
+    const handleFadeIntersection = (entries) => {
+      const newVisibility = { ...visibleMessages };
+
+      entries.forEach((entry) => {
+        const messageId = entry.target.dataset.messageId;
+        const messageIndex = messageId?.split("-")[1];
+        if (messageId && messageIndex !== undefined) {
+          // Calculate opacity based on intersection ratio and position
+          const { bottom } = entry.boundingClientRect;
+          const containerBottom = entry.rootBounds.bottom;
+          const distanceFromBottom = containerBottom - bottom;
+
+          let opacity = entry.intersectionRatio;
+
+          // Apply additional fade when close to bottom
+          if (distanceFromBottom < 100 && distanceFromBottom >= 0) {
+            opacity = opacity * (distanceFromBottom / 100);
+          }
+
+          newVisibility[messageId] = opacity;
+        }
+      });
+
+      setVisibleMessages(newVisibility);
+    };
+
+    const handleAnimationIntersection = (entries) => {
+      const newBottomEdgeMessages = new Set(bottomEdgeMessages);
+      const newAnimatedEmotions = {
+        user: new Set(animatedEmotions.user),
+        partner: new Set(animatedEmotions.partner),
+      };
+
+      entries.forEach((entry) => {
+        const messageId = entry.target.dataset.messageId;
+        const messageIndex = messageId?.split("-")[1];
+
+        if (messageId && messageIndex !== undefined) {
+          // Get the message's position information
+          const rect = entry.boundingClientRect;
+          const rootRect = entry.rootBounds;
+
+          // Check if the message is leaving through the bottom edge
+          // by seeing if its bottom is near the container's bottom
+          const isAtBottomEdge =
+            rect.bottom <= rootRect.bottom + 5 &&
+            rect.bottom >= rootRect.bottom - 20;
+
+          // Only trigger animation if:
+          // 1. The message is at the bottom edge
+          // 2. It hasn't been processed yet
+          if (isAtBottomEdge && !newBottomEdgeMessages.has(messageId)) {
+            const message = messages[parseInt(messageIndex)];
+
+            if (message && message.emotion) {
+              const isFromUser = message.sender_id === userId;
+              const senderType = isFromUser ? "user" : "partner";
+
+              // Check if this emotion has already been animated for this sender
+              if (!newAnimatedEmotions[senderType].has(message.emotion)) {
+                // Trigger the appropriate animation based on sender
+                if (isFromUser && updateUserEmotion) {
+                  updateUserEmotion(message.emotion);
+                } else if (!isFromUser && updatePartnerEmotion) {
+                  updatePartnerEmotion(message.emotion);
+                }
+
+                // Add this emotion to the animated set for this sender
+                newAnimatedEmotions[senderType].add(message.emotion);
+              }
+
+              // Track that we've processed this message
+              newBottomEdgeMessages.add(messageId);
+            }
+          }
+        }
+      });
+
+      setBottomEdgeMessages(newBottomEdgeMessages);
+      setAnimatedEmotions(newAnimatedEmotions);
+    };
+
+    // Create both observers
+    const fadeObserver = new IntersectionObserver(
+      handleFadeIntersection,
+      fadeOptions,
+    );
+    const animationObserver = new IntersectionObserver(
+      handleAnimationIntersection,
+      animationOptions,
+    );
+
+    // Get all message elements and observe them with both observers
+    const messageElements =
+      containerRef.current.querySelectorAll(".chat-message-item");
+    messageElements.forEach((el) => {
+      fadeObserver.observe(el);
+      animationObserver.observe(el);
+    });
+
+    // Add an event to reset the animated messages when scrolling up significantly
+    const handleScroll = () => {
+      if (containerRef.current) {
+        // Get all message elements in view
+        const visibleElements = Array.from(
+          containerRef.current.querySelectorAll(".chat-message-item"),
+        ).filter((el) => {
+          const rect = el.getBoundingClientRect();
+          const containerRect = containerRef.current.getBoundingClientRect();
+          // Check if element is fully in view from the top
+          return (
+            rect.top >= containerRect.top && rect.bottom <= containerRect.bottom
+          );
+        });
+
+        // If we've scrolled up far enough, reset logged messages
+        if (visibleElements.length > 0) {
+          const firstVisibleId = visibleElements[0].dataset.messageId;
+          const lastLoggedId = Array.from(bottomEdgeMessages).pop();
+
+          if (
+            firstVisibleId &&
+            lastLoggedId &&
+            parseInt(firstVisibleId.split("-")[1]) <
+              parseInt(lastLoggedId.split("-")[1]) - 5
+          ) {
+            // We've scrolled up at least 5 messages, reset all animated emotions and messages
+            setBottomEdgeMessages(new Set());
+            setAnimatedEmotions({
+              user: new Set(),
+              partner: new Set(),
+            });
+          }
+        }
+      }
+    };
+
+    containerRef.current.addEventListener("scroll", handleScroll);
+
+    return () => {
+      fadeObserver.disconnect();
+      animationObserver.disconnect();
+      containerRef.current?.removeEventListener("scroll", handleScroll);
+    };
+  }, [
+    messages,
+    visibleMessages,
+    bottomEdgeMessages,
+    animatedEmotions,
+    userId,
+    updateUserEmotion,
+    updatePartnerEmotion,
+  ]);
 
   return isLoading ? (
     <Grid2
@@ -171,6 +357,7 @@ function ChatContainer({ messages, isLoading }) {
     </Grid2>
   ) : (
     <Grid2
+      ref={containerRef}
       container
       className="hidden-scroll"
       direction="column"
@@ -192,6 +379,11 @@ function ChatContainer({ messages, isLoading }) {
         const currentMessage = message;
         const nextMessage = array[index + 1];
         const isCurrentMessageFromUser = currentMessage.sender_id === userId;
+        const messageId = `message-${index}`;
+        const opacity =
+          visibleMessages[messageId] !== undefined
+            ? visibleMessages[messageId]
+            : 1;
 
         const extraSpace =
           nextMessage &&
@@ -200,6 +392,10 @@ function ChatContainer({ messages, isLoading }) {
         return (
           <Grid2
             key={`chat-message-${index}`}
+            className="chat-message-item"
+            data-message-id={messageId}
+            data-message-emotion={message.emotion || "neutral"}
+            data-sender={isCurrentMessageFromUser ? "user" : "partner"}
             sx={{
               width: "100%",
               display: "flex",
@@ -207,6 +403,8 @@ function ChatContainer({ messages, isLoading }) {
                 ? "flex-end"
                 : "flex-start",
               mb: extraSpace ? 2 : 0.5,
+              opacity: opacity,
+              transition: "opacity 0.2s ease-out",
             }}
           >
             <ChatMessage
