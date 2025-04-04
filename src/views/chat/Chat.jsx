@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Alert, Button, Collapse, Grid2, Typography } from "@mui/material";
+import { Alert, Grid2 } from "@mui/material";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetConversationMessages } from "../../hooks/useGetConversationMessages";
@@ -10,7 +10,6 @@ import anime from "animejs";
 import { useOnlineStatus } from "../../hooks/useOnlineStatus";
 import BackgroundGradients from "./components/background/BackgroundGradients";
 import { useMessageHandler } from "../../hooks/useMessageHandler";
-import AnalyticsDrawer from "./components/navigation/AnalyticsDrawer";
 import ContactNav from "./components/navigation/ContactNav";
 import ChatInput from "./components/input/ChatInput";
 import { useTheme } from "@mui/material";
@@ -20,9 +19,6 @@ function Chat() {
   const { session, isLoading } = useAuth();
   const { chatId } = useParams();
   const theme = useTheme();
-
-  // UI State
-  const [openDrawer, setOpenDrawer] = useState(false);
 
   // Data Hooks
   const { messages, isLoading: isLoadingMessages } =
@@ -45,7 +41,6 @@ function Chat() {
   const updateUserEmotion = useCallback(
     (emotion) => {
       if (emotion && theme.palette.emotion[emotion]) {
-        // Animate user gradients (1-3)
         anime({
           targets: ["#gradient-1", "#gradient-2", "#gradient-3"],
           fill: theme.palette.emotion[emotion],
@@ -60,7 +55,6 @@ function Chat() {
   const updatePartnerEmotion = useCallback(
     (emotion) => {
       if (emotion && theme.palette.emotion[emotion]) {
-        // Animate partner gradients (4-6)
         anime({
           targets: ["#gradient-4", "#gradient-5", "#gradient-6"],
           fill: theme.palette.emotion[emotion],
@@ -75,9 +69,6 @@ function Chat() {
   // Message Handler Hook
   const { text, setText, handleSend, error, dismissError, handleKeyDown } =
     useMessageHandler(chatId, updateBackgroundColor, session?.user?.id);
-
-  // UI Handlers
-  const toggleDrawer = () => setOpenDrawer(!openDrawer);
 
   // Auth redirect
   if (!session && !isLoading) {
@@ -133,8 +124,6 @@ function Chat() {
       />
 
       <BackgroundGradients backgroundColors={backgroundColors} />
-
-      <AnalyticsDrawer openDrawer={openDrawer} toggleDrawer={toggleDrawer} />
     </Grid2>
   );
 }

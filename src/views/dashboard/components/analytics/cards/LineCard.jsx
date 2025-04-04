@@ -1,8 +1,6 @@
 import React from "react";
 import { Grid2, Typography, useTheme } from "@mui/material";
 import { LineChart, AreaPlot, axisClasses } from "@mui/x-charts";
-import { MONTHLY_GRAPH_DATA } from "../../../../../constants/mock/api";
-import { MONTH_LABELS } from "../../../../../constants/chart";
 
 function LineCard({ activeEmotion }) {
   const theme = useTheme();

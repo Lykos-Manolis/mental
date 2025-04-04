@@ -10,10 +10,8 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 
-import FaceIcon from "@mui/icons-material/Face";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import AddReactionIcon from "@mui/icons-material/AddReaction";
-import SettingsIcon from "@mui/icons-material/Settings";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";

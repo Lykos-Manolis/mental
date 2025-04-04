@@ -9,11 +9,9 @@ export function useGetContacts() {
 
   const sortContactsByLastMessage = (contacts) => {
     return [...contacts].sort((a, b) => {
-      // If no last message, put at the bottom
       if (!a.last_message) return 1;
       if (!b.last_message) return -1;
 
-      // Sort by created_at in descending order (newest first)
       return (
         new Date(b.last_message.created_at) -
         new Date(a.last_message.created_at)
@@ -29,7 +27,6 @@ export function useGetContacts() {
           getContactsLastMessages(),
         ]);
 
-        // Merge and sort the data
         const mergedContacts = sortContactsByLastMessage(
           basicContacts.map((contact) => ({
             ...contact,
@@ -49,7 +46,6 @@ export function useGetContacts() {
 
     fetchAndMergeData();
 
-    // Subscribe to contacts changes
     const contactsSubscription = supabase
       .channel("public:contacts")
       .on(
@@ -74,7 +70,6 @@ export function useGetContacts() {
       )
       .subscribe();
 
-    // Subscribe to messages changes
     const messagesSubscription = supabase
       .channel("public:messages")
       .on(
@@ -100,7 +95,6 @@ export function useGetContacts() {
       )
       .subscribe();
 
-    // Subscribe to conversations changes (for read status)
     const conversationsSubscription = supabase
       .channel("public:conversations")
       .on(

@@ -2,8 +2,6 @@ import React from "react";
 import { Grid2, Typography, useTheme } from "@mui/material";
 
 function StatisticCard({ prevailingEmotion, underlyingEmotion }) {
-  const theme = useTheme();
-
   return (
     <Grid2
       container

@@ -3,11 +3,10 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import supabase from "../../utils/supabase";
-import { Stack, Typography, useTheme } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 function Login() {
   const { session } = useAuth();
-  const theme = useTheme();
 
   if (session) {
     return <Navigate to="/home" replace />;

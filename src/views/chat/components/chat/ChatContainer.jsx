@@ -33,14 +33,14 @@ function ChatContainer({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Fade effect observer - uses 100px margin for gradual fade
+    // Fade effect observer
     const fadeOptions = {
       root: containerRef.current,
       rootMargin: "0px 0px 100px 0px",
       threshold: [0, 0.25, 0.5, 0.75, 1],
     };
 
-    // Animation observer - uses 0px margin for precise edge detection
+    // Animation observer
     const animationOptions = {
       root: containerRef.current,
       rootMargin: "0px 0px 0px 0px",
@@ -61,7 +61,7 @@ function ChatContainer({
 
           let opacity = entry.intersectionRatio;
 
-          // Apply additional fade when close to bottom
+          // Apply additional fade when close to the bottom
           if (distanceFromBottom < 100 && distanceFromBottom >= 0) {
             opacity = opacity * (distanceFromBottom / 100);
           }
@@ -89,8 +89,6 @@ function ChatContainer({
           const rect = entry.boundingClientRect;
           const rootRect = entry.rootBounds;
 
-          // Check if the message is leaving through the bottom edge
-          // by seeing if its bottom is near the container's bottom
           const isAtBottomEdge =
             rect.bottom <= rootRect.bottom + 5 &&
             rect.bottom >= rootRect.bottom - 20;
@@ -107,18 +105,15 @@ function ChatContainer({
 
               // Check if this emotion has already been animated for this sender
               if (!newAnimatedEmotions[senderType].has(message.emotion)) {
-                // Trigger the appropriate animation based on sender
                 if (isFromUser && updateUserEmotion) {
                   updateUserEmotion(message.emotion);
                 } else if (!isFromUser && updatePartnerEmotion) {
                   updatePartnerEmotion(message.emotion);
                 }
 
-                // Add this emotion to the animated set for this sender
                 newAnimatedEmotions[senderType].add(message.emotion);
               }
 
-              // Track that we've processed this message
               newBottomEdgeMessages.add(messageId);
             }
           }
@@ -129,7 +124,6 @@ function ChatContainer({
       setAnimatedEmotions(newAnimatedEmotions);
     };
 
-    // Create both observers
     const fadeObserver = new IntersectionObserver(
       handleFadeIntersection,
       fadeOptions,
@@ -139,7 +133,6 @@ function ChatContainer({
       animationOptions,
     );
 
-    // Get all message elements and observe them with both observers
     const messageElements =
       containerRef.current.querySelectorAll(".chat-message-item");
     messageElements.forEach((el) => {
@@ -147,22 +140,19 @@ function ChatContainer({
       animationObserver.observe(el);
     });
 
-    // Add an event to reset the animated messages when scrolling up significantly
+    // Handle scrolling behavior and reset animated emotions
     const handleScroll = () => {
       if (containerRef.current) {
-        // Get all message elements in view
         const visibleElements = Array.from(
           containerRef.current.querySelectorAll(".chat-message-item"),
         ).filter((el) => {
           const rect = el.getBoundingClientRect();
           const containerRect = containerRef.current.getBoundingClientRect();
-          // Check if element is fully in view from the top
           return (
             rect.top >= containerRect.top && rect.bottom <= containerRect.bottom
           );
         });
 
-        // If we've scrolled up far enough, reset logged messages
         if (visibleElements.length > 0) {
           const firstVisibleId = visibleElements[0].dataset.messageId;
           const lastLoggedId = Array.from(bottomEdgeMessages).pop();
@@ -173,7 +163,6 @@ function ChatContainer({
             parseInt(firstVisibleId.split("-")[1]) <
               parseInt(lastLoggedId.split("-")[1]) - 5
           ) {
-            // We've scrolled up at least 5 messages, reset all animated emotions and messages
             setBottomEdgeMessages(new Set());
             setAnimatedEmotions({
               user: new Set(),
@@ -374,7 +363,6 @@ function ChatContainer({
         zIndex: 1,
       }}
     >
-      {/* TODO: Add react-window to render messages efficiently */}
       {messages.map((message, index, array) => {
         const currentMessage = message;
         const nextMessage = array[index + 1];

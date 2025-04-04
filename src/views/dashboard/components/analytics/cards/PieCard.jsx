@@ -1,7 +1,6 @@
 import React from "react";
 import { Grid2, Typography, useTheme } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
-import { CHART_DATA } from "../../../../../constants/mock/api";
 
 function PieCard({ emotionPercentage, activeEmotion }) {
   const theme = useTheme();

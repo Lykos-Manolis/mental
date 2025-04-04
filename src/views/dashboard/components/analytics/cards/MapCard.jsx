@@ -1,21 +1,8 @@
 import React from "react";
-import { Grid2, Typography, useTheme } from "@mui/material";
-import {
-  AreaPlot,
-  ChartContainer,
-  LineChart,
-  ScatterChart,
-  axisClasses,
-} from "@mui/x-charts";
-import {
-  MONTHLY_GRAPH_DATA,
-  MONTHLY_SCATTER_DATA,
-} from "../../../../../constants/mock/api";
-import { MONTH_LABELS } from "../../../../../constants/chart";
+import { Grid2, Typography } from "@mui/material";
+import { ScatterChart, axisClasses } from "@mui/x-charts";
 
 function MapCard({ monthlyData }) {
-  const theme = useTheme();
-
   return (
     <Grid2
       container

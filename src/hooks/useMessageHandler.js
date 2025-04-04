@@ -6,9 +6,7 @@ import { useTheme } from "@mui/material";
 export function useMessageHandler(chatId, onColorUpdate, userId) {
   const [text, setText] = useState("");
   const [error, setError] = useState(null);
-  const theme = useTheme();
 
-  // Get the hooks for emotion prediction and message sending
   const { fetchPrediction, error: predictionError } = useGetEmotionPrediction();
   const { sendMessage, error: sendError } = useSendMessage();
 
@@ -22,15 +20,12 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
     setText("");
 
     try {
-      // Step 1: Get emotion prediction
       const prediction = await fetchPrediction(messageCopy);
 
-      // Step 2: Update background color based on emotion
       if (onColorUpdate && prediction) {
         onColorUpdate(prediction);
       }
 
-      // Step 3: Send message with the predicted emotion
       await sendMessage(messageCopy, prediction ?? "neutral", chatId);
 
       return prediction;
