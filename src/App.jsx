@@ -12,7 +12,6 @@ import { Chat } from "./views/chat";
 import { Home } from "./views/home";
 import { Login } from "./views/login";
 import { AuthProvider } from "./auth/AuthContext";
-import { ModelProvider } from "./context/ModelContext";
 import { useState, createContext } from "react";
 
 // Create a theme context
@@ -159,22 +158,20 @@ function App() {
 
   return (
     <AuthProvider>
-      <ModelProvider>
-        <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
-          <BrowserRouter>
-            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-              <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/chat/:chatId" element={<Chat />} />
-                <Route path="/dashboard/:dashboardId" element={<Dashboard />} />
-                <Route path="/unauthorized" element={<UnauthorizedPage />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </ThemeProvider>
-          </BrowserRouter>
-        </ThemeContext.Provider>
-      </ModelProvider>
+      <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+        <BrowserRouter>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/chat/:chatId" element={<Chat />} />
+              <Route path="/dashboard/:dashboardId" element={<Dashboard />} />
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Routes>
+          </ThemeProvider>
+        </BrowserRouter>
+      </ThemeContext.Provider>
     </AuthProvider>
   );
 }

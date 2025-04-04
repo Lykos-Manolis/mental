@@ -1,6 +1,5 @@
 import { Grid2, Typography } from "@mui/material";
 import React from "react";
-import LogoutButton from "../../../components/buttons/LogoutButton";
 
 function HomeHeader() {
   return (
@@ -27,7 +26,6 @@ function HomeHeader() {
       >
         Mental
       </Typography>
-      {/* <LogoutButton /> */}
     </Grid2>
   );
 }

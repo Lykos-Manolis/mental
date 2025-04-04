@@ -1,12 +1,10 @@
 import React from "react";
 import { Grid2, Skeleton } from "@mui/material";
-import Heading from "../../../components/typography/Heading";
 import FaveBubbles from "./FaveBubbles";
 
 function Favorites({ favoriteContacts, favoritesLoading }) {
   return (
     <Grid2 size={12} sx={{ zIndex: 1 }}>
-      {/* <Heading alignment="start" variant="h6" content="Favorites" /> */}
       {favoritesLoading ? (
         <Grid2
           container

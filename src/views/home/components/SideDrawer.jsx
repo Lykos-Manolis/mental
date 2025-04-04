@@ -66,15 +66,6 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
           }}
         >
           <List sx={{ mt: 6, px: 1 }}>
-            <ListItem key="profile">
-              <ListItemButton>
-                <ListItemIcon>
-                  <FaceIcon sx={{ color: "lightblue" }} />
-                </ListItemIcon>
-                <ListItemText primary="Profile" sx={{ color: "lightblue" }} />
-              </ListItemButton>
-            </ListItem>
-
             <ListItem key="addContact">
               <ListItemButton
                 aria-label="add contact"
@@ -97,15 +88,6 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
                   <FavoriteBorderIcon sx={{ color: "pink" }} />
                 </ListItemIcon>
                 <ListItemText primary="Favorites" sx={{ color: "pink" }} />
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem key="settings">
-              <ListItemButton>
-                <ListItemIcon>
-                  <SettingsIcon sx={{ color: "gray" }} />
-                </ListItemIcon>
-                <ListItemText primary="Settings" sx={{ color: "gray" }} />
               </ListItemButton>
             </ListItem>
 

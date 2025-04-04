@@ -115,7 +115,6 @@ function Chat() {
         conversationInfo={conversationInfo}
         isLoading={isLoadingConversationInfo}
         isOnline={isOnline}
-        toggleDrawer={toggleDrawer}
       />
 
       <ChatContainer

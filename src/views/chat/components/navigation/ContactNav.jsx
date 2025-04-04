@@ -2,10 +2,9 @@ import React from "react";
 import { Grid2, Skeleton } from "@mui/material";
 import BackButton from "./BackButton";
 import ContactInfo from "./ContactInfo";
-import ModalButton from "./ModalButton";
 import DashboardButton from "./DashboardButton";
 
-function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
+function ContactNav({ conversationInfo, isOnline, isLoading }) {
   return isLoading ? (
     <Grid2
       size={12}
@@ -47,12 +46,6 @@ function ContactNav({ conversationInfo, isOnline, toggleDrawer, isLoading }) {
       <BackButton />
       <ContactInfo conversationInfo={conversationInfo} isOnline={isOnline} />
       <DashboardButton />
-      {/* <ModalButton
-        toggleDrawer={toggleDrawer}
-        icon="analytics"
-        title="View Analytics"
-        id="analytics-button"
-      /> */}
     </Grid2>
   );
 }
