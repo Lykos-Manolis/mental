@@ -53,6 +53,6 @@ export function useGetEmotionPrediction() {
     prediction,
     isLoading,
     error,
-    setError: () => setError(null),
+    setError,
   };
 }

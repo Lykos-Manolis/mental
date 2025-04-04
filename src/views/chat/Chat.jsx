@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import { Alert, Grid2 } from "@mui/material";
+import { Alert, Grid2, AlertTitle } from "@mui/material";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useAuth } from "../../auth/AuthContext";
 import { useGetConversationMessages } from "../../hooks/useGetConversationMessages";
@@ -98,6 +98,7 @@ function Chat() {
             boxShadow: 4,
           }}
         >
+          <AlertTitle>Something went wrong</AlertTitle>
           {error}
         </Alert>
       )}

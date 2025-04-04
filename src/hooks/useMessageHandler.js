@@ -7,8 +7,16 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
   const [text, setText] = useState("");
   const [error, setError] = useState(null);
 
-  const { fetchPrediction, error: predictionError } = useGetEmotionPrediction();
-  const { sendMessage, error: sendError } = useSendMessage();
+  const {
+    fetchPrediction,
+    error: predictionError,
+    setError: setPredictionError,
+  } = useGetEmotionPrediction();
+  const {
+    sendMessage,
+    error: sendError,
+    setError: setSendError,
+  } = useSendMessage();
 
   const handleSend = async () => {
     if (!text.replace(/\s/g, "")) return;
@@ -43,6 +51,9 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
 
   const dismissError = () => {
     setError(null);
+    // Also clear errors from other hooks
+    if (setPredictionError) setPredictionError(null);
+    if (setSendError) setSendError(null);
   };
 
   return {

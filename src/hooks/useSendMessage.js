@@ -18,5 +18,5 @@ export function useSendMessage() {
     }
   };
 
-  return { sendMessage, isLoading, error };
+  return { sendMessage, isLoading, error, setError };
 }
