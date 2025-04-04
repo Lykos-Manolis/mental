@@ -29,9 +29,74 @@
     <meta name="theme-color" content="#242424" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="apple-touch-icon" href="/icons/icon-128x128.png" />
+    <style>
+      #splash-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #121212;
+        color: white;
+        z-index: 9999;
+        transition: opacity 0.5s ease-out;
+      }
+
+      .splash-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .splash-title {
+        font-family: "Agbalumo", sans-serif;
+        font-size: 28px;
+        margin-bottom: 8px;
+      }
+
+      .splash-subtitle {
+        font-family: sans-serif;
+        font-size: 14px;
+        opacity: 0.7;
+      }
+    </style>
   </head>
   <body>
+    <div id="splash-screen">
+      <div class="splash-spinner"></div>
+      <div class="splash-title">Mental</div>
+      <div class="splash-subtitle">Emotion-Aware Messaging</div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Hide splash screen when app is loaded
+      window.addEventListener("load", () => {
+        // Give React a moment to initialize
+        setTimeout(() => {
+          const splash = document.getElementById("splash-screen");
+          if (splash) {
+            splash.style.opacity = "0";
+            setTimeout(() => {
+              splash.style.display = "none";
+            }, 500);
+          }
+        }, 500);
+      });
+    </script>
   </body>
 </html>
