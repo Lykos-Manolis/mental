@@ -45,6 +45,12 @@ const darkTheme = createTheme({
       disabled: "rgba(255, 255, 255, 0.3)",
       disabledBackground: "rgba(255, 255, 255, 0.12)",
     },
+    welcomeModal: {
+      welcome: "#2E1A2E",
+      info: "#201e31",
+      issues: "#2a1a1f",
+      feedback: "#1a2e1e",
+    },
     divider: "rgba(255, 255, 255, 0.12)",
     activity: {
       online: "#44b700",
@@ -110,6 +116,12 @@ const lightTheme = createTheme({
       selected: "rgba(0, 0, 0, 0.16)",
       disabled: "rgba(0, 0, 0, 0.3)",
       disabledBackground: "rgba(0, 0, 0, 0.12)",
+    },
+    welcomeModal: {
+      welcome: "#FFF0F7",
+      info: "#f5f0ff",
+      issues: "#fff7f0",
+      feedback: "#f0fff4",
     },
     divider: "rgba(0, 0, 0, 0.12)",
     activity: {

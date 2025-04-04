@@ -11,10 +11,25 @@ import HomeHeader from "./components/HomeHeader";
 import Favorites from "./components/Favorites";
 import anime from "animejs";
 import SideDrawer from "./components/SideDrawer";
+import WelcomeModal from "./components/WelcomeModal";
 
 function Home() {
   const { session } = useAuth();
   const theme = useTheme();
+  const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
+
+  // Check if it's the first visit when component mounts
+  useEffect(() => {
+    const hasVisitedBefore = localStorage.getItem("hasVisitedBefore");
+    if (!hasVisitedBefore) {
+      setWelcomeModalOpen(true);
+      localStorage.setItem("hasVisitedBefore", "true");
+    }
+  }, []);
+
+  const handleWelcomeModalClose = () => {
+    setWelcomeModalOpen(false);
+  };
 
   if (!session) {
     return <Navigate to="/" replace />;
@@ -115,6 +130,7 @@ function Home() {
       <SideDrawer
         onOpenContactModal={() => setOpenContactModal(true)}
         onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
+        onOpenWelcomeModal={() => setWelcomeModalOpen(true)}
       />
 
       <ContactModal
@@ -128,6 +144,8 @@ function Home() {
         setFavoriteContacts={setFavoriteContacts}
         contacts={contacts}
       />
+
+      <WelcomeModal open={welcomeModalOpen} onClose={handleWelcomeModalClose} />
 
       <svg
         id="visual"

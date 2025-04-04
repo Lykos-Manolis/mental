@@ -15,15 +15,25 @@ import AddReactionIcon from "@mui/icons-material/AddReaction";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import InfoIcon from "@mui/icons-material/Info";
 import { ThemeContext } from "../../../App";
 
 import { useAuth } from "../../../auth/AuthContext";
 
-function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
+function SideDrawer({
+  onOpenContactModal,
+  onOpenFavoritesModal,
+  onOpenWelcomeModal,
+}) {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
     setDrawerOpen(open);
+  };
+
+  const handleOpenWelcomeModal = () => {
+    onOpenWelcomeModal();
+    setDrawerOpen(false);
   };
 
   const iOS =
@@ -86,6 +96,18 @@ function SideDrawer({ onOpenContactModal, onOpenFavoritesModal }) {
                   <FavoriteBorderIcon sx={{ color: "pink" }} />
                 </ListItemIcon>
                 <ListItemText primary="Favorites" sx={{ color: "pink" }} />
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem key="info">
+              <ListItemButton
+                aria-label="app info"
+                onClick={handleOpenWelcomeModal}
+              >
+                <ListItemIcon>
+                  <InfoIcon sx={{ color: "#A1C9FF" }} />
+                </ListItemIcon>
+                <ListItemText primary="Info" sx={{ color: "#A1C9FF" }} />
               </ListItemButton>
             </ListItem>
 
