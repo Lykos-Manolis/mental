@@ -5,8 +5,6 @@ const urlsToCache = [
   "/manifest.json",
   "/icons/icon-128x128.png",
   "/icons/icon-512x512.png",
-  "/word_index.json",
-  "/emo_model_js/model.json",
 ];
 
 self.addEventListener("install", (event) => {
