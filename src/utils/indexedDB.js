@@ -63,6 +63,32 @@ export async function initializeIndexedDB(userId) {
 
     request.onsuccess = (event) => {
       const db = event.target.result;
+
+      const transaction = db.transaction(["key_pairs"]);
+      const objectStore = transaction.objectStore("key_pairs");
+      const getRequest = objectStore.get(userId);
+
+      getRequest.onsuccess = async (event) => {
+        const result = getRequest.result;
+
+        if (!result) {
+          console.log("Adding key pairs for new user");
+          const { publicKey, privateKey } = await generateKeyPair();
+
+          const transaction = db
+            .transaction("key_pairs", "readwrite")
+            .objectStore("key_pairs")
+            .add({
+              user_id: userId,
+              public_key: publicKey,
+              private_key: privateKey,
+            });
+
+          console.log("New key pairs added to database");
+          await setPublicKey(publicKey);
+        }
+      };
+
       dbInitialized = true;
       console.log("Database initialized");
       resolve(db);
