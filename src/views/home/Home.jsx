@@ -134,7 +134,7 @@ function Home() {
       />
 
       {/* No Contacts */}
-      {contacts?.length === 0 && (
+      {!isLoadingContacts && contacts?.length === 0 && (
         <NoContacts
           onOpenSideDrawer={() => setDrawerOpen(true)}
           onOpenContactModal={() => setOpenContactModal(true)}
@@ -143,7 +143,7 @@ function Home() {
       )}
 
       {/* Some Contacts */}
-      {contacts?.length > 0 && contacts.length <= 3 && (
+      {!isLoadingContacts && contacts?.length > 0 && contacts.length <= 3 && (
         <SomeContacts
           onOpenContactModal={() => setOpenContactModal(true)}
           onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
