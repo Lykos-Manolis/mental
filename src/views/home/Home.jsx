@@ -22,22 +22,9 @@ function Home() {
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
   const userId = useGetUserId();
 
-  // Check if it's the first visit when component mounts
-  useEffect(() => {
-    const hasVisitedBefore = localStorage.getItem("hasVisitedBefore");
-    if (!hasVisitedBefore) {
-      setWelcomeModalOpen(true);
-      localStorage.setItem("hasVisitedBefore", "true");
-    }
-  }, []);
-
   const handleWelcomeModalClose = () => {
     setWelcomeModalOpen(false);
   };
-
-  if (!session) {
-    return <Navigate to="/" replace />;
-  }
 
   const {
     decryptedContacts: contacts,
@@ -50,6 +37,15 @@ function Home() {
   const [favoriteContacts, setFavoriteContacts] = useState(
     contacts?.filter((contact) => contact.is_favorite) || [],
   );
+
+  // Check if it's the first visit when component mounts
+  useEffect(() => {
+    const hasVisitedBefore = localStorage.getItem("hasVisitedBefore");
+    if (!hasVisitedBefore) {
+      setWelcomeModalOpen(true);
+      localStorage.setItem("hasVisitedBefore", "true");
+    }
+  }, []);
 
   // Update favorite contacts
   useEffect(() => {
@@ -103,6 +99,10 @@ function Home() {
       });
     }
   }, [contacts, theme]);
+
+  if (!session) {
+    return <Navigate to="/" replace />;
+  }
 
   return (
     <Grid2
