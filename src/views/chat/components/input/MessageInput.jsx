@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid2, InputBase } from "@mui/material";
 
-function MessageInput({ text, setText, handleKeyDown }) {
+function MessageInput({ text, setText, handleKeyDown, inputRef }) {
   return (
     <Grid2
       size={8}
@@ -15,6 +15,7 @@ function MessageInput({ text, setText, handleKeyDown }) {
       }}
     >
       <InputBase
+        ref={inputRef}
         id="message-input"
         multiline
         autoFocus

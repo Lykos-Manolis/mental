@@ -1,9 +1,11 @@
 import { Grid2 } from "@mui/material";
-import React from "react";
+import React, { useRef } from "react";
 import MessageInput from "./MessageInput";
 import SendButton from "./SendButton";
 
 function ChatInput({ text, setText, handleKeyDown, handleSend }) {
+  const inputRef = useRef();
+
   return (
     <Grid2
       size={12}
@@ -18,8 +20,12 @@ function ChatInput({ text, setText, handleKeyDown, handleSend }) {
         text={text}
         setText={setText}
         handleKeyDown={handleKeyDown}
+        inputRef={inputRef}
       />
-      <SendButton handleClick={handleSend} />
+      <SendButton
+        handleClick={handleSend}
+        focusInput={() => inputRef.current?.focus()}
+      />
     </Grid2>
   );
 }
