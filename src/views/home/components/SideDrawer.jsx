@@ -24,9 +24,9 @@ function SideDrawer({
   onOpenContactModal,
   onOpenFavoritesModal,
   onOpenWelcomeModal,
+  drawerOpen,
+  setDrawerOpen,
 }) {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
   const toggleDrawer = (open) => (event) => {
     setDrawerOpen(open);
   };

@@ -4,7 +4,7 @@ import FaveBubbles from "./FaveBubbles";
 
 function Favorites({ favoriteContacts, favoritesLoading }) {
   return (
-    <Grid2 size={12} sx={{ zIndex: 1 }}>
+    <Grid2 size={12} sx={{ zIndex: 1, mt: 4 }}>
       {favoritesLoading ? (
         <Grid2
           container

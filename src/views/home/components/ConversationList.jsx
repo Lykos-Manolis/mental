@@ -14,7 +14,7 @@ const avatarSize = 45;
 function ConversationList({ contacts, isLoading }) {
   const theme = useTheme();
   return isLoading ? (
-    <Grid2>
+    <Grid2 sx={{ mt: 3 }}>
       {[...Array(4)].map((_, index) => (
         <Grid2 container sx={{ my: 4 }} spacing={3} key={`skeleton-${index}`}>
           {/* Avatar */}
@@ -47,7 +47,7 @@ function ConversationList({ contacts, isLoading }) {
       ))}
     </Grid2>
   ) : (
-    <Grid2 sx={{ zIndex: 1 }}>
+    <Grid2 sx={{ zIndex: 1, mt: 3 }}>
       {contacts.map((contact, index) => (
         <Grid2
           component={Link}

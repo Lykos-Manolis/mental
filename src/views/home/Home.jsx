@@ -15,6 +15,8 @@ import WelcomeModal from "./components/WelcomeModal";
 import { checkMasterKeys, getMasterKey } from "../../utils/indexedDB";
 import { useGetUserId } from "../../hooks/useGetUserId";
 import { decryptMessage } from "../../utils/encryption";
+import NoContacts from "./components/NoContacts";
+import SomeContacts from "./components/SomeContacts";
 
 function Home() {
   const { session } = useAuth();
@@ -32,6 +34,7 @@ function Home() {
     error: errorContacts,
   } = useGetContacts(userId);
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [openContactModal, setOpenContactModal] = useState(false);
   const [openFavoritesModal, setOpenFavoritesModal] = useState(false);
   const [favoriteContacts, setFavoriteContacts] = useState(
@@ -108,7 +111,7 @@ function Home() {
     <Grid2
       container
       direction="column"
-      spacing={7}
+      spacing={4}
       sx={{
         px: 4,
         pt: 6,
@@ -130,6 +133,23 @@ function Home() {
         favoritesLoading={isLoadingContacts}
       />
 
+      {/* No Contacts */}
+      {contacts?.length === 0 && (
+        <NoContacts
+          onOpenSideDrawer={() => setDrawerOpen(true)}
+          onOpenContactModal={() => setOpenContactModal(true)}
+          onOpenWelcomeModal={() => setWelcomeModalOpen(true)}
+        />
+      )}
+
+      {/* Some Contacts */}
+      {contacts?.length > 0 && contacts.length <= 3 && (
+        <SomeContacts
+          onOpenContactModal={() => setOpenContactModal(true)}
+          onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
+        />
+      )}
+
       {/* Messages */}
       <ConversationList contacts={contacts} isLoading={isLoadingContacts} />
 
@@ -137,6 +157,8 @@ function Home() {
         onOpenContactModal={() => setOpenContactModal(true)}
         onOpenFavoritesModal={() => setOpenFavoritesModal(true)}
         onOpenWelcomeModal={() => setWelcomeModalOpen(true)}
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
       />
 
       <ContactModal
