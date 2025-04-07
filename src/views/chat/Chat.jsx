@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { Alert, Grid2, AlertTitle } from "@mui/material";
 import ChatContainer from "./components/chat/ChatContainer";
 import { useAuth } from "../../auth/AuthContext";
@@ -21,7 +21,7 @@ function Chat() {
   const theme = useTheme();
 
   // Data Hooks
-  const { messages, isLoading: isLoadingMessages } =
+  const { decryptedMessages: messages, isLoading: isLoadingMessages } =
     useGetConversationMessages(chatId);
   const { conversationInfo, isLoading: isLoadingConversationInfo } =
     useGetConversationInfo(chatId);

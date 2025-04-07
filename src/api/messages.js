@@ -11,6 +11,9 @@ export async function getConversationMessages(conversationId) {
       throw error;
     }
 
+    // Update conversation read status
+    await updateConversationReadStatus(conversationId);
+
     return data;
   } catch (error) {
     console.error("Error fetching messages:", error.message);
@@ -18,7 +21,7 @@ export async function getConversationMessages(conversationId) {
   }
 }
 
-export async function setMessage(message, emotion, conversationId) {
+export async function setMessage(message, iv, emotion, conversationId) {
   try {
     // Get the current user
     const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -34,6 +37,7 @@ export async function setMessage(message, emotion, conversationId) {
     // Insert the message
     const { error } = await supabase.from("messages").insert({
       content: message,
+      iv: iv,
       emotion: emotion,
       conversation_id: conversationId,
       sender_id: userData.user.id,

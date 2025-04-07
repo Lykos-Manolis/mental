@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { getBasicContacts, getContactsLastMessages } from "../api/contacts";
 import supabase from "../utils/supabase";
+import { checkMasterKeys, getMasterKey } from "../utils/indexedDB";
+import { decryptHomeLastMessages } from "../utils/encryption";
 
-export function useGetContacts() {
+export function useGetContacts(userId) {
   const [contacts, setContacts] = useState([]);
+  const [decryptedContacts, setDecryptedContacts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -18,6 +21,16 @@ export function useGetContacts() {
       );
     });
   };
+
+  useEffect(() => {
+    if (contacts && contacts.length > 0) {
+      (async () => {
+        await checkMasterKeys(contacts, userId);
+        const newContacts = await decryptHomeLastMessages(contacts);
+        setDecryptedContacts(newContacts);
+      })();
+    }
+  }, [contacts]);
 
   useEffect(() => {
     async function fetchAndMergeData() {
@@ -54,7 +67,7 @@ export function useGetContacts() {
           event: "*",
           schema: "public",
           table: "contacts",
-          filter: `user_id=eq.${supabase.auth.getUser().id}`,
+          filter: `user_id=eq.${userId}`,
         },
         async () => {
           const basicContacts = await getBasicContacts();
@@ -128,5 +141,5 @@ export function useGetContacts() {
     };
   }, []);
 
-  return { contacts, isLoading, error };
+  return { decryptedContacts, isLoading, error };
 }

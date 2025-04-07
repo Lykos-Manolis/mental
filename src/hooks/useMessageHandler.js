@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useSendMessage } from "./useSendMessage";
 import { useGetEmotionPrediction } from "./useGetEmotionPrediction";
 import { useTheme } from "@mui/material";
+import { encryptMessage } from "../utils/encryption";
+import { getMasterKey } from "../utils/indexedDB";
 
 export function useMessageHandler(chatId, onColorUpdate, userId) {
   const [text, setText] = useState("");
@@ -34,7 +36,13 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
         onColorUpdate(prediction);
       }
 
-      await sendMessage(messageCopy, prediction ?? "neutral", chatId);
+      const masterKey = await getMasterKey(chatId);
+
+      const { encryptedMessage, iv } = await encryptMessage(
+        messageCopy,
+        masterKey,
+      );
+      await sendMessage(encryptedMessage, iv, prediction ?? "neutral", chatId);
 
       return prediction;
     } catch (error) {

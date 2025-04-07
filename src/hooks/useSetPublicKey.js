@@ -1,15 +1,15 @@
 import { useState } from "react";
-import { setMessage } from "../api/messages";
+import { setPublicKey } from "../api/keys";
 
-export function useSendMessage() {
+export function useSetPublicKey() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const sendMessage = async (message, iv, emotion, conversationId) => {
+  const handleSetPublicKey = async (publicKey) => {
     try {
       setIsLoading(true);
       setError(null);
-      await setMessage(message, iv, emotion, conversationId);
+      await setPublicKey(publicKey);
     } catch (err) {
       setError(err);
       throw err;
@@ -18,5 +18,5 @@ export function useSendMessage() {
     }
   };
 
-  return { sendMessage, isLoading, error, setError };
+  return { setPublicKey: handleSetPublicKey, isLoading, error };
 }

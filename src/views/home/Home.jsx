@@ -12,11 +12,15 @@ import Favorites from "./components/Favorites";
 import anime from "animejs";
 import SideDrawer from "./components/SideDrawer";
 import WelcomeModal from "./components/WelcomeModal";
+import { checkMasterKeys, getMasterKey } from "../../utils/indexedDB";
+import { useGetUserId } from "../../hooks/useGetUserId";
+import { decryptMessage } from "../../utils/encryption";
 
 function Home() {
   const { session } = useAuth();
   const theme = useTheme();
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(false);
+  const userId = useGetUserId();
 
   // Check if it's the first visit when component mounts
   useEffect(() => {
@@ -36,10 +40,10 @@ function Home() {
   }
 
   const {
-    contacts,
+    decryptedContacts: contacts,
     isLoading: isLoadingContacts,
     error: errorContacts,
-  } = useGetContacts();
+  } = useGetContacts(userId);
 
   const [openContactModal, setOpenContactModal] = useState(false);
   const [openFavoritesModal, setOpenFavoritesModal] = useState(false);
@@ -47,12 +51,14 @@ function Home() {
     contacts?.filter((contact) => contact.is_favorite) || [],
   );
 
+  // Update favorite contacts
   useEffect(() => {
     setFavoriteContacts(
       contacts?.filter((contact) => contact.is_favorite) || [],
     );
   }, [contacts]);
 
+  // Update SVG paths
   useEffect(() => {
     if (contacts && contacts.length > 0) {
       anime({

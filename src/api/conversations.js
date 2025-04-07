@@ -13,6 +13,7 @@ export async function getConversationInfo(chatId) {
 }
 
 export async function updateConversationReadStatus(conversationId) {
+  console.log("Updating conversation read status");
   const {
     data: {
       user: { id: currentUserId },

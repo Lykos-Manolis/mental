@@ -1,11 +1,25 @@
 import { useState, useEffect } from "react";
 import { getConversationMessages } from "../api/messages";
 import supabase from "../utils/supabase";
+import { decryptMessages } from "../utils/encryption";
 
 export function useGetConversationMessages(conversationId) {
   const [messages, setMessages] = useState([]);
+  const [decryptedMessages, setDecryptedMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      (async () => {
+        const decryptedMessages = await decryptMessages(
+          messages,
+          conversationId,
+        );
+        setDecryptedMessages(decryptedMessages);
+      })();
+    }
+  }, [messages]);
 
   useEffect(() => {
     async function fetchMessages() {
@@ -47,5 +61,5 @@ export function useGetConversationMessages(conversationId) {
     }
   }, [conversationId]);
 
-  return { messages, isLoading, error };
+  return { decryptedMessages, isLoading, error };
 }

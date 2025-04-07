@@ -43,12 +43,27 @@ function Login() {
         supabaseClient={supabase}
         providers={["google", "github"]}
         socialLayout="horizontal"
+        localization={{
+          variables: {
+            sign_in: {
+              email_input_placeholder: "",
+              password_input_placeholder: "",
+            },
+            sign_up: {
+              email_input_placeholder: "",
+              password_input_placeholder: "",
+            },
+          },
+        }}
         appearance={{
           theme: ThemeSupa,
-          variables: {
-            default: {
-              colors: { inputText: "white" },
-            },
+          style: {
+            button: { background: "white", color: "black" },
+            anchor: { color: "white" },
+            input: { border: "2px solid white", color: "white" },
+            divider: { border: "2px solid white", borderRadius: "10px" },
+            label: { color: "white" },
+            message: { color: "white", background: "#2f2f2f" },
           },
         }}
       />
