@@ -24,6 +24,8 @@ function ContactModal({ open, onClose }) {
       await setContact(identifier);
       setError(false);
       onClose();
+      // Automatically refresh the page to show the new contact
+      window.location.reload();
     } catch (err) {
       setError(err.message);
     }
