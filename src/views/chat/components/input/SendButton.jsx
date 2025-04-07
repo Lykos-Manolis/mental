@@ -2,7 +2,7 @@ import React from "react";
 import { Grid2, IconButton } from "@mui/material";
 import UploadIcon from "@mui/icons-material/Upload";
 
-function SendButton({ handleClick, focusInput }) {
+function SendButton({ handleClick }) {
   return (
     <Grid2
       size={4}
@@ -17,10 +17,7 @@ function SendButton({ handleClick, focusInput }) {
     >
       <IconButton
         aria-label="send"
-        onClick={async () => {
-          await handleClick();
-          focusInput();
-        }}
+        onClick={handleClick}
         sx={{
           borderRadius: 10,
           ml: 1,
