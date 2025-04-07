@@ -17,10 +17,9 @@ function SendButton({ handleClick, focusInput }) {
     >
       <IconButton
         aria-label="send"
-        onClick={async (e) => {
-          e.preventDefault();
-          focusInput();
+        onClick={async () => {
           await handleClick();
+          focusInput();
         }}
         sx={{
           borderRadius: 10,
