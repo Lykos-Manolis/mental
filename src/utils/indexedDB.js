@@ -277,6 +277,52 @@ export async function getMasterKey(conversationId) {
   }
 }
 
+async function updateMasterKeyForContact(contact, userId) {
+  try {
+    // Get user public key
+    const userPublicKey = await getPublicKey(userId);
+
+    // Get the contact user ID from the contact object
+    const contactId = contact.contact_id;
+
+    if (!contactId) {
+      console.error("Could not determine contact ID");
+      return false;
+    }
+
+    // Get the contact's public key
+    const contactPublicKey = await getContactPublicKeyById(contactId);
+
+    if (!userPublicKey || !contactPublicKey) {
+      console.error("Could not find required public keys");
+      return false;
+    }
+
+    // Generate a new master key
+    const newMasterKey = await generateMasterKey();
+
+    // Encrypt the new master key for both users
+    const { encryptedUserMasterKey, encryptedContactMasterKey } =
+      await encryptMasterKey(newMasterKey, userPublicKey, contactPublicKey);
+
+    // Update the master key in the database
+    await updateConversationMasterKeys(
+      contact.conversation_id,
+      encryptedUserMasterKey,
+      encryptedContactMasterKey,
+    );
+
+    // Update the master key locally
+    await updateMasterKey(contact.conversation_id, newMasterKey);
+
+    console.log("Master key successfully updated");
+    return true;
+  } catch (error) {
+    console.error("Error updating master key:", error);
+    return false;
+  }
+}
+
 export async function checkMasterKeys(contacts, userId) {
   try {
     const db = await getDB();
@@ -304,6 +350,14 @@ export async function checkMasterKeys(contacts, userId) {
                 contact.master_key,
                 userPrivateKey,
               );
+
+              if (!decryptedMasterKey) {
+                // If decryption failed, generate a new master key
+                await updateMasterKeyForContact(contact, userId);
+                resolve(true);
+                return;
+              }
+
               await saveMasterKey(contact.conversation_id, decryptedMasterKey);
               resolve(true);
             } catch (error) {
@@ -323,54 +377,7 @@ export async function checkMasterKeys(contacts, userId) {
 
             if (savedMasterKey !== decryptedMasterKey) {
               console.log("Master key mismatch, generating new master key");
-              try {
-                // Get user public key
-                const userPublicKey = await getPublicKey(userId);
-
-                // Get the contact user ID from the contact object
-                const contactId = contact.contact_id;
-
-                if (!contactId) {
-                  console.error("Could not determine contact ID");
-                  resolve(false);
-                  return;
-                }
-
-                // Get the contact's public key
-                const contactPublicKey =
-                  await getContactPublicKeyById(contactId);
-
-                if (!userPublicKey || !contactPublicKey) {
-                  console.error("Could not find required public keys");
-                  resolve(false);
-                  return;
-                }
-
-                // Generate a new master key
-                const newMasterKey = await generateMasterKey();
-
-                // Encrypt the new master key for both users
-                const { encryptedUserMasterKey, encryptedContactMasterKey } =
-                  await encryptMasterKey(
-                    newMasterKey,
-                    userPublicKey,
-                    contactPublicKey,
-                  );
-
-                // Update the master key in the database
-                await updateConversationMasterKeys(
-                  contact.conversation_id,
-                  encryptedUserMasterKey,
-                  encryptedContactMasterKey,
-                );
-
-                // Update the master key locally
-                await updateMasterKey(contact.conversation_id, newMasterKey);
-
-                console.log("Master key successfully updated");
-              } catch (error) {
-                console.error("Error updating master key:", error);
-              }
+              await updateMasterKeyForContact(contact, userId);
             }
             resolve(true);
           }
