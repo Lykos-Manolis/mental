@@ -5,7 +5,6 @@ import {
   generateMasterKey,
   encryptMasterKey,
 } from "./encryption";
-import { updateConversationMasterKeys } from "../api/conversations";
 import { getContactPublicKeyById } from "../api/contacts";
 
 // Track database initialization status
@@ -277,25 +276,22 @@ export async function getMasterKey(conversationId) {
   }
 }
 
-async function updateMasterKeyForContact(contact, userId) {
+// Export the functions needed by conversations.js
+export async function getEncryptedMasterKeys(
+  contactId,
+  userId,
+  conversationId,
+) {
   try {
     // Get user public key
     const userPublicKey = await getPublicKey(userId);
-
-    // Get the contact user ID from the contact object
-    const contactId = contact.contact_id;
-
-    if (!contactId) {
-      console.error("Could not determine contact ID");
-      return false;
-    }
 
     // Get the contact's public key
     const contactPublicKey = await getContactPublicKeyById(contactId);
 
     if (!userPublicKey || !contactPublicKey) {
       console.error("Could not find required public keys");
-      return false;
+      return null;
     }
 
     // Generate a new master key
@@ -305,21 +301,14 @@ async function updateMasterKeyForContact(contact, userId) {
     const { encryptedUserMasterKey, encryptedContactMasterKey } =
       await encryptMasterKey(newMasterKey, userPublicKey, contactPublicKey);
 
-    // Update the master key in the database
-    await updateConversationMasterKeys(
-      contact.conversation_id,
-      encryptedUserMasterKey,
-      encryptedContactMasterKey,
-    );
-
     // Update the master key locally
-    await updateMasterKey(contact.conversation_id, newMasterKey);
+    await updateMasterKey(conversationId, newMasterKey);
 
-    console.log("Master key successfully updated");
-    return true;
+    console.log("Master key successfully generated");
+    return { encryptedUserMasterKey, encryptedContactMasterKey };
   } catch (error) {
-    console.error("Error updating master key:", error);
-    return false;
+    console.error("Error generating encrypted master keys:", error);
+    return null;
   }
 }
 
@@ -352,8 +341,14 @@ export async function checkMasterKeys(contacts, userId) {
               );
 
               if (!decryptedMasterKey) {
-                // If decryption failed, generate a new master key
-                await updateMasterKeyForContact(contact, userId);
+                // If decryption failed, need to update master keys
+                // Use the conversations API instead of local function
+                const { data: conversation } = await import(
+                  "../api/conversations"
+                );
+                if (conversation && conversation.updateMasterKeyForContact) {
+                  await conversation.updateMasterKeyForContact(contact, userId);
+                }
                 resolve(true);
                 return;
               }
@@ -377,7 +372,12 @@ export async function checkMasterKeys(contacts, userId) {
 
             if (savedMasterKey !== decryptedMasterKey) {
               console.log("Master key mismatch, generating new master key");
-              await updateMasterKeyForContact(contact, userId);
+              const { data: conversation } = await import(
+                "../api/conversations"
+              );
+              if (conversation && conversation.updateMasterKeyForContact) {
+                await conversation.updateMasterKeyForContact(contact, userId);
+              }
             }
             resolve(true);
           }

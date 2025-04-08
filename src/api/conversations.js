@@ -1,4 +1,5 @@
 import supabase from "../utils/supabase";
+import { getEncryptedMasterKeys } from "../utils/indexedDB";
 
 export async function getConversationInfo(chatId) {
   const { data, error } = await supabase.rpc("get_conversation_partner", {
@@ -81,5 +82,39 @@ export async function updateConversationMasterKeys(
   } catch (error) {
     console.error("Error updating conversation master keys:", error.message);
     throw error;
+  }
+}
+
+export async function updateMasterKeyForContact(contact, userId) {
+  try {
+    if (!contact.contact_id) {
+      console.error("Could not determine contact ID");
+      return false;
+    }
+
+    // Get encrypted master keys from indexedDB utility
+    const keys = await getEncryptedMasterKeys(
+      contact.contact_id,
+      userId,
+      contact.conversation_id,
+    );
+
+    if (!keys) {
+      console.error("Failed to generate encrypted master keys");
+      return false;
+    }
+
+    // Update the master keys in the database
+    await updateConversationMasterKeys(
+      contact.conversation_id,
+      keys.encryptedUserMasterKey,
+      keys.encryptedContactMasterKey,
+    );
+
+    console.log("Master key successfully updated in database");
+    return true;
+  } catch (error) {
+    console.error("Error in updateMasterKeyForContact:", error);
+    return false;
   }
 }
