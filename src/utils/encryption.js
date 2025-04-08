@@ -243,7 +243,6 @@ export async function decryptMessage(message, masterKey, iv) {
 
     return decodeMessage(decryptedMessage);
   } catch (error) {
-    console.error("Error decrypting message:", error);
     return " ";
   }
 }

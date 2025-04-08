@@ -1,4 +1,8 @@
-import { setPublicKey } from "../api/keys";
+import {
+  setPublicKey,
+  getUserPublicKeyFromDatabase,
+  updatePublicKey,
+} from "../api/keys";
 import {
   decryptMasterKey,
   generateKeyPair,
@@ -6,6 +10,7 @@ import {
   encryptMasterKey,
 } from "./encryption";
 import { getContactPublicKeyById } from "../api/contacts";
+import { updateMasterKeyForContact } from "../api/conversations";
 
 // Track database initialization status
 let dbInitialized = false;
@@ -40,19 +45,44 @@ export async function initializeIndexedDB(userId) {
 
       objectstore.transaction.oncomplete = async () => {
         console.log("Key pairs object store created");
-        const { publicKey, privateKey } = await generateKeyPair();
 
-        const transaction = db
-          .transaction("key_pairs", "readwrite")
-          .objectStore("key_pairs")
-          .add({
-            user_id: userId,
-            public_key: publicKey,
-            private_key: privateKey,
-          });
+        // Check if the user already has keys in the remote database
+        const remotePublicKey = await getUserPublicKeyFromDatabase(userId);
 
-        console.log("New key pairs added to database");
-        await setPublicKey(publicKey);
+        if (remotePublicKey) {
+          console.log("Found existing public key in remote database");
+          // User has a key in the database but not locally - need to create a new keypair
+          // since we can't recover the private key
+          const { publicKey, privateKey } = await generateKeyPair();
+
+          const transaction = db
+            .transaction("key_pairs", "readwrite")
+            .objectStore("key_pairs")
+            .add({
+              user_id: userId,
+              public_key: publicKey,
+              private_key: privateKey,
+            });
+
+          // Update remote public key with the new one
+          await updatePublicKey(publicKey);
+          console.log("Updated remote database with new public key");
+        } else {
+          // New user without keys in remote database
+          const { publicKey, privateKey } = await generateKeyPair();
+
+          const transaction = db
+            .transaction("key_pairs", "readwrite")
+            .objectStore("key_pairs")
+            .add({
+              user_id: userId,
+              public_key: publicKey,
+              private_key: privateKey,
+            });
+
+          console.log("New key pairs added to database");
+          await setPublicKey(publicKey);
+        }
       };
 
       const masterObjectstore = db.createObjectStore("master_keys", {
@@ -78,20 +108,83 @@ export async function initializeIndexedDB(userId) {
         const result = getRequest.result;
 
         if (!result) {
-          console.log("Adding key pairs for new user");
-          const { publicKey, privateKey } = await generateKeyPair();
+          // No local keys found, check if remote keys exist
+          const remotePublicKey = await getUserPublicKeyFromDatabase(userId);
 
-          const transaction = db
-            .transaction("key_pairs", "readwrite")
-            .objectStore("key_pairs")
-            .add({
-              user_id: userId,
-              public_key: publicKey,
-              private_key: privateKey,
-            });
+          if (remotePublicKey) {
+            console.log("Found existing public key in remote database");
+            // User has a key in the database but not locally - need to create a new keypair
+            const { publicKey, privateKey } = await generateKeyPair();
 
-          console.log("New key pairs added to database");
-          await setPublicKey(publicKey);
+            const transaction = db
+              .transaction("key_pairs", "readwrite")
+              .objectStore("key_pairs")
+              .add({
+                user_id: userId,
+                public_key: publicKey,
+                private_key: privateKey,
+              });
+
+            // Update remote public key with the new one
+            await updatePublicKey(publicKey);
+            console.log("Updated remote database with new public key");
+          } else {
+            // Completely new user
+            console.log("Adding key pairs for new user");
+            const { publicKey, privateKey } = await generateKeyPair();
+
+            const transaction = db
+              .transaction("key_pairs", "readwrite")
+              .objectStore("key_pairs")
+              .add({
+                user_id: userId,
+                public_key: publicKey,
+                private_key: privateKey,
+              });
+
+            console.log("New key pairs added to database");
+            await setPublicKey(publicKey);
+          }
+        } else {
+          // User has local keys, check if they match the remote keys
+          const remotePublicKey = await getUserPublicKeyFromDatabase(userId);
+
+          if (remotePublicKey && remotePublicKey !== result.public_key) {
+            // Keys don't match, update remote database with local key
+            console.log("Local and remote public keys don't match");
+
+            // Clear the cached public key from the service worker cache
+            if ("caches" in window) {
+              try {
+                const cache = await caches.open("mental-cache-v2");
+                // Find and delete any cached responses for the public key endpoint
+                const cachedRequests = await cache.keys();
+                const publicKeyRequests = cachedRequests.filter(
+                  (request) =>
+                    request.url.includes("/keys") &&
+                    request.url.includes(userId),
+                );
+
+                for (const request of publicKeyRequests) {
+                  await cache.delete(request);
+                  console.log(
+                    "Cleared cached public key from service worker cache",
+                  );
+                }
+              } catch (error) {
+                console.error("Error clearing public key cache:", error);
+              }
+            }
+
+            await updatePublicKey(result.public_key);
+            console.log("Updated remote database with local public key");
+          } else if (!remotePublicKey) {
+            // No remote key found, add the local key to remote database
+            console.log(
+              "No remote public key found, setting local key to remote",
+            );
+            await setPublicKey(result.public_key);
+          }
         }
       };
 
@@ -341,14 +434,7 @@ export async function checkMasterKeys(contacts, userId) {
               );
 
               if (!decryptedMasterKey) {
-                // If decryption failed, need to update master keys
-                // Use the conversations API instead of local function
-                const { data: conversation } = await import(
-                  "../api/conversations"
-                );
-                if (conversation && conversation.updateMasterKeyForContact) {
-                  await conversation.updateMasterKeyForContact(contact, userId);
-                }
+                await updateMasterKeyForContact(contact, userId);
                 resolve(true);
                 return;
               }
@@ -372,12 +458,8 @@ export async function checkMasterKeys(contacts, userId) {
 
             if (savedMasterKey !== decryptedMasterKey) {
               console.log("Master key mismatch, generating new master key");
-              const { data: conversation } = await import(
-                "../api/conversations"
-              );
-              if (conversation && conversation.updateMasterKeyForContact) {
-                await conversation.updateMasterKeyForContact(contact, userId);
-              }
+
+              await updateMasterKeyForContact(contact, userId);
             }
             resolve(true);
           }
