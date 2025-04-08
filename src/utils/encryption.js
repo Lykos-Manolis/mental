@@ -230,15 +230,20 @@ export async function decryptHomeLastMessages(contacts) {
 }
 
 export async function decryptMessage(message, masterKey, iv) {
-  const importedKey = await importMasterKey(masterKey);
-  const bufferMessage = base64ToArrayBuffer(message);
-  const bufferIv = base64ToArrayBuffer(iv);
+  try {
+    const importedKey = await importMasterKey(masterKey);
+    const bufferMessage = base64ToArrayBuffer(message);
+    const bufferIv = base64ToArrayBuffer(iv);
 
-  const decryptedMessage = await window.crypto.subtle.decrypt(
-    { name: "AES-GCM", iv: bufferIv },
-    importedKey,
-    bufferMessage,
-  );
+    const decryptedMessage = await window.crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: bufferIv },
+      importedKey,
+      bufferMessage,
+    );
 
-  return decodeMessage(decryptedMessage);
+    return decodeMessage(decryptedMessage);
+  } catch (error) {
+    console.error("Error decrypting message:", error);
+    return " ";
+  }
 }

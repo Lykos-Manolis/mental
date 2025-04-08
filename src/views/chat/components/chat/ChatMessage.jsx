@@ -29,9 +29,15 @@ function ChatMessage({ content, sent_by_user, emotion }) {
   // Use useMemo to avoid recreating the component on every render
   const StyledTooltip = useMemo(() => createStyledTooltip(emotion), [emotion]);
 
+  // Calculate random padding only once when component mounts
+  const randomPadding = useMemo(
+    () => Math.floor(Math.random() * (10 - 4 + 1)) + 4,
+    [],
+  );
+
   return (
     <StyledTooltip
-      title={`Detected emotion: ${emotion}`}
+      title={`${emotion.charAt(0).toUpperCase()}${emotion.slice(1)}`}
       disableFocusListener
       slots={{
         transition: Zoom,
@@ -42,7 +48,7 @@ function ChatMessage({ content, sent_by_user, emotion }) {
           borderRadius: sent_by_user ? "20px 0 20px 20px" : "0 20px 20px 20px",
           maxWidth: "75%",
           width: "auto",
-          px: 2,
+          px: content === " " ? randomPadding : 2,
           py: 1.2,
           bgcolor: sent_by_user
             ? theme.palette.bubble.user
