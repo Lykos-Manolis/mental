@@ -1,5 +1,12 @@
 import { setPublicKey } from "../api/keys";
-import { decryptMasterKey, generateKeyPair } from "./encryption";
+import {
+  decryptMasterKey,
+  generateKeyPair,
+  generateMasterKey,
+  encryptMasterKey,
+} from "./encryption";
+import { updateConversationMasterKeys } from "../api/conversations";
+import { getContactPublicKeyById } from "../api/contacts";
 
 // Track database initialization status
 let dbInitialized = false;
@@ -150,6 +157,54 @@ export async function saveMasterKey(conversationId, masterKey) {
   }
 }
 
+export async function updateMasterKey(conversationId, masterKey) {
+  try {
+    const db = await getDB();
+
+    return new Promise((resolve, reject) => {
+      // First delete the existing entry
+      const deleteTransaction = db
+        .transaction("master_keys", "readwrite")
+        .objectStore("master_keys");
+
+      const deleteRequest = deleteTransaction.delete(Number(conversationId));
+
+      deleteRequest.onsuccess = () => {
+        // Then add the new entry
+        const addTransaction = db
+          .transaction("master_keys", "readwrite")
+          .objectStore("master_keys")
+          .add({
+            conversation_id: conversationId,
+            master_key: masterKey,
+          });
+
+        addTransaction.onsuccess = () => {
+          console.log("Master key updated in database");
+          resolve(true);
+        };
+
+        addTransaction.onerror = (event) => {
+          console.error(
+            `Error updating master key: ${event.target.error?.message}`,
+          );
+          reject(event.target.error);
+        };
+      };
+
+      deleteRequest.onerror = (event) => {
+        console.error(
+          `Error deleting old master key: ${event.target.error?.message}`,
+        );
+        reject(event.target.error);
+      };
+    });
+  } catch (error) {
+    console.error("Error in updateMasterKey:", error);
+    throw error;
+  }
+}
+
 export async function getPublicKey(userId) {
   try {
     const db = await getDB();
@@ -226,6 +281,7 @@ export async function checkMasterKeys(contacts, userId) {
   try {
     const db = await getDB();
 
+    // Check if master keys are saved locally
     const promises = contacts.map(async (contact) => {
       return new Promise((resolve) => {
         const transaction = db.transaction(["master_keys"]);
@@ -240,9 +296,9 @@ export async function checkMasterKeys(contacts, userId) {
         getRequest.onsuccess = async (event) => {
           const result = getRequest.result;
 
+          // If not, decrypt this master key and save it locally
           if (!result) {
             try {
-              // If not, decrypt this master key and save it locally
               const userPrivateKey = await getPrivateKey(userId);
               const decryptedMasterKey = await decryptMasterKey(
                 contact.master_key,
@@ -254,7 +310,68 @@ export async function checkMasterKeys(contacts, userId) {
               console.error("Error processing master key:", error);
               resolve(false);
             }
-          } else {
+          }
+
+          // If it does, compare with the saved master key
+          else {
+            const savedMasterKey = await getMasterKey(contact.conversation_id);
+            const userPrivateKey = await getPrivateKey(userId);
+            const decryptedMasterKey = await decryptMasterKey(
+              contact.master_key,
+              userPrivateKey,
+            );
+
+            if (savedMasterKey !== decryptedMasterKey) {
+              console.log("Master key mismatch, generating new master key");
+              try {
+                // Get user public key
+                const userPublicKey = await getPublicKey(userId);
+
+                // Get the contact user ID from the contact object
+                const contactId = contact.contact_id;
+
+                if (!contactId) {
+                  console.error("Could not determine contact ID");
+                  resolve(false);
+                  return;
+                }
+
+                // Get the contact's public key
+                const contactPublicKey =
+                  await getContactPublicKeyById(contactId);
+
+                if (!userPublicKey || !contactPublicKey) {
+                  console.error("Could not find required public keys");
+                  resolve(false);
+                  return;
+                }
+
+                // Generate a new master key
+                const newMasterKey = await generateMasterKey();
+
+                // Encrypt the new master key for both users
+                const { encryptedUserMasterKey, encryptedContactMasterKey } =
+                  await encryptMasterKey(
+                    newMasterKey,
+                    userPublicKey,
+                    contactPublicKey,
+                  );
+
+                // Update the master key in the database
+                await updateConversationMasterKeys(
+                  contact.conversation_id,
+                  encryptedUserMasterKey,
+                  encryptedContactMasterKey,
+                );
+
+                // Update the master key locally
+                await updateMasterKey(contact.conversation_id, newMasterKey);
+
+                console.log("Master key successfully updated");
+              } catch (error) {
+                console.error("Error updating master key:", error);
+              }
+            }
             resolve(true);
           }
         };

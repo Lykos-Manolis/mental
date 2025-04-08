@@ -139,18 +139,23 @@ export async function encryptMasterKey(
 }
 
 export async function decryptMasterKey(masterKey, userPrivateKey) {
-  const importedUserPrivateKey = await importKey(userPrivateKey, "private");
-  const bufferMasterKey = base64ToArrayBuffer(masterKey);
+  try {
+    const importedUserPrivateKey = await importKey(userPrivateKey, "private");
+    const bufferMasterKey = base64ToArrayBuffer(masterKey);
 
-  const decryptedMasterKey = await window.crypto.subtle.decrypt(
-    {
-      name: "RSA-OAEP",
-    },
-    importedUserPrivateKey,
-    bufferMasterKey,
-  );
+    const decryptedMasterKey = await window.crypto.subtle.decrypt(
+      {
+        name: "RSA-OAEP",
+      },
+      importedUserPrivateKey,
+      bufferMasterKey,
+    );
 
-  return arrayBufferToBase64(decryptedMasterKey);
+    return arrayBufferToBase64(decryptedMasterKey);
+  } catch (error) {
+    console.error("Error decrypting master key:", error);
+    return null;
+  }
 }
 
 // ------------------------------------------------------------

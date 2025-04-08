@@ -77,6 +77,22 @@ async function getContactPublicKey(identifier) {
   return data;
 }
 
+export async function getContactPublicKeyById(userId) {
+  try {
+    const { data, error } = await supabase
+      .from("keys")
+      .select("public_key")
+      .eq("user_id", userId)
+      .single();
+
+    if (error) throw error;
+    return data.public_key;
+  } catch (error) {
+    console.error("Error fetching contact public key:", error.message);
+    throw error;
+  }
+}
+
 export async function getBasicContacts() {
   const { data, error } = await supabase.rpc("get_basic_contacts");
   if (error) throw error;

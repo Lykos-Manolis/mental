@@ -143,7 +143,7 @@ function Home() {
       )}
 
       {/* Some Contacts */}
-      {!isLoadingContacts && contacts?.length > 0 && contacts.length <= 3 && (
+      {!isLoadingContacts && contacts?.length > 0 && contacts.length <= 2 && (
         <SomeContacts
           onOpenContactModal={() => setOpenContactModal(true)}
           onOpenFavoritesModal={() => setOpenFavoritesModal(true)}

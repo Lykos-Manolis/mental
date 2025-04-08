@@ -46,3 +46,40 @@ export async function updateConversationReadStatus(conversationId) {
 
   return true;
 }
+
+export async function updateConversationMasterKeys(
+  conversationId,
+  userMasterKey,
+  contactMasterKey,
+) {
+  try {
+    // Get the conversation to ensure it exists
+    const { data: conversation, error: fetchError } = await supabase
+      .from("conversations")
+      .select("id, user_1, user_2")
+      .eq("id", conversationId)
+      .single();
+
+    if (fetchError) {
+      throw fetchError;
+    }
+
+    // Update the master keys
+    const { error } = await supabase
+      .from("conversations")
+      .update({
+        user_1_master_key: userMasterKey,
+        user_2_master_key: contactMasterKey,
+      })
+      .eq("id", conversationId);
+
+    if (error) {
+      throw error;
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error updating conversation master keys:", error.message);
+    throw error;
+  }
+}
