@@ -108,6 +108,7 @@ function ConversationList({ contacts, isLoading }) {
                 }}
               >
                 {contact?.last_message?.content || "No messages yet"}
+                {contact?.last_message?.content === " " && "No messages yet"}
               </Typography>
 
               {!contact?.is_read && (
