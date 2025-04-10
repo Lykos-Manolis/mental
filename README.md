@@ -311,31 +311,466 @@ This way we can make sure that every component has the correct layout for each s
 
 ## Database
 
+The application employs a hybrid database architecture that combines a robust backend PostgreSQL database hosted on Supabase with client-side storage implemented through the IndexedDB API. This dual-database approach supports both persistent server-side data management and secure client-side cryptographic operations.
+
+The Supabase database follows a relational schema designed to efficiently model the relationships between users, conversations, and messages
+
 ![Relational Schema](docs/database/relational-schema.png)
+
+1. **Conversations:** Represents chat sessions between two users, storing metadata and encrypted master keys
+2. **Messages:** Contains all encrypted messages with their metadata, including timestamps and emotional analysis
+3. **Contacts:** Maps relationships between users, including favorite status and conversation links
+4. **Keys:** Contains the public cryptographic keys associated with each user
+
+Users are stored securely within supabase's authentication system which leaves room for extra security. That ensures the safety of each user's password and is directly connected to the created tables.
+
+## Client-side storage
+
+To support the end-to-end encryption system, a browser-based IndexedDB database stores sensitive cryptographic material.
+
+```js
+export async function initializeIndexedDB(userId) {
+  // Create the database structure
+  const request = indexedDB.open("Mental_DB", 1);
+
+  request.onupgradeneeded = (event) => {
+    const db = event.target.result;
+
+    // Create key pairs table
+    const objectstore = db.createObjectStore("key_pairs", {
+      keyPath: "user_id",
+    });
+    objectstore.createIndex("user_id", "user_id", { unique: true });
+    objectstore.createIndex("public_key", "public_key", { unique: true });
+    objectstore.createIndex("private_key", "private_key", { unique: true });
+
+    // Create master keys table
+    const masterObjectstore = db.createObjectStore("master_keys", {
+      keyPath: "conversation_id",
+    });
+    masterObjectstore.createIndex("conversation_id", "conversation_id", {
+      unique: true,
+    });
+  };
+}
+```
+
+This IndexedDB instance stores:
+
+- Private keys: The user's RSA private key, never transmitted to the server
+- Master keys: Decrypted AES keys for each conversation, used for message encryption/decryption
+
+The design prioritizes security by ensuring that sensitive cryptographic materials never leave the client device in unencrypted form, while still providing seamless data synchronization across multiple devices.
 
 ## API
 
+The application leverages Supabase's comprehensive API ecosystem to handle data operations, authentication, and storage. This serverless architecture eliminates the need for a custom backend while providing robust security and scalability.
+
+The API layer is organized into functional modules that encapsulate specific operations:
+
+1. **Authentication API:** Manages user registration, login, and session management
+2. **Contacts API:** Handles user discovery, relationship management, and public key exchange
+3. **Conversations API:** Manages chat sessions and encrypted master key distribution
+4. **Messages API:** Handles storing and retrieving encrypted messages
+5. **Emotions API:** Interfaces with the machine learning model for sentiment analysis
+
+```js
+// Example of the emotion prediction API
+export async function getEmotionPrediction(text) {
+  if (!text) return;
+
+  try {
+    const { data, error } = await supabase.functions.invoke("predict-emotion", {
+      body: { text: text },
+    });
+
+    if (error) throw error;
+    return { data, error };
+  } catch (error) {
+    console.error("Error fetching emotion prediction:", error.message);
+    throw error;
+  }
+}
+```
+
+The system employs Supabase's server-side PostgreSQL functions to implement complex operations securely.
+
+```sql
+begin
+  -- Set is_favorite to false for all contacts of the current user
+  update contacts
+  set is_favorite = false
+  where user_id = auth.uid();
+
+  -- Set is_favorite to true for the selected contacts
+  update contacts
+  set is_favorite = true
+  where user_id = auth.uid()
+  and contact_id = any(favorite_contact_ids);
+end;
+
+```
+
+These server-side functions offer several advantages:
+
+- Reduced network traffic by processing data at the source
+- Enhanced security through access control at the database level
+- Improved performance for complex relational queries
+
+After creation, these functions can be initiated by calling supabase's rpc function.
+
+```js
+export async function updateFavoriteContacts(favoriteContactIds) {
+  try {
+    const { data, error } = await supabase.rpc("update_favorite_contacts", {
+      favorite_contact_ids: favoriteContactIds,
+    });
+
+    if (error) throw error;
+
+    return data;
+  } catch (error) {
+    console.error("Error updating favorite contacts:", error.message);
+    throw error;
+  }
+}
+```
+
+## Real-time Subscriptions
+
+The application utilizes Supabase's real-time capabilities for instant message updates.
+
+```js
+const subscription = supabase
+  .channel(`messages:conversation_id=eq.${conversationId}`)
+  .on(
+    "postgres_changes",
+    {
+      event: "*",
+      schema: "public",
+      table: "messages",
+      filter: `conversation_id=eq.${conversationId}`,
+    },
+    (payload) => {
+      setMessages((currentMessages) => [...currentMessages, payload.new]);
+    },
+  )
+  .subscribe();
+```
+
+This enables a responsive user experience where new messages appear instantly without polling the server for updates.
+
 ## Hooks
+
+The application employs a comprehensive set of custom React hooks to encapsulate and reuse complex business logic. These hooks abstract away implementation details, providing a clean interface for components to interact with the data layer and various application services.
+
+Several hooks are implemented to manage data retrieval operations. These hooks manage the entire data lifecycle, including:
+
+- Initial data loading states
+- Asynchronous data fetching
+- Error handling
+- Data transformation (such as decryption)
+- Real-time subscriptions when applicable
+
+```jsx
+export function useGetConversationMessages(conversationId) {
+  const [messages, setMessages] = useState([]);
+  const [decryptedMessages, setDecryptedMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (messages && messages.length > 0) {
+      (async () => {
+        const decryptedMessages = await decryptMessages(
+          messages,
+          conversationId,
+        );
+        setDecryptedMessages(decryptedMessages);
+      })();
+    }
+  }, [messages]);
+
+  // Additional logic for fetching and subscribing to messages
+
+  return { decryptedMessages, isLoading, error };
+}
+```
+
+State management hooks are also used in this instance to encapsulate complex state management operations.
+
+```jsx
+export function useMessageHandler(chatId, onColorUpdate, userId) {
+  const [text, setText] = useState("");
+  const [error, setError] = useState(null);
+
+  const { fetchPrediction } = useGetEmotionPrediction();
+  const { sendMessage } = useSendMessage();
+
+  const handleSend = async () => {
+    if (!text.replace(/\s/g, "")) return;
+
+    // Message handling logic including encryption and emotion prediction
+
+    return prediction;
+  };
+
+  // Additional utility functions
+
+  return {
+    text,
+    setText,
+    handleSend,
+    handleKeyDown,
+    error,
+    dismissError,
+  };
+}
+```
+
+The last type of hooks that are implemented are authentication hooks. These are used to manage the authentication state and user identity.
+
+```jsx
+export function useGetUserId() {
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const getUserId = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUserId(user?.id);
+    };
+    getUserId();
+  }, []);
+
+  return userId;
+}
+```
+
+This pattern of custom hooks creates a clean separation of concerns, improves code reusability, and simplifies component implementation by abstracting away complex logic related to data management and API interactions.
 
 ## Host
 
+The application is designed for modern web deployment with progressive web app (PWA) capabilities, allowing installation on mobile devices. This approach provides the advantages of both web accessibility and native-like functionality.
+
+The deployment is managed using Vercel, a platform specialized in hosting JavaScript applications. This configuration ensures proper routing for the single-page application architecture, directing all requests to the main entry point where the React Router handles internal navigation.
+
 ## Authentication
+
+The application implements a robust authentication system leveraging Supabase Auth, which provides secure user management with multiple authentication options. This system integrates seamlessly with the application's encryption architecture to ensure both identity verification and data security.
+
+```jsx
+<Auth
+  supabaseClient={supabase}
+  providers={["google", "github"]}
+  socialLayout="horizontal"
+  // Additional configuration
+/>
+```
+
+A React context is also implemented to manage authentication state throughout the component tree.
+
+```js
+export function AuthProvider({ children }) {
+  const [session, setSession] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  useEffect(() => {
+    // Initialize authentication state and listen for changes
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      setSession(session);
+
+      if (session) {
+        // Initialize cryptographic storage when authenticated
+        await initializeIndexedDB(session.user.id);
+        setDbInitialized(true);
+      }
+
+      setIsLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Additional authentication methods
+
+  return (
+    <AuthContext.Provider
+      value={{ session, isLoading, dbInitialized, signOut }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+```
+
+Users can authenticate through multiple methods. This implementation offers:
+
+- Email/password authentication with secure password handling
+- Social login through Google and GitHub
+- Session persistence across browser sessions
+- Automatic token refresh for continuous authentication
 
 # Providing Security
 
-(intro explaining how sequrity is important)
-(explain how sequrity works in wireless communication with messages)
+Secure communication is a big concern in modern messaging applications. To address this need, the system implements a robust end-to-end encryption (E2EE) protocol that ensures message confidentiality between participants. This section explores the cryptographic foundations and implementation details of the security layer.
 
 ## End-to-end encryption (E2EE)
 
-(explain symmetric and asymmetric)
-(explain your hybrid solution)
+**Asymmetric Encryption** uses a pair of mathematically related keys—public and private. The public key can be freely shared, while the private key remains secret. Any message encrypted with the public key can only be decrypted with the corresponding private key. This system facilitates secure key exchange but operates more slowly for large data volumes.
+
+```js
+// RSA-OAEP implementation for asymmetric encryption
+async function generateKeyPair() {
+  const { publicKey, privateKey } = await window.crypto.subtle.generateKey(
+    {
+      name: "RSA-OAEP",
+      modulusLength: 4096,
+      publicExponent: new Uint8Array([1, 0, 1]),
+      hash: "SHA-256",
+    },
+    true,
+    ["encrypt", "decrypt"],
+  );
+
+  // Keys are exported and encoded in base64 format
+  // ...
+}
+```
+
+**Symmetric Encryption** utilizes a single shared key for both encryption and decryption operations. While significantly faster for processing large amounts of data, the challenge lies in securely exchanging this key between parties.
+
+```js
+// AES-GCM implementation for symmetric encryption
+async function generateMasterKey() {
+  let key = await window.crypto.subtle.generateKey(
+    {
+      name: "AES-GCM",
+      length: 256,
+    },
+    true,
+    ["encrypt", "decrypt"],
+  );
+
+  return await exportMasterKey(key);
+}
+```
+
+The implemented solution combines both approaches to leverage their respective advantages. The system creates a unique symmetric key (master key) for each conversation, which encrypts all messages exchanged within that conversation. This master key is then securely distributed to both participants using asymmetric encryption.
+
+**The hybrid approach works as follows:**
+
+1. Each user generates an RSA key pair (4096-bit) during account creation
+2. For each conversation, a shared AES-256-GCM master key is generated
+3. The master key is encrypted twice—once with each participant's public key
+4. Both encrypted versions are stored in the database
+5. Each participant can only decrypt the master key using their private key
+6. All messages are encrypted/decrypted using the master key
+
+> [!TIP]
+>
+> ### This architecture provides several significant benefits:
+>
+> - Security: Neither the server nor any third parties can access message content
+> - Performance: Fast symmetric encryption for message content
+> - Key Management: Secure key distribution without direct exchange
 
 ## Encrypting data
 
+The encryption process occurs entirely client-side, ensuring that only encrypted data ever reaches the server. Each message is encrypted using the Web Crypto API with the AES-GCM algorithm. This implementation includes careful handling of encryption parameters, particularly the initialization vector (IV), which ensures that identical plaintext messages produce different ciphertexts.
+
+```js
+export async function encryptMessage(message, masterKey) {
+  // Convert message to binary format
+  const encodedMessage = encodeMessage(message);
+  const importedKey = await importMasterKey(masterKey);
+
+  // Generate a random initialization vector
+  const iv = window.crypto.getRandomValues(new Uint8Array(12));
+
+  // Encrypt the message
+  const encryptedMessage = await window.crypto.subtle.encrypt(
+    { name: "AES-GCM", iv: iv },
+    importedKey,
+    encodedMessage,
+  );
+
+  // Return both the encrypted message and IV
+  return {
+    encryptedMessage: arrayBufferToBase64(encryptedMessage),
+    iv: arrayBufferToBase64(iv),
+  };
+}
+```
+
+For storage and transmission, all binary data is converted to Base64 encoding. This ensures compatibility with databases and network protocols while maintaining the integrity of the encrypted information.
+
+![Encrypted messages](docs/database/encrypted-messages.png)
+<sup>Picture: Example of encrypted messages in the database</sup>
+
 ## Decrypting data
 
+The decryption process mirrors encryption, retrieving the relevant master key for each conversation from secure local storage. When messages are fetched from the server, they remain encrypted until rendered in the user interface.
+
+```js
+export async function decryptMessage(message, masterKey, iv) {
+  try {
+    const importedKey = await importMasterKey(masterKey);
+    const bufferMessage = base64ToArrayBuffer(message);
+    const bufferIv = base64ToArrayBuffer(iv);
+
+    // Decrypt using the same AES-GCM algorithm
+    const decryptedMessage = await window.crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: bufferIv },
+      importedKey,
+      bufferMessage,
+    );
+
+    return decodeMessage(decryptedMessage);
+  } catch (error) {
+    return " ";
+  }
+}
+```
+
+The system efficiently handles bulk decryption operations for conversation history through promise-based parallel processing:
+
+```js
+export async function decryptMessages(messages, conversationId) {
+  const masterKey = await getMasterKey(conversationId);
+  const messagesCopy = JSON.parse(JSON.stringify(messages));
+
+  await Promise.all(
+    messagesCopy.map(async (message) => {
+      const decryptedMessage = await decryptMessage(
+        message.content,
+        masterKey,
+        message.iv,
+      );
+      message.content = decryptedMessage;
+    }),
+  );
+
+  return messagesCopy;
+}
+```
+
 ## Caveats and limitations
+
+Despite the robustness of the implemented encryption system, several considerations and limitations should be acknowledged:
+
+1. Key Security: The security model depends on private keys remaining secure on client devices. If a user's device is compromised, message confidentiality cannot be guaranteed.
+2. Forward Secrecy: The current implementation does not support perfect forward secrecy. A compromise of the master key potentially exposes all messages in a conversation. Future iterations could implement rotating session keys.
+3. Metadata Visibility: While message content is encrypted, metadata such as sender, recipient, timestamp, and message frequency remains visible to the server.
+4. Browser Limitations: The system relies on browser-based cryptography through the Web Crypto API. While standardized and secure, this approach inherits any implementation-specific limitations of the user's browser.
+5. Key Recovery: The system currently lacks a robust key recovery mechanism. Loss of private keys could result in permanent inability to access encrypted conversations.
+
+These limitations represent opportunities for future enhancements to further strengthen the security architecture while maintaining the application's usability and performance characteristics.
 
 # Migrating to Mobile
 
@@ -344,9 +779,12 @@ The app can migrate to mobile by making it into a progressive web-app (PWA). To 
 ### Lighthouse Tool
 
 The lighthouse tool on google chrome's developer tools allows us to analyze the performance of the application. After auditing the site, it can determine the performance, accessibility, best practices and search engine optimization (SEO).
-![[{7C2EB199-FBEC-417B-8165-9C2D153C1072}.png]]
+![Lighthouse performance](docs/performance/lighthouse.png)
+<sub>Image: The Lighthouse performance tab</sub>
 
-It can also provide additional information for each of them and major flaws to fix later on.![[Pasted image 20250211143254.png]]
+It can also provide additional information for each of them and major flaws to fix later on.
+![Lighthouse warning](docs/performance/warning.png)
+<sub>Image: Lighthouse warning message</sub>
 
 When the metrics reach a certain point meaning it _could_ be made into a PWA, the lighthouse lets us transform it.
 
@@ -356,3 +794,23 @@ To migrate we need to create a JavaScript worker\*
 In our case, a popular library will be used to handle all that, called ??
 
 ![](https://youtu.be/sFsRylCQblw?si=eP5Vk9_5j-xLOvbq)
+
+# Application features
+
+The main idea is centered around helping people understand eachother and communicate better. To achieve this, the application has several features integrated within it, guiding the user into a friendly and easy to navigate experience.
+
+## Converting feelings
+
+With the use of a custom-made neural network and an overall utilization of artificial intelligence, the application attempts to convert each text sent into an emotionally understandable spectrum of colors.
+
+When sending messages through the application, the message contents are analyzed in real time and attempt to classify them into twenty seven different emotions which are then matched into colors. In the chatroom interface the background changes based on the emotion predictions. When a user scrolls through the application, the colors change to match the last message visible at that moment.
+
+> ![Chat view](docs/app-design/chat-view.png) > <sub>Image: Chat view of the application</sub>
+
+After creating and initiating a conversation with someone, the user can see in their home screen a new background that expands and changes colors as the conversations add up and their emotions change.
+
+## Analyzing understanding
+
+Each conversation has their own analytics desplayed in a separate dashboard. When a user navigates to a conversation, they can select the dashboard button which redirects them to that interface. There, they can view that conversation's analytics, showing the emotions throughout the month or year and even view some statistics for each emotion separately.
+
+> ![Dashboard and chat views](docs/app-design/dashboard-chat-view.png) > <sub>Image: Dashboard and chat view of the application</sub>
