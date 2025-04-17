@@ -44,7 +44,7 @@ function Chat() {
         animate(["#gradient-1", "#gradient-2", "#gradient-3"], {
           fill: theme.palette.emotion[emotion],
           easing: "easeInOutQuad",
-          duration: 800,
+          duration: 500,
         });
       }
     },

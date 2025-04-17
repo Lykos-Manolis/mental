@@ -7,7 +7,8 @@ import {
   tooltipClasses,
   styled,
 } from "@mui/material";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
+import { animate, onScroll, utils } from "animejs";
 
 // Move the styled component outside the function component
 const createStyledTooltip = (emotion) =>
@@ -23,7 +24,33 @@ const createStyledTooltip = (emotion) =>
     },
   }));
 
-function ChatMessage({ content, sent_by_user, emotion }) {
+function ChatMessage({
+  content,
+  sent_by_user,
+  emotion,
+  index,
+  updateUserEmotion,
+  updatePartnerEmotion,
+}) {
+  const updateEmotion = () => {
+    if (sent_by_user) {
+      updateUserEmotion(emotion);
+    } else {
+      updatePartnerEmotion(emotion);
+    }
+  };
+
+  useEffect(() => {
+    animate(`#message-${index}`, {
+      autoplay: onScroll({
+        container: ".chat-container",
+        enter: "bottom-=50 top",
+        leave: "top+=30 bottom",
+        onEnter: () => updateEmotion(),
+      }),
+    });
+  }, []);
+
   const theme = useTheme();
 
   // Use useMemo to avoid recreating the component on every render
@@ -44,6 +71,7 @@ function ChatMessage({ content, sent_by_user, emotion }) {
       }}
     >
       <Paper
+        id={`message-${index}`}
         sx={{
           borderRadius: sent_by_user ? "20px 0 20px 20px" : "0 20px 20px 20px",
           maxWidth: "75%",
