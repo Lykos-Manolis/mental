@@ -1,15 +1,34 @@
-import React from "react";
+import { useEffect } from "react";
 import Grid2 from "@mui/material/Grid2";
 import Typography from "@mui/material/Typography";
+import { animate } from "animejs";
 
 function NoChat() {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      animate("#no-chat", {
+        opacity: 1,
+        scale: {
+          from: 0,
+          to: 1.2,
+          duration: 200,
+        },
+        duration: 500,
+        easing: "easeInOutElastic",
+      });
+    });
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <Grid2
+      id="no-chat"
       container
       justifyContent="center"
       alignItems="center"
       spacing={3}
-      sx={{ mt: 2 }}
+      sx={{ mt: 2, opacity: 0 }}
     >
       <svg
         viewBox="0 0 699.9999999999999 831.2500000000002"
@@ -17,7 +36,7 @@ function NoChat() {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         overflow="visible"
-        width="80%"
+        width="60%"
       >
         <g id="Master/Spot Illustration/Catching Up">
           <g id="Small Elements">

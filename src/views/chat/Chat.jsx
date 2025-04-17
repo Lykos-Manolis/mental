@@ -6,7 +6,7 @@ import { useGetConversationMessages } from "../../hooks/useGetConversationMessag
 import { useGetConversationInfo } from "../../hooks/useGetConversationInfo";
 import { useEmotionColors } from "../../hooks/useEmotionColors";
 import { useParams, Navigate } from "react-router-dom";
-import anime from "animejs";
+import { animate } from "animejs";
 import { useOnlineStatus } from "../../hooks/useOnlineStatus";
 import BackgroundGradients from "./components/background/BackgroundGradients";
 import { useMessageHandler } from "../../hooks/useMessageHandler";
@@ -41,8 +41,7 @@ function Chat() {
   const updateUserEmotion = useCallback(
     (emotion) => {
       if (emotion && theme.palette.emotion[emotion]) {
-        anime({
-          targets: ["#gradient-1", "#gradient-2", "#gradient-3"],
+        animate(["#gradient-1", "#gradient-2", "#gradient-3"], {
           fill: theme.palette.emotion[emotion],
           easing: "easeInOutQuad",
           duration: 800,
@@ -55,8 +54,7 @@ function Chat() {
   const updatePartnerEmotion = useCallback(
     (emotion) => {
       if (emotion && theme.palette.emotion[emotion]) {
-        anime({
-          targets: ["#gradient-4", "#gradient-5", "#gradient-6"],
+        animate(["#gradient-4", "#gradient-5", "#gradient-6"], {
           fill: theme.palette.emotion[emotion],
           easing: "easeInOutQuad",
           duration: 800,

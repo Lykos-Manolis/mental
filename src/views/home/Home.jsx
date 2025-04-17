@@ -9,7 +9,7 @@ import FavoritesModal from "./components/FavoritesModal";
 import { Grid2, useTheme } from "@mui/material";
 import HomeHeader from "./components/HomeHeader";
 import Favorites from "./components/Favorites";
-import anime from "animejs";
+import { animate } from "animejs";
 import SideDrawer from "./components/SideDrawer";
 import WelcomeModal from "./components/WelcomeModal";
 import { checkMasterKeys, getMasterKey } from "../../utils/indexedDB";
@@ -60,40 +60,35 @@ function Home() {
   // Update SVG paths
   useEffect(() => {
     if (contacts && contacts.length > 0) {
-      anime({
-        targets: "#svg-path-1",
+      animate("#svg-path-1", {
         fill: theme.palette.emotion[
           contacts[0]?.last_message?.emotion || "default"
         ],
         duration: 3000,
         easing: "easeOutElastic",
       });
-      anime({
-        targets: "#svg-path-2",
+      animate("#svg-path-2", {
         fill: theme.palette.emotion[
           contacts[1]?.last_message?.emotion || "default"
         ],
         duration: 3000,
         easing: "easeOutElastic",
       });
-      anime({
-        targets: "#svg-path-3",
+      animate("#svg-path-3", {
         fill: theme.palette.emotion[
           contacts[2]?.last_message?.emotion || "default"
         ],
         duration: 3000,
         easing: "easeOutElastic",
       });
-      anime({
-        targets: "#svg-path-4",
+      animate("#svg-path-4", {
         fill: theme.palette.emotion[
           contacts[3]?.last_message?.emotion || "default"
         ],
         duration: 3000,
         easing: "easeOutElastic",
       });
-      anime({
-        targets: "#svg-path-5",
+      animate("#svg-path-5", {
         fill: theme.palette.emotion[
           contacts[4]?.last_message?.emotion || "default"
         ],

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import anime from "animejs";
+import { animate } from "animejs";
 import { useTheme } from "@mui/material";
 
 function BackgroundGradients({ backgroundColors }) {
@@ -9,15 +9,13 @@ function BackgroundGradients({ backgroundColors }) {
   useEffect(() => {
     // Only animate if backgroundColors are provided
     if (backgroundColors && backgroundColors.length >= 2) {
-      anime({
-        targets: ["#gradient-1", "#gradient-2", "#gradient-3"],
+      animate(["#gradient-1", "#gradient-2", "#gradient-3"], {
         fill: backgroundColors[0] ?? theme.palette.background.default,
         easing: "easeInOutQuad",
         duration: 800,
       });
 
-      anime({
-        targets: ["#gradient-4", "#gradient-5", "#gradient-6"],
+      animate(["#gradient-4", "#gradient-5", "#gradient-6"], {
         fill: backgroundColors[1] ?? theme.palette.background.default,
         easing: "easeInOutQuad",
         duration: 800,

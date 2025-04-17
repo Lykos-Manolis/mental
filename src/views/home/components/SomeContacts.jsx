@@ -1,9 +1,25 @@
 import { Button, Grid2, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { animate } from "animejs";
 
 function SomeContacts({ onOpenContactModal, onOpenFavoritesModal }) {
+  useEffect(() => {
+    animate("#some-contacts", {
+      opacity: 1,
+      duration: 1000,
+      easing: "easeInOutElastic",
+    });
+  }, []);
+
   return (
-    <Grid2 container justifyContent="center" alignItems="center" spacing={10}>
+    <Grid2
+      id="some-contacts"
+      container
+      justifyContent="center"
+      alignItems="center"
+      spacing={10}
+      sx={{ opacity: 0, zIndex: 1 }}
+    >
       <Grid2
         container
         direction="column"
