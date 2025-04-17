@@ -458,12 +458,20 @@ export async function checkMasterKeys(contacts, userId) {
               userPrivateKey,
             );
 
-            if (savedMasterKey !== decryptedMasterKey) {
-              console.log("Master key mismatch, generating new master key");
-
+            if (!decryptedMasterKey) {
+              console.log(
+                "Could not decrypt master key, generating new master key",
+              );
               await updateMasterKeyForContact(contact, userId);
+            } else if (savedMasterKey !== decryptedMasterKey) {
+              console.log("Master key mismatch, storing new master key");
+              await updateMasterKey(
+                contact.conversation_id,
+                decryptedMasterKey,
+              );
             }
             resolve(true);
+            return;
           }
         };
       });
