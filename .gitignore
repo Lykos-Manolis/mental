@@ -31,3 +31,6 @@ dist-ssr
 
 # Model files
 .model
+
+# Docs
+documentation.txt

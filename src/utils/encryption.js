@@ -143,6 +143,11 @@ export async function decryptMasterKey(masterKey, userPrivateKey) {
     const importedUserPrivateKey = await importKey(userPrivateKey, "private");
     const bufferMasterKey = base64ToArrayBuffer(masterKey);
 
+    if (!bufferMasterKey || !importedUserPrivateKey) {
+      console.error("Missing required parameters for decryptMasterKey");
+      return null;
+    }
+
     const decryptedMasterKey = await window.crypto.subtle.decrypt(
       {
         name: "RSA-OAEP",
@@ -151,7 +156,9 @@ export async function decryptMasterKey(masterKey, userPrivateKey) {
       bufferMasterKey,
     );
 
-    return arrayBufferToBase64(decryptedMasterKey);
+    const result = arrayBufferToBase64(decryptedMasterKey);
+
+    return result;
   } catch (error) {
     console.error("Error decrypting master key:", error);
     return null;

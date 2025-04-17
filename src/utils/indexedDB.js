@@ -411,7 +411,7 @@ export async function checkMasterKeys(contacts, userId) {
 
     // Check if master keys are saved locally
     const promises = contacts.map(async (contact) => {
-      return new Promise((resolve) => {
+      return new Promise(async (resolve) => {
         const transaction = db.transaction(["master_keys"]);
         const objectStore = transaction.objectStore("master_keys");
         const getRequest = objectStore.get(contact.conversation_id);
@@ -426,6 +426,7 @@ export async function checkMasterKeys(contacts, userId) {
 
           // If not, decrypt this master key and save it locally
           if (!result) {
+            console.log("No master key found");
             try {
               const userPrivateKey = await getPrivateKey(userId);
               const decryptedMasterKey = await decryptMasterKey(
@@ -434,6 +435,7 @@ export async function checkMasterKeys(contacts, userId) {
               );
 
               if (!decryptedMasterKey) {
+                console.log("Could not decrypt master key");
                 await updateMasterKeyForContact(contact, userId);
                 resolve(true);
                 return;

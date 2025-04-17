@@ -65,12 +65,24 @@ export async function updateConversationMasterKeys(
       throw fetchError;
     }
 
+    const {
+      data: {
+        user: { id: currentUserId },
+      },
+    } = await supabase.auth.getUser();
+
     // Update the master keys
     const { error } = await supabase
       .from("conversations")
       .update({
-        user_1_master_key: userMasterKey,
-        user_2_master_key: contactMasterKey,
+        user_1_master_key:
+          currentUserId === conversation.user_1
+            ? userMasterKey
+            : contactMasterKey,
+        user_2_master_key:
+          currentUserId === conversation.user_2
+            ? userMasterKey
+            : contactMasterKey,
       })
       .eq("id", conversationId);
 
