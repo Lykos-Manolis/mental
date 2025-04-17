@@ -138,7 +138,6 @@ function Home() {
         <NoContacts
           onOpenSideDrawer={() => setDrawerOpen(true)}
           onOpenContactModal={() => setOpenContactModal(true)}
-          onOpenWelcomeModal={() => setWelcomeModalOpen(true)}
         />
       )}
 

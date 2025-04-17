@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Grid2, Skeleton } from "@mui/material";
 import ChatMessage from "./ChatMessage";
 import { useGetUserId } from "../../../../hooks/useGetUserId";
+import NoChat from "./NoChat";
 
 function ChatContainer({
   messages,
@@ -363,46 +364,50 @@ function ChatContainer({
         zIndex: 1,
       }}
     >
-      {messages.map((message, index, array) => {
-        const currentMessage = message;
-        const nextMessage = array[index + 1];
-        const isCurrentMessageFromUser = currentMessage.sender_id === userId;
-        const messageId = `message-${index}`;
-        const opacity =
-          visibleMessages[messageId] !== undefined
-            ? visibleMessages[messageId]
-            : 1;
+      {!isLoading && messages?.length === 0 ? (
+        <NoChat />
+      ) : (
+        messages.map((message, index, array) => {
+          const currentMessage = message;
+          const nextMessage = array[index + 1];
+          const isCurrentMessageFromUser = currentMessage.sender_id === userId;
+          const messageId = `message-${index}`;
+          const opacity =
+            visibleMessages[messageId] !== undefined
+              ? visibleMessages[messageId]
+              : 1;
 
-        const extraSpace =
-          nextMessage &&
-          isCurrentMessageFromUser !== (nextMessage.sender_id === userId);
+          const extraSpace =
+            nextMessage &&
+            isCurrentMessageFromUser !== (nextMessage.sender_id === userId);
 
-        return (
-          <Grid2
-            key={`chat-message-${index}`}
-            className="chat-message-item"
-            data-message-id={messageId}
-            data-message-emotion={message.emotion || "neutral"}
-            data-sender={isCurrentMessageFromUser ? "user" : "partner"}
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: isCurrentMessageFromUser
-                ? "flex-end"
-                : "flex-start",
-              mb: extraSpace ? 2 : 0.5,
-              opacity: opacity,
-              transition: "opacity 0.2s ease-out",
-            }}
-          >
-            <ChatMessage
-              {...message}
-              sent_by_user={isCurrentMessageFromUser}
-              extraSpace={extraSpace}
-            />
-          </Grid2>
-        );
-      })}
+          return (
+            <Grid2
+              key={`chat-message-${index}`}
+              className="chat-message-item"
+              data-message-id={messageId}
+              data-message-emotion={message.emotion || "neutral"}
+              data-sender={isCurrentMessageFromUser ? "user" : "partner"}
+              sx={{
+                width: "100%",
+                display: "flex",
+                justifyContent: isCurrentMessageFromUser
+                  ? "flex-end"
+                  : "flex-start",
+                mb: extraSpace ? 2 : 0.5,
+                opacity: opacity,
+                transition: "opacity 0.2s ease-out",
+              }}
+            >
+              <ChatMessage
+                {...message}
+                sent_by_user={isCurrentMessageFromUser}
+                extraSpace={extraSpace}
+              />
+            </Grid2>
+          );
+        })
+      )}
       <div ref={messagesEndRef} />
     </Grid2>
   );
