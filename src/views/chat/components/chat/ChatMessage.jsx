@@ -7,8 +7,9 @@ import {
   tooltipClasses,
   styled,
 } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
-import { animate, onScroll, utils } from "animejs";
+import React, { useEffect, useMemo, useState } from "react";
+import { animate, onScroll, utils, engine } from "animejs";
+import MessageParticle from "./MessageParticle";
 
 // Move the styled component outside the function component
 const createStyledTooltip = (emotion) =>
@@ -40,6 +41,8 @@ function ChatMessage({
     }
   };
 
+  const [animations, setAnimations] = useState([]);
+
   useEffect(() => {
     animate(`#message-${index}`, {
       autoplay: onScroll({
@@ -50,6 +53,34 @@ function ChatMessage({
       }),
     });
   }, []);
+
+  useEffect(() => {
+    Array.from({ length: 5 }).map((_, i) => {
+      const animation = animate(`#particle-${index}-${i}`, {
+        x: utils.random(-40, 40) + "px",
+        y: utils.random(-50, 0) + "px",
+        scale: [{ from: 0, to: 1 }, { to: 0 }],
+        delay: utils.random(0, 1000),
+        opacity: [{ from: 0, to: 1 }, { to: 0 }],
+        ease: "easeInOut",
+        loop: true,
+      });
+      animation.revert();
+      setAnimations((prev) => [...prev, animation]);
+    });
+  }, []);
+
+  const toggleAnimations = () => {
+    if (animations[0].began) {
+      animations.forEach((animation) => {
+        animation.revert();
+      });
+    } else {
+      animations.forEach((animation) => {
+        animation.restart();
+      });
+    }
+  };
 
   const theme = useTheme();
 
@@ -69,6 +100,9 @@ function ChatMessage({
       slots={{
         transition: Zoom,
       }}
+      onClick={() => {
+        toggleAnimations();
+      }}
     >
       <Paper
         id={`message-${index}`}
@@ -84,8 +118,27 @@ function ChatMessage({
           boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0)",
           wordBreak: "break-word",
           overflowWrap: "break-word",
+          position: "relative",
         }}
       >
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div
+            key={`particle-${index}-${i}`}
+            id={`particle-${index}-${i}`}
+            style={{
+              position: "absolute",
+              top: -20,
+              right: "50%",
+              width: "10px",
+              height: "10px",
+              borderRadius: "50%",
+              opacity: 0,
+              color: theme.palette.emotion[emotion],
+            }}
+          >
+            <MessageParticle emotion={emotion} />
+          </div>
+        ))}
         <Typography
           variant="body1"
           sx={{
