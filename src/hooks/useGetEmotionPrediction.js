@@ -20,25 +20,34 @@ export function useGetEmotionPrediction() {
         throw new Error(error.message);
       }
 
-      const predictedEmotionIndex = Number(
-        data[0][0].label.replace("LABEL_", ""),
-      );
+      if (data.emotions_detected) {
+        const predictedEmotion = data.emotions_detected[0] ?? "neutral";
+        console.log("predictedEmotion", predictedEmotion);
 
-      console.log("predictedEmotionIndex", predictedEmotionIndex);
+        setPrediction(predictedEmotion);
+        return predictedEmotion; // Return the emotion for immediate use
+      } else {
+        const predictedEmotionIndex = Number(
+          data[0][0].label.replace("LABEL_", ""),
+        );
 
-      if (
-        isNaN(predictedEmotionIndex) ||
-        predictedEmotionIndex < 0 ||
-        predictedEmotionIndex >= EMOTION_LABELS.length
-      ) {
-        throw new Error("Invalid emotion index");
+        console.log("predictedEmotionIndex", predictedEmotionIndex);
+
+        if (
+          isNaN(predictedEmotionIndex) ||
+          predictedEmotionIndex < 0 ||
+          predictedEmotionIndex >= EMOTION_LABELS.length
+        ) {
+          throw new Error("Invalid emotion index");
+        }
+
+        const predictedEmotion = EMOTION_LABELS[predictedEmotionIndex];
+
+        console.log("predictedEmotion", predictedEmotion);
+
+        setPrediction(predictedEmotion);
+        return predictedEmotion; // Return the emotion for immediate use
       }
-
-      const predictedEmotion = EMOTION_LABELS[predictedEmotionIndex];
-      console.log("predictedEmotion", predictedEmotion);
-
-      setPrediction(predictedEmotion);
-      return predictedEmotion; // Return the emotion for immediate use
     } catch (err) {
       console.error("Emotion prediction failed:", err.message);
       setError(err.message);
