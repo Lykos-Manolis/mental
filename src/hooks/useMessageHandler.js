@@ -5,7 +5,12 @@ import { useTheme } from "@mui/material";
 import { encryptMessage } from "../utils/encryption";
 import { getMasterKey } from "../utils/indexedDB";
 
-export function useMessageHandler(chatId, onColorUpdate, userId) {
+export function useMessageHandler(
+  chatId,
+  onColorUpdate,
+  userId,
+  addOptimisticMessage,
+) {
   const [text, setText] = useState("");
   const [error, setError] = useState(null);
 
@@ -28,6 +33,21 @@ export function useMessageHandler(chatId, onColorUpdate, userId) {
 
     const messageCopy = text;
     setText("");
+
+    // Generate a temporary ID for optimistic message
+    const tempId = `temp-${Date.now()}`;
+
+    // Add optimistic message immediately with neutral emotion
+    if (addOptimisticMessage) {
+      addOptimisticMessage({
+        id: tempId,
+        content: messageCopy,
+        sender_id: userId,
+        emotion: "neutral",
+        isOptimistic: true, // Flag to identify optimistic messages
+        created_at: new Date().toISOString(),
+      });
+    }
 
     try {
       const prediction = await fetchPrediction(messageCopy);

@@ -230,6 +230,7 @@ function ChatContainer({
                 extraSpace={extraSpace}
                 updateUserEmotion={updateUserEmotion}
                 updatePartnerEmotion={updatePartnerEmotion}
+                isOptimistic={message.isOptimistic || false}
               />
             </Grid2>
           );

@@ -21,8 +21,11 @@ function Chat() {
   const theme = useTheme();
 
   // Data Hooks
-  const { decryptedMessages: messages, isLoading: isLoadingMessages } =
-    useGetConversationMessages(chatId);
+  const {
+    decryptedMessages: messages,
+    isLoading: isLoadingMessages,
+    addOptimisticMessage,
+  } = useGetConversationMessages(chatId);
   const { conversationInfo, isLoading: isLoadingConversationInfo } =
     useGetConversationInfo(chatId);
   const { backgroundColors, setBackgroundColors } = useEmotionColors(
@@ -66,7 +69,12 @@ function Chat() {
 
   // Message Handler Hook
   const { text, setText, handleSend, error, dismissError, handleKeyDown } =
-    useMessageHandler(chatId, updateBackgroundColor, session?.user?.id);
+    useMessageHandler(
+      chatId,
+      updateBackgroundColor,
+      session?.user?.id,
+      addOptimisticMessage,
+    );
 
   // Auth redirect
   if (!session && !isLoading) {
