@@ -92,7 +92,7 @@ function Chat() {
     >
       {error && (
         <Alert
-          severity="warning"
+          severity="error"
           onClose={dismissError}
           sx={{
             position: "absolute",
@@ -104,12 +104,8 @@ function Chat() {
             boxShadow: 4,
           }}
         >
-          <AlertTitle>Still warming up</AlertTitle>
-          Don't worry, your message will be sent 😊
-          <br />
-          <span style={{ fontSize: "10px", opacity: 0.5 }}>
-            Sadly the emotion will not..
-          </span>
+          <AlertTitle>Something went wrong</AlertTitle>
+          Please try again in a moment.
         </Alert>
       )}
 
