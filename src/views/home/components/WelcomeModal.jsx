@@ -599,7 +599,7 @@ function WelcomeModal({ open, onClose }) {
                   }}
                 >
                   <Link
-                    href="mailto:your.email@example.com"
+                    href="mailto:lykosmanolis@gmail.com"
                     color="inherit"
                     sx={{
                       display: "flex",
@@ -633,7 +633,7 @@ function WelcomeModal({ open, onClose }) {
                     </Typography>
                   </Link>
                   <Link
-                    href="https://linkedin.com/in/yourprofile"
+                    href="https://linkedin.com/in/manolis-lykos-504472289"
                     target="_blank"
                     color="inherit"
                     sx={{
@@ -668,7 +668,7 @@ function WelcomeModal({ open, onClose }) {
                     </Typography>
                   </Link>
                   <Link
-                    href="https://github.com/yourusername"
+                    href="https://github.com/Lykos-Manolis"
                     target="_blank"
                     color="inherit"
                     sx={{
