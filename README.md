@@ -18,7 +18,8 @@ With the use of a custom-made neural network and an overall utilization of artif
 
 When sending messages through the application, the message contents are analyzed in real time and attempt to classify them into twenty seven different emotions which are then matched into colors. In the chatroom interface the background changes based on the emotion predictions. When a user scrolls through the application, the colors change to match the last message visible at that moment.
 
-> ![Chat view](docs/app-design/chat-view.png) > <sub>Image: Chat view of the application</sub>
+> ![Chat view](docs/app-design/chat-view.png)
+> </br><sub>Image 1: Chat view of the application</sub>
 
 After creating and initiating a conversation with someone, the user can see in their home screen a new background that expands and changes colors as the conversations add up and their emotions change.
 
@@ -26,7 +27,8 @@ After creating and initiating a conversation with someone, the user can see in t
 
 Each conversation has their own analytics desplayed in a separate dashboard. When a user navigates to a conversation, they can select the dashboard button which redirects them to that interface. There, they can view that conversation's analytics, showing the emotions throughout the month or year and even view some statistics for each emotion separately.
 
-> ![Dashboard and chat views](docs/app-design/dashboard-chat-view.png) > <sub>Image: Dashboard and chat view of the application</sub>
+> ![Dashboard and chat views](docs/app-design/dashboard-chat-view.png)
+> </br><sub>Image 2: Dashboard and chat view of the application</sub>
 
 # Styling
 
@@ -39,7 +41,7 @@ Material UI provides a plethora of pre-built components for use. Once Installed,
 Imported components can be as simple or a complex as the user needs. MUI provides the ability to customize them by adding several different props that alter them in many ways depending on the component. A list of such components can be found [here](https://mui.com/material-ui/all-components/)
 
 > ![Color palettes](/docs/app-design/palettes.png)
-> <sub>Image: Emotion color palettes</sub>
+> </br><sub>Image 3: Emotion color palettes</sub>
 
 # Hosting
 
@@ -64,14 +66,27 @@ The app can migrate to mobile by making it into a progressive web-app (PWA). To 
 ### Lighthouse Tool
 
 The lighthouse tool on google chrome's developer tools allows us to analyze the performance of the application. After auditing the site, it can determine the performance, accessibility, best practices and search engine optimization (SEO).
-![Lighthouse performance](docs/performance/lighthouse.png)
-<sub>Image: The Lighthouse performance tab</sub>
+> ![Lighthouse performance](docs/performance/lighthouse.png)
+> </br><sub>Image 4: The Lighthouse performance tab</sub>
 
 It can also provide additional information for each of them and major flaws to fix later on.
-![Lighthouse warning](docs/performance/warning.png)
-<sub>Image: Lighthouse warning message</sub>
+> ![Lighthouse warning](docs/performance/warning.png)
+> </br><sub>Image 5: Lighthouse warning message</sub>
 
 When the metrics reach a certain point meaning it _could_ be made into a PWA, the lighthouse lets us transform it.
+
+# Installing the application
+
+The installation of the app is pretty simple.
+1. Open your preferred browser on a mobile phone.
+2. Go to this website: [https://mental-pi.vercel.app/home](https://mental-pi.vercel.app/home)
+3. Click on the **share** button.
+4. Click on the **"add to home screen"** option.
+
+> [!WARNING]
+> ### It is recommended to install the application on a **mobile phone** for a better experience.
+> Most browsers have the option to **install** or **add to home screen** when clicking on the share button.
+> </br>If such option is unavailable, something in these lines should be available in the browser's settings.
 
 # Caveats and limitations
 
